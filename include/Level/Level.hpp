@@ -23,6 +23,10 @@ namespace Level
 class Level : public sf::Drawable
 {
 public:
+	/// For readability.
+	typedef std::shared_ptr<Object::Object> ObjectPtr;
+
+	/// Init
 	Level();
 
 	/// Init the level, and load the static tilemap.
@@ -99,7 +103,14 @@ private:
 	/// The static tiles that make up the map.
 	GFX::TiledTilemap mStaticMap;
 	/// All level objects.
-	std::vector<std::shared_ptr<Object::Object>> mObjects;
+	std::vector<ObjectPtr> mObjects;
+	/// All objects, sorted by priority.
+	std::vector<ObjectPtr*> mObjectsPriority;
+	/// All objects, sorted by Z-index.
+	std::vector<ObjectPtr*> mObjectsZIndex;
+
+	/// Refresh the priority and Z index queues, removing nullptrs.
+	void refreshObjectQueues();
 };
 
 }

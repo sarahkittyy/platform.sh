@@ -45,6 +45,9 @@ Object::Object* Level::addObject(Object::Object* object)
 	object->init();
 
 	mObjects.push_back(std::shared_ptr<Object::Object>(object));
+	/// Get the newly pushed object shared_ptr.
+	std::shared_ptr<Object::Object>* obj_ptr = &mObjects.back();
+	/// Insert it into the priority queue.
 
 	return mObjects.back().get();
 }
@@ -54,6 +57,16 @@ void Level::removeObject(Object::Object* object)
 	std::remove_if(mObjects.begin(), mObjects.end(),
 				   [object](std::shared_ptr<Object::Object>& obj) {
 					   return obj.get() == object;
+				   });
+
+	// Remove the object from the priority queues as well.
+	std::remove_if(mObjectsPriority.begin(), mObjectsPriority.end(),
+				   [object](auto& objptr) {
+					   return objptr->get() == object;
+				   });
+	std::remove_if(mObjectsZIndex.begin(), mObjectsZIndex.end(),
+				   [object](auto& objptr) {
+					   return objptr->get() == object;
 				   });
 }
 
@@ -130,29 +143,23 @@ void Level::update()
 	// when it's time for both a frame and a tick update,
 	// so as to not run two loops.
 
-	// Sort all objects in order of priority (lowest to highest).
-	std::sort(mObjects.begin(), mObjects.end(),
-			  [](auto& obj1, auto& obj2) {
-				  return obj1->priority < obj2->priority;
-			  });
-
 	/// Game tick updates.
 	if (mClock.getElapsedTime() >= mTickSpeed)
 	{
 		mClock.restart();
 
 		/// Frame update and tick update all objects.
-		for (auto& obj : mObjects)
+		for (auto& obj : mObjectsPriority)
 		{
-			obj->update();
-			obj->updateTick();
+			(*obj)->update();
+			(*obj)->updateTick();
 		}
 	}
 	else   // If it's not time to tick updte, just frame update.
 	{
-		for (auto& obj : mObjects)
+		for (auto& obj : mObjectsPriority)
 		{
-			obj->update();
+			(*obj)->update();
 		}
 	}
 }
@@ -168,9 +175,9 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(mStaticMap, states);
 
 	// Draw all objects
-	for (auto& obj : mObjects)
+	for (auto& obj : mObjectsZIndex)
 	{
-		target.draw(*obj, states);
+		target.draw(**obj, states);
 	}
 }
 

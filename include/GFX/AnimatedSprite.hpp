@@ -34,6 +34,13 @@ public:
 	void init(sf::Texture* texture, sf::Vector2f size);
 
 	/**
+	 * @brief Get the size of a single sprite frame.
+	 * 
+	 * @return sf::Vector2f The size of the rendered sprite.
+	 */
+	sf::Vector2f getSize();
+
+	/**
 	 * @brief Update the animation. Call once per frame.
 	 * 
 	 */

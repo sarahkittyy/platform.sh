@@ -28,6 +28,11 @@ void AnimatedSprite::init(sf::Texture* texture, sf::Vector2f size)
 	};
 }
 
+sf::Vector2f AnimatedSprite::getSize()
+{
+	return mFrameSize;
+}
+
 void AnimatedSprite::update()
 {
 	if (!mRunning || getCurrentAnimation()->speed.asSeconds() == -1)

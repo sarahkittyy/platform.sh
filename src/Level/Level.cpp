@@ -133,7 +133,7 @@ void Level::update()
 	// Sort all objects in order of priority (lowest to highest).
 	std::sort(mObjects.begin(), mObjects.end(),
 			  [](auto& obj1, auto& obj2) {
-				  return obj1.priority < obj2.priority;
+				  return obj1->priority < obj2->priority;
 			  });
 
 	/// Game tick updates.

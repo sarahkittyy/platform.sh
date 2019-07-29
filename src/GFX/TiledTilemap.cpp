@@ -45,8 +45,8 @@ unsigned char TiledTilemap::getNeighborBitmask(int index)
 
 	// Array of neighboring positions.
 	int neighbor_pos[4] = {x + (y - 1) * mMapSize.x,
-						   (x + 1) + y * mMapSize.x,
 						   (x - 1) + y * mMapSize.x,
+						   (x + 1) + y * mMapSize.x,
 						   x + (y + 1) * mMapSize.x};
 
 	// Get the four neighbors
@@ -59,10 +59,10 @@ unsigned char TiledTilemap::getNeighborBitmask(int index)
 	});
 
 	// Return the bitmasked sum
-	unsigned char sum = (neighbors[0] << 3) |
-						(neighbors[1] << 2) |
-						(neighbors[2] << 1) |
-						(neighbors[3] << 0);
+	unsigned char sum = (neighbors[0] << 0) |
+						(neighbors[1] << 1) |
+						(neighbors[2] << 2) |
+						(neighbors[3] << 3);
 	return sum;
 }
 

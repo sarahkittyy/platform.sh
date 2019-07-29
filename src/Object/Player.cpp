@@ -3,7 +3,7 @@
 namespace Object
 {
 
-Player::Player(sf::Vector2f startPos)
+Player::Player(sf::Vector2i startPos)
 	: mStartPos(startPos)
 {
 	// Always should be updated first.
@@ -34,7 +34,12 @@ void Player::updateTick()
 
 void Player::reset()
 {
-	// Reset the player's position.
+	mPlayer.setPosition(getRealPosition(mStartPos));
+}
+
+sf::Vector2f Player::getRealPosition(sf::Vector2i tilePos)
+{
+	// Get the tile size
 	sf::Vector2i tileSize = staticTilemap().getTileSize();
 	// Get the offset to center the player on the bottom-middle.
 	sf::Vector2i playerOffset = {
@@ -52,7 +57,7 @@ void Player::reset()
 	sf::Vector2i offset = playerOffset + tileOffset;
 
 	// Set the player position.
-	mPlayer.setPosition(mStartPos.x * tileSize.x + offset.x, mStartPos.y * tileSize.y + offset.y);
+	return sf::Vector2f(mStartPos.x * tileSize.x + offset.x, mStartPos.y * tileSize.y + offset.y);
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const

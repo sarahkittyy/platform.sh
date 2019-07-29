@@ -40,6 +40,13 @@ public:
 	 */
 	int getTile(int x, int y);
 
+	/// Get the map size, in tiles.
+	sf::Vector2i getMapSize();
+	/// Get the tile size, in pixels.
+	sf::Vector2i getTileSize();
+	/// Get the raw Tiled map json data.
+	const nlohmann::json& getRawMapData();
+
 private:
 	/// SFML draw() override.
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

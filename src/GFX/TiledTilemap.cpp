@@ -47,6 +47,21 @@ int TiledTilemap::getTile(int x, int y)
 		return mTiles[index];   // Return the tile.
 }
 
+sf::Vector2i TiledTilemap::getMapSize()
+{
+	return mMapSize;
+}
+
+sf::Vector2i TiledTilemap::getTileSize()
+{
+	return mTileSize;
+}
+
+const nlohmann::json& TiledTilemap::getRawMapData()
+{
+	return mData;
+}
+
 unsigned char TiledTilemap::getNeighborBitmask(int index)
 {
 	// Get x and y position.

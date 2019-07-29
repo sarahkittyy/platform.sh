@@ -68,6 +68,10 @@ public:
 	/// Call once per frame -- updates the level.
 	void update();
 
+protected:
+	/// For objects to retrieve the level's static map.
+	const GFX::TiledTilemap& getTiledTilemap();
+
 private:
 	/// SFML draw() override.
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

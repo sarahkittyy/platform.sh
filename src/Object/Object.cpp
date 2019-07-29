@@ -58,6 +58,11 @@ float Object::getViewportScale()
 	return mGetViewportScale();
 }
 
+const GFX::TiledTilemap& Object::getStaticTilemap()
+{
+	return mGetStaticTilemap();
+}
+
 void Object::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 }

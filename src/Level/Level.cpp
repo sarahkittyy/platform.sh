@@ -151,6 +151,11 @@ void Level::update()
 	}
 }
 
+const GFX::TiledTilemap& Level::getTiledTilemap()
+{
+	return mStaticMap;
+}
+
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= mTransform;

@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <functional>
+#include "GFX/TiledTilemap.hpp"
 #include "ResourceManager.hpp"
 
 // So that Object::Object can friend Level and allow for initialization.
@@ -49,6 +50,9 @@ protected:
 	/// Get the level viewport scale.
 	float getViewportScale();
 
+	/// Get the static level tilemap.
+	const GFX::TiledTilemap& getStaticTilemap();
+
 	/// SFML draw() override.
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
@@ -67,6 +71,9 @@ private:
 	std::function<void(float)> mSetViewportScale;
 	/// Get the level viewport scale.
 	std::function<float()> mGetViewportScale;
+
+	/// Get the static level tilemap.
+	std::function<const GFX::TiledTilemap&()> mGetStaticTilemap;
 
 	// For initialization
 	friend class Level::Level;

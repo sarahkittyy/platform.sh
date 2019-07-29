@@ -27,20 +27,14 @@ void Level::init(sf::RenderWindow* window,
 Object::Object* Level::addObject(Object::Object* object)
 {
 	// Initialize the object.
-	object->mResource = mResource;
-	object->mAddObject =
-		std::bind(&Level::addObject, this, std::placeholders::_1);
-	object->mRemoveObject =
-		std::bind(&Level::removeObject, this, std::placeholders::_1);
+	object->mResource	 = mResource;
+	object->mAddObject	= [this](Object::Object* obj) { return addObject(obj); };
+	object->mRemoveObject = [this](Object::Object* obj) { removeObject(obj); };
 	// Bind camera controls.
-	object->mSetCameraPosition =
-		std::bind(&Level::setCameraPosition, this, std::placeholders::_1);
-	object->mGetCameraPosition =
-		std::bind(&Level::getCameraPosition, this);
-	object->mSetViewportScale =
-		std::bind(&Level::setViewportScale, this, std::placeholders::_1);
-	object->mGetViewportScale =
-		std::bind(&Level::getViewportScale, this);
+	object->mSetCameraPosition = [this](sf::Vector2f pos) { setCameraPosition(pos); };
+	object->mGetCameraPosition = [this]() { return getCameraPosition(); };
+	object->mSetViewportScale  = [this](float scale) { setViewportScale(scale); };
+	object->mGetViewportScale  = [this]() { return getViewportScale(); };
 
 	object->mStaticTilemap = &mStaticMap;
 

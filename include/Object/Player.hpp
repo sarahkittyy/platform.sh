@@ -38,6 +38,25 @@ private:
 	sf::Vector2i mStartPos;
 	/// Get the real coordinate position from a given tile position.
 	sf::Vector2f getRealPosition(sf::Vector2i tilePos);
+
+	/// Set the position of the player to a tile on the grid.
+	void setCurrentTilePosition(sf::Vector2i tilePos);
+	/// Get the current tile the player is occupying.
+	sf::Vector2i getCurrentTilePosition();
+
+	////////////////////////////
+	//
+	// Physics methods
+	//
+	////////////////////////////
+
+	void moveRight();
+	void moveLeft();
+	bool jump();
+
+	bool mJustJumped = false;
+
+	void postMove();
 };
 
 }

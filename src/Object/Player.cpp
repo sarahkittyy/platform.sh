@@ -24,17 +24,114 @@ void Player::init()
 
 void Player::update()
 {
+	mPlayer.update();
+
+	// Keep the level camera centered on the player.
+	setCameraPosition(mPlayer.getPosition() +
+					  sf::Vector2f(mPlayer.getSize().x / 2.f,
+								   mPlayer.getSize().y / 2.f));
 }
 
 void Player::updateTick()
 {
-	// Keep the level camera centered on the player.
-	setCameraPosition(mPlayer.getPosition());
+	// Jumping
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		if (!mJustJumped)
+		{
+			if (jump())
+				mJustJumped = true;
+		}
+		else
+		{
+			mJustJumped = false;
+		}
+	}
+	// L/R movement.
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		moveRight();
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		moveLeft();
+	}
+
+	postMove();   // Post-move processing.
+}
+
+bool Player::jump()
+{
+	sf::Vector2i tilePos = getCurrentTilePosition();
+
+	// If there's something above us, don't jump.
+	if (staticTilemap().getTile(tilePos.x, tilePos.y - 1) != 0)
+		return false;
+	// If there's nothing below us, don't jump.
+	if (staticTilemap().getTile(tilePos.x, tilePos.y + 1) == 0)
+		return false;
+
+	// Jump.
+	setCurrentTilePosition({ tilePos.x, tilePos.y - 1 });
+	return true;
+}
+
+void Player::moveRight()
+{
+	sf::Vector2i tilePos = getCurrentTilePosition();
+
+	// If there's something to the right of us..
+	if (staticTilemap().getTile(tilePos.x + 1, tilePos.y) != 0)
+		return;   // Don't move
+
+	setCurrentTilePosition({ tilePos.x + 1, tilePos.y });
+}
+
+void Player::moveLeft()
+{
+	sf::Vector2i tilePos = getCurrentTilePosition();
+
+	// If there's something to the left of us..
+	if (staticTilemap().getTile(tilePos.x - 1, tilePos.y) != 0)
+		return;   // Don't move
+
+	setCurrentTilePosition({ tilePos.x - 1, tilePos.y });
+}
+
+void Player::postMove()
+{
+	sf::Vector2i tilePos = getCurrentTilePosition();
+	// Fall if there's nothing under the player,
+	// and we didn't jump that frame.
+	if (staticTilemap().getTile(tilePos.x, tilePos.y + 1) == 0)
+	{
+		if (!mJustJumped)
+			setCurrentTilePosition({ tilePos.x, tilePos.y + 1 });
+	}
+}
+
+void Player::setCurrentTilePosition(sf::Vector2i tilePos)
+{
+	mPlayer.setPosition(getRealPosition(tilePos));
+}
+
+sf::Vector2i Player::getCurrentTilePosition()
+{
+	sf::Vector2i tileSize	 = staticTilemap().getTileSize();
+	sf::Vector2i playerCenter = {
+		(int)mPlayer.getPosition().x + (int)mPlayer.getSize().x / 2,
+		(int)mPlayer.getPosition().y + (int)mPlayer.getSize().y / 2
+	};
+
+	int x, y;
+	x = std::floor(playerCenter.x / tileSize.x);
+	y = std::floor(playerCenter.y / tileSize.y);
+	return { x, y };
 }
 
 void Player::reset()
 {
-	mPlayer.setPosition(getRealPosition(mStartPos));
+	setCurrentTilePosition(mStartPos);
 }
 
 sf::Vector2f Player::getRealPosition(sf::Vector2i tilePos)
@@ -49,15 +146,15 @@ sf::Vector2f Player::getRealPosition(sf::Vector2i tilePos)
 
 	// Center the player's center on the bottom middle of the tile.
 	sf::Vector2i tileOffset = {
-		-(int)tileSize.x / 2,
-		-(int)tileSize.y
+		(int)tileSize.x / 2,
+		(int)tileSize.y
 	};
 
 	// Sum up the player and tile offsets.
 	sf::Vector2i offset = playerOffset + tileOffset;
 
 	// Set the player position.
-	return sf::Vector2f(mStartPos.x * tileSize.x + offset.x, mStartPos.y * tileSize.y + offset.y);
+	return sf::Vector2f(tilePos.x * tileSize.x + offset.x, tilePos.y * tileSize.y + offset.y);
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const

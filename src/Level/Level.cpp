@@ -44,12 +44,51 @@ Object::Object* Level::addObject(Object::Object* object)
 
 	object->init();
 
-	mObjects.push_back(std::shared_ptr<Object::Object>(object));
+	mObjects.push_back(ObjectPtr(object));
 	/// Get the newly pushed object shared_ptr.
-	std::shared_ptr<Object::Object>* obj_ptr = &mObjects.back();
-	/// Insert it into the priority queue.
+	ObjectPtr* obj_ptr = &mObjects.back();
+	/// Insert it into the priority queues.
+	insertIntoZQueue(obj_ptr);
+	insertIntoPriorityQueue(obj_ptr);
+
 
 	return mObjects.back().get();
+}
+
+void Level::insertIntoZQueue(ObjectPtr* ptr)
+{
+	// Find the first element greater than the z-index.
+	auto found = std::find_if(mObjectsZIndex.begin(), mObjectsZIndex.end(),
+							  [ptr](auto& obj) {
+								  return (*obj)->zindex > (*ptr)->zindex;
+							  });
+	if (found == mObjectsZIndex.end())
+	{
+		mObjectsZIndex.push_back(ptr);
+	}
+	else
+	{
+		// Insert the object into the found position.
+		mObjectsZIndex.insert(found, ptr);
+	}
+}
+
+void Level::insertIntoPriorityQueue(ObjectPtr* ptr)
+{
+	// Find the first element greater than this object's.
+	auto found = std::find_if(mObjectsPriority.begin(), mObjectsPriority.end(),
+							  [ptr](auto& obj) {
+								  return (*obj)->priority > (*ptr)->priority;
+							  });
+	if (found == mObjectsPriority.end())
+	{
+		mObjectsPriority.push_back(ptr);
+	}
+	else
+	{
+		// Insert the object into the found position.
+		mObjectsPriority.insert(found, ptr);
+	}
 }
 
 void Level::removeObject(Object::Object* object)
@@ -180,5 +219,4 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		target.draw(**obj, states);
 	}
 }
-
 }

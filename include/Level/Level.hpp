@@ -108,6 +108,11 @@ private:
 	std::vector<ObjectPtr*> mObjectsPriority;
 	/// All objects, sorted by Z-index.
 	std::vector<ObjectPtr*> mObjectsZIndex;
+
+	/// Inserts an object into the priority queue.
+	void insertIntoPriorityQueue(ObjectPtr* ptr);
+	/// Inserts and object into the Z-index queue.
+	void insertIntoZQueue(ObjectPtr* ptr);
 };
 
 }

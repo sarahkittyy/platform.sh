@@ -58,7 +58,7 @@ protected:
 	float getViewportScale();
 
 	/// Get the static level tilemap.
-	const GFX::TiledTilemap& getStaticTilemap();
+	const GFX::TiledTilemap& staticTilemap();
 
 	/// SFML draw() override.
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -79,8 +79,8 @@ private:
 	/// Get the level viewport scale.
 	std::function<float()> mGetViewportScale;
 
-	/// Get the static level tilemap.
-	std::function<const GFX::TiledTilemap&()> mGetStaticTilemap;
+	/// The level static tilemap
+	GFX::TiledTilemap* mStaticTilemap;
 
 	// For initialization
 	friend class Level::Level;

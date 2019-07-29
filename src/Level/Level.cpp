@@ -42,6 +42,8 @@ Object::Object* Level::addObject(Object::Object* object)
 	object->mGetViewportScale =
 		std::bind(&Level::getViewportScale, this);
 
+	object->mStaticTilemap = &mStaticMap;
+
 	object->init();
 
 	mObjects.push_back(ObjectPtr(object));

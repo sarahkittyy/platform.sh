@@ -19,5 +19,5 @@ file(GLOB_RECURSE sources "src/*.cpp")
 # create target
 add_executable(platform.sh ${sources})
 target_compile_options(platform.sh PUBLIC -Wall)
-target_include_directories(platform.sh PUBLIC "include/")
+target_include_directories(platform.sh PUBLIC "include/" "lib/")
 target_link_libraries(platform.sh ${SFML_LIB})

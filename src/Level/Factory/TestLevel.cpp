@@ -3,12 +3,12 @@
 namespace Level::Factory
 {
 
-Level testLevel(sf::RenderWindow* window, ResourceManager* resource)
+void testLevel(Level* lvl,
+			   sf::RenderWindow* window,
+			   ResourceManager* resource)
 {
-	Level lvl;
-	lvl.init(window, resource, "assets/maps/test_map.json", true);
-	lvl.addObject(new Object::Player({ 4, 3 }));
-	return lvl;
+	lvl->init(window, resource, "assets/maps/test_map.json", true);
+	lvl->addObject(new Object::Player({ 4, 3 }));
 }
 
 }

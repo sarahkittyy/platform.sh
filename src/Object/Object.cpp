@@ -4,7 +4,8 @@ namespace Object
 {
 
 Object::Object()
-	: priority(10)
+	: priority(10),
+	  zindex(10)
 {
 }
 

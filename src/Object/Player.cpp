@@ -8,6 +8,7 @@ Player::Player(sf::Vector2f startPos)
 {
 	// Always should be updated first.
 	priority = 0;
+	zindex   = 0;
 }
 
 void Player::init()

@@ -37,6 +37,8 @@ public:
 
 	/// Update priority. Lower values are higher priority. Default 10.
 	unsigned int priority;
+	/// Z-Index, lower values get drawn first. Default 10.
+	unsigned int zindex;
 
 protected:
 	/// Returns a reference to the app resource manager.

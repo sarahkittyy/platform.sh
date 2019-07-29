@@ -4,19 +4,24 @@ namespace Level
 {
 
 Level::Level()
-	: mRunning(false)
+	: mRunning(false),
+	  mCameraPosition(0, 0),
+	  mViewportScale(1)
 {
 	mClock.restart();
 }
 
-void Level::init(ResourceManager* resource,
+void Level::init(sf::RenderWindow* window,
+				 ResourceManager* resource,
 				 std::string file,
-				 bool autotile = false)
+				 bool autotile)
 {
 	// Save the resource manager.
 	mResource = resource;
+	mWindow   = window;
 	// Load the static tilemap.
 	mStaticMap.load(resource, file, autotile);
+	updateCameraTransform();
 }
 
 Object::Object* Level::addObject(Object::Object* object)
@@ -40,6 +45,45 @@ void Level::removeObject(Object::Object* object)
 				   [object](std::shared_ptr<Object::Object>& obj) {
 					   return obj.get() == object;
 				   });
+}
+
+void Level::setCameraPosition(sf::Vector2f pos)
+{
+	mCameraPosition = -1.f * pos;
+	updateCameraTransform();
+}
+
+sf::Vector2f Level::getCameraPosition()
+{
+	return mCameraPosition;
+}
+
+void Level::setViewportScale(float scale)
+{
+	mViewportScale = scale;
+	updateCameraTransform();
+}
+
+float Level::getViewportScale()
+{
+	return mViewportScale;
+}
+
+void Level::updateCameraTransform()
+{
+	// Refresh the transform
+	mTransform = sf::Transform::Identity;
+
+	// Calculate the actual camera position (top-left)
+	sf::Vector2f actualCam(
+		mCameraPosition.x + mWindow->getSize().x / 2.f,
+		mCameraPosition.y + mWindow->getSize().y / 2.f);
+
+	// Move the transform to the camera position.
+	mTransform.translate(actualCam);
+
+	// Scale the viewport.
+	mTransform.scale(mViewportScale, mViewportScale, mCameraPosition.x, mCameraPosition.y);
 }
 
 void Level::setTickSpeed(sf::Time speed)
@@ -99,8 +143,8 @@ void Level::update()
 
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	states.transform *= getTransform();
-	target.draw(mStaticMap);
+	states.transform *= mTransform;
+	target.draw(mStaticMap, states);
 }
 
 }

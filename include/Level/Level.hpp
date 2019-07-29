@@ -20,13 +20,14 @@ namespace Level
  * drawable and able to be started / stopped / reset.
  * 
  */
-class Level : public sf::Drawable, public sf::Transformable
+class Level : public sf::Drawable
 {
 public:
 	Level();
 
-	/// Load the static tilemap.
-	void init(ResourceManager* resource,
+	/// Init the level, and load the static tilemap.
+	void init(sf::RenderWindow* window,
+			  ResourceManager* resource,
 			  std::string file,
 			  bool autotile = false);
 
@@ -47,6 +48,15 @@ public:
 	 */
 	void removeObject(Object::Object* object);
 
+	/// Set the position of the camera
+	void setCameraPosition(sf::Vector2f pos);
+	/// Get the position of the camera
+	sf::Vector2f getCameraPosition();
+	/// Set the scale of the visible area.
+	void setViewportScale(float scale);
+	/// Get the level viewport scale.
+	float getViewportScale();
+
 	/// Set the game update tick speed.
 	void setTickSpeed(sf::Time speed);
 	/// Start the level updating.
@@ -61,6 +71,8 @@ public:
 private:
 	/// SFML draw() override.
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	/// App window.
+	sf::RenderWindow* mWindow;
 	/// App resource manager.
 	ResourceManager* mResource;
 
@@ -70,6 +82,15 @@ private:
 	sf::Time mTickSpeed;
 	/// Whether or not the level is updating.
 	bool mRunning;
+
+	/// Camera position.
+	sf::Vector2f mCameraPosition;
+	/// Viewport scale
+	float mViewportScale;
+	/// The cumulative transform of the camera position and size.
+	sf::Transform mTransform;
+	/// Update the level transform based on the pos and viewport size.
+	void updateCameraTransform();
 
 	/// The static tiles that make up the map.
 	GFX::TiledTilemap mStaticMap;

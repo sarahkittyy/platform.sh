@@ -1,3 +1,0 @@
-[submodule "lib/Box2D"]
-	path = lib/Box2D
-	url = https://github.com/tobanteGaming/Box2D-cmake

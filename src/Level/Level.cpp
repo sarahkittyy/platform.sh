@@ -166,6 +166,12 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= mTransform;
 	target.draw(mStaticMap, states);
+
+	// Draw all objects
+	for (auto& obj : mObjects)
+	{
+		target.draw(*obj, states);
+	}
 }
 
 }

@@ -5,7 +5,7 @@ namespace State
 
 void Game::init()
 {
-	map.load(&resource(), "assets/maps/test_map.json", trues);
+	map.load(&resource(), "assets/maps/test_map.json", true);
 }
 
 void Game::update()

@@ -5,13 +5,15 @@ namespace State
 
 void Game::init()
 {
-	map.load(&resource(), "assets/maps/test_map.json", true);
+	mTestLevel.init(&resource(), "assets/maps/test_map.json", true);
 }
 
 void Game::update()
 {
+	mTestLevel.update();
+
 	window().clear(sf::Color::Black);
-	window().draw(map);
+	window().draw(mTestLevel);
 
 	window().display();
 }

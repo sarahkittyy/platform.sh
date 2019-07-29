@@ -1,7 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "GFX/TiledTilemap.hpp"
+#include "Level/Level.hpp"
+#include "Object/Object.hpp"
 #include "ResourceManager.hpp"
 #include "State/State.hpp"
 
@@ -19,7 +20,7 @@ public:
 	void update();
 
 private:
-	GFX::TiledTilemap map;
+	Level::Level mTestLevel;
 };
 
 }

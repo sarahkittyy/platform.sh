@@ -4,7 +4,7 @@ namespace Level
 {
 
 Level::Level()
-	: mTickSpeed(sf::seconds(1)),
+	: mTickSpeed(sf::seconds(0.5f)),
 	  mRunning(false),
 	  mCameraPosition(0, 0),
 	  mViewportScale(1)

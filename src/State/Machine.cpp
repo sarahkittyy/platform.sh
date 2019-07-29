@@ -48,7 +48,7 @@ void Machine::resetCurrentState(State* state)
 {
 	mCurrentState.reset(state);
 	// Set state env vars
-	mCurrentState->mWindow = mWindow;
+	mCurrentState->mWindow   = mWindow;
 	mCurrentState->mResource = mResource;
 	mCurrentState->mChangeState =
 		std::bind(&Machine::changeState, this, std::placeholders::_1);

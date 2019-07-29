@@ -7,14 +7,14 @@ AnimatedSprite::AnimatedSprite()
 	: mCurrentAnimation(nullptr),
 	  mCurrentAnimationName(""),
 	  mCurrentFrame(0),
-	  DEFAULT_ANIMATION({.frames = {0}, .speed = sf::seconds(-1)})
+	  DEFAULT_ANIMATION({ .frames = { 0 }, .speed = sf::seconds(-1) })
 {
 	mClock.restart();
 }
 
 void AnimatedSprite::init(sf::Texture* texture, sf::Vector2f size)
 {
-	mTexture = texture;
+	mTexture   = texture;
 	mFrameSize = size;
 
 	// Init the sprite
@@ -24,7 +24,8 @@ void AnimatedSprite::init(sf::Texture* texture, sf::Vector2f size)
 	// Calculate the texture grid size.
 	mGridSize = {
 		(int)mTexture->getSize().x / (int)mFrameSize.x,
-		(int)mTexture->getSize().y / (int)mFrameSize.y};
+		(int)mTexture->getSize().y / (int)mFrameSize.y
+	};
 }
 
 void AnimatedSprite::update()

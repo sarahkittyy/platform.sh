@@ -28,12 +28,23 @@ void TiledTilemap::load(ResourceManager* resource,
 	fs::path mapFolder(json_file);
 	mapFolder = mapFolder.parent_path();
 
-	mTiles = mData["layers"][0]["data"].get<std::vector<int>>();
-	mMapSize = {mData["width"].get<int>(), mData["height"].get<int>()};
-	mTexture = resource->texture(mapFolder / mData["tilesets"][0]["image"].get<std::string>());
-	mTileSize = {mData["tilewidth"].get<int>(), mData["tileheight"].get<int>()};
+	mTiles	= mData["layers"][0]["data"].get<std::vector<int>>();
+	mMapSize  = { mData["width"].get<int>(), mData["height"].get<int>() };
+	mTexture  = resource->texture(mapFolder / mData["tilesets"][0]["image"].get<std::string>());
+	mTileSize = { mData["tilewidth"].get<int>(), mData["tileheight"].get<int>() };
 
 	loadVertices(autotile);
+}
+
+int TiledTilemap::getTile(int x, int y)
+{
+	// Calculate the index.
+	int index = x + y * mMapSize.x;
+	/// If out of bounds, return 0.
+	if (index < 0 || index >= mTiles.size())
+		return 0;
+	else
+		return mTiles[index];   // Return the tile.
 }
 
 unsigned char TiledTilemap::getNeighborBitmask(int index)
@@ -44,13 +55,13 @@ unsigned char TiledTilemap::getNeighborBitmask(int index)
 	y = index / mMapSize.x;
 
 	// Array of neighboring positions.
-	int neighbor_pos[4] = {x + (y - 1) * mMapSize.x,
-						   (x - 1) + y * mMapSize.x,
-						   (x + 1) + y * mMapSize.x,
-						   x + (y + 1) * mMapSize.x};
+	int neighbor_pos[4] = { x + (y - 1) * mMapSize.x,
+							(x - 1) + y * mMapSize.x,
+							(x + 1) + y * mMapSize.x,
+							x + (y + 1) * mMapSize.x };
 
 	// Get the four neighbors
-	int neighbors[4] = {0};
+	int neighbors[4] = { 0 };
 	std::transform(neighbor_pos, neighbor_pos + 4, neighbors, [this](int pos) {
 		if (pos < 0 || pos >= mTiles.size())
 			return 1;
@@ -93,10 +104,11 @@ void TiledTilemap::loadVertices(bool autotile)
 
 		// Get the tile's vertex positions on-screen.
 		sf::Vector2i position[4] = {
-			{x, y},
-			{x + mTileSize.x, y},
-			{x + mTileSize.x, y + mTileSize.y},
-			{x, y + mTileSize.y}};
+			{ x, y },
+			{ x + mTileSize.x, y },
+			{ x + mTileSize.x, y + mTileSize.y },
+			{ x, y + mTileSize.y }
+		};
 
 		// Get the texture index to use..
 		int tex_index = autotile ? getNeighborBitmask(index) : id;
@@ -107,10 +119,11 @@ void TiledTilemap::loadVertices(bool autotile)
 
 		// Get the texture coords.
 		sf::Vector2i texture[4] = {
-			{tx, ty},
-			{tx + mTileSize.x, ty},
-			{tx + mTileSize.x, ty + mTileSize.y},
-			{tx, ty + mTileSize.y}};
+			{ tx, ty },
+			{ tx + mTileSize.x, ty },
+			{ tx + mTileSize.x, ty + mTileSize.y },
+			{ tx, ty + mTileSize.y }
+		};
 
 		// Create the four vertices.
 		mVertices.append(sf::Vertex(

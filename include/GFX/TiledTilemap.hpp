@@ -31,6 +31,15 @@ public:
 	 */
 	void load(ResourceManager* resource, std::string file, bool autotile = false);
 
+	/**
+	 * @brief Get the tile ID at a given position.
+	 * 
+	 * @param x The x position.
+	 * @param y The y position.
+	 * @return int 0 for nothing, otherwise the tile ID.
+	 */
+	int getTile(int x, int y);
+
 private:
 	/// SFML draw() override.
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

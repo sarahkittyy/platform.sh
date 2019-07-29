@@ -1,8 +1,16 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <algorithm>
+#include <functional>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "GFX/TiledTilemap.hpp"
 #include "ResourceManager.hpp"
+
+#include "Object/Object.hpp"
 
 namespace Level
 {
@@ -22,6 +30,23 @@ public:
 			  std::string file,
 			  bool autotile = false);
 
+	/**
+	 * @brief Link an object to the level. Also initializes the object.
+	 * 
+	 * @param object The object itself (new-allocated, i.e. new Object())
+	 * 
+	 * @returns A pointer to that object.
+	 */
+	Object::Object* addObject(Object::Object* object);
+
+	/**
+	 * @brief Delete the object from the level.
+	 * 
+	 * @param object The pointer to the object.
+	 * @remarks The object will be nullified! Do not use the object after this call.
+	 */
+	void removeObject(Object::Object* object);
+
 	/// Set the game update tick speed.
 	void setTickSpeed(sf::Time speed);
 	/// Start the level updating.
@@ -34,7 +59,10 @@ public:
 	void update();
 
 private:
+	/// SFML draw() override.
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	/// App resource manager.
+	ResourceManager* mResource;
 
 	/// The main level clock.
 	sf::Clock mClock;
@@ -45,6 +73,8 @@ private:
 
 	/// The static tiles that make up the map.
 	GFX::TiledTilemap mStaticMap;
+	/// All level objects.
+	std::vector<std::shared_ptr<Object::Object>> mObjects;
 };
 
 }

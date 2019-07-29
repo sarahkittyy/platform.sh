@@ -5,7 +5,7 @@ namespace State
 
 void Game::init()
 {
-	mTestLevel.init(&resource(), "assets/maps/test_map.json", true);
+	mTestLevel = Level::Factory::testLevel(&window(), &resource());
 }
 
 void Game::update()

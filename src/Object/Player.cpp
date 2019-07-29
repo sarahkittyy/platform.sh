@@ -107,6 +107,8 @@ void Player::postMove()
 	{
 		if (!mJustJumped)
 			setCurrentTilePosition({ tilePos.x, tilePos.y + 1 });
+		else
+			mJustJumped = false;
 	}
 }
 

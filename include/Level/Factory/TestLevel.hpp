@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Level/Level.hpp"
+#include "Object/Player.hpp"
 
 namespace Level::Factory
 {

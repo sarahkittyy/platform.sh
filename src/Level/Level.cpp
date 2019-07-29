@@ -32,6 +32,16 @@ Object::Object* Level::addObject(Object::Object* object)
 		std::bind(&Level::addObject, this, std::placeholders::_1);
 	object->mRemoveObject =
 		std::bind(&Level::removeObject, this, std::placeholders::_1);
+	// Bind camera controls.
+	object->mSetCameraPosition =
+		std::bind(&Level::setCameraPosition, this, std::placeholders::_1);
+	object->mGetCameraPosition =
+		std::bind(&Level::getCameraPosition, this);
+	object->mSetViewportScale =
+		std::bind(&Level::setViewportScale, this, std::placeholders::_1);
+	object->mGetViewportScale =
+		std::bind(&Level::getViewportScale, this);
+
 	object->init();
 
 	mObjects.push_back(std::shared_ptr<Object::Object>(object));

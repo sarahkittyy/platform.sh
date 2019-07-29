@@ -38,6 +38,26 @@ void Object::removeObject(Object* object)
 	mRemoveObject(object);
 }
 
+void Object::setCameraPosition(sf::Vector2f pos)
+{
+	mSetCameraPosition(pos);
+}
+
+sf::Vector2f Object::getCameraPosition()
+{
+	return mGetCameraPosition();
+}
+
+void Object::setViewportScale(float scale)
+{
+	mSetViewportScale(scale);
+}
+
+float Object::getViewportScale()
+{
+	return mGetViewportScale();
+}
+
 void Object::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 }

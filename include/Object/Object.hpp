@@ -40,6 +40,15 @@ protected:
 	/// Remove an object from the level.
 	void removeObject(Object* object);
 
+	/// Set the position of the level camera
+	void setCameraPosition(sf::Vector2f pos);
+	/// Get the position of the level camera
+	sf::Vector2f getCameraPosition();
+	/// Set the scale of the level visible area.
+	void setViewportScale(float scale);
+	/// Get the level viewport scale.
+	float getViewportScale();
+
 	/// SFML draw() override.
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
@@ -50,6 +59,14 @@ private:
 	std::function<Object*(Object*)> mAddObject;
 	/// Initialized by Level::Level, removes & deallocates object from level.
 	std::function<void(Object*)> mRemoveObject;
+	/// Set the level camera position.
+	std::function<void(sf::Vector2f)> mSetCameraPosition;
+	/// Get the camera position.
+	std::function<sf::Vector2f()> mGetCameraPosition;
+	/// Set the level viewport scale
+	std::function<void(float)> mSetViewportScale;
+	/// Get the level viewport scale.
+	std::function<float()> mGetViewportScale;
 
 	// For initialization
 	friend class Level::Level;

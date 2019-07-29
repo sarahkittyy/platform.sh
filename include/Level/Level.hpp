@@ -108,9 +108,6 @@ private:
 	std::vector<ObjectPtr*> mObjectsPriority;
 	/// All objects, sorted by Z-index.
 	std::vector<ObjectPtr*> mObjectsZIndex;
-
-	/// Refresh the priority and Z index queues, removing nullptrs.
-	void refreshObjectQueues();
 };
 
 }

@@ -8,7 +8,7 @@ void testLevel(Level* lvl,
 			   ResourceManager* resource)
 {
 	lvl->init(window, resource, "assets/maps/test_map.json", true);
-	lvl->addObject(new Object::Player({ 4, 3 }));
+	lvl->addObject(new Object::Player({ 3, 1 }));
 }
 
 }

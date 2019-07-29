@@ -22,6 +22,8 @@ namespace Object
 class Object : public sf::Drawable
 {
 public:
+	/// Sets the default priority.
+	Object();
 	/// For inheritance
 	virtual ~Object();
 	/// Called once all protected resources are loaded (ResourceManager, etc)
@@ -32,6 +34,9 @@ public:
 	virtual void updateTick();
 	/// Should reset the object back to it's initial state.
 	virtual void reset();
+
+	/// Update priority. Lower values are higher priority. Default 10.
+	unsigned int priority;
 
 protected:
 	/// Returns a reference to the app resource manager.

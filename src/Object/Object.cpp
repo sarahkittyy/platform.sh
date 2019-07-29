@@ -3,6 +3,11 @@
 namespace Object
 {
 
+Object::Object()
+	: priority(10)
+{
+}
+
 Object::~Object()
 {
 }

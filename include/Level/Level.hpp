@@ -45,6 +45,6 @@ private:
 
 	/// The static tiles that make up the map.
 	GFX::TiledTilemap mStaticMap;
-}
+};
 
 }

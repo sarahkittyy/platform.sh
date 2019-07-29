@@ -5,6 +5,6 @@
 namespace Level::Factory
 {
 
-Level::Level testLevel(sf::RenderWindow* window, ResourceManager* resource);
+Level testLevel(sf::RenderWindow* window, ResourceManager* resource);
 
 }

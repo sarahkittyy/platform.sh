@@ -28,12 +28,31 @@ void Player::update()
 
 void Player::updateTick()
 {
+	// Keep the level camera centered on the player.
+	setCameraPosition(mPlayer.getPosition());
 }
 
 void Player::reset()
 {
 	// Reset the player's position.
-	mPlayer.setPosition(mStartPos);
+	sf::Vector2i tileSize = staticTilemap().getTileSize();
+	// Get the offset to center the player on the bottom-middle.
+	sf::Vector2i playerOffset = {
+		-(int)mPlayer.getSize().x / 2,
+		-(int)mPlayer.getSize().y
+	};
+
+	// Center the player's center on the bottom middle of the tile.
+	sf::Vector2i tileOffset = {
+		-(int)tileSize.x / 2,
+		-(int)tileSize.y
+	};
+
+	// Sum up the player and tile offsets.
+	sf::Vector2i offset = playerOffset + tileOffset;
+
+	// Set the player position.
+	mPlayer.setPosition(mStartPos.x * tileSize.x + offset.x, mStartPos.y * tileSize.y + offset.y);
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const

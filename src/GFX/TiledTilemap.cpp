@@ -36,7 +36,7 @@ void TiledTilemap::load(ResourceManager* resource,
 	loadVertices(autotile);
 }
 
-int TiledTilemap::getTile(int x, int y)
+int TiledTilemap::getTile(int x, int y) const
 {
 	// Calculate the index.
 	int index = x + y * mMapSize.x;
@@ -47,17 +47,17 @@ int TiledTilemap::getTile(int x, int y)
 		return mTiles[index];   // Return the tile.
 }
 
-sf::Vector2i TiledTilemap::getMapSize()
+sf::Vector2i TiledTilemap::getMapSize() const
 {
 	return mMapSize;
 }
 
-sf::Vector2i TiledTilemap::getTileSize()
+sf::Vector2i TiledTilemap::getTileSize() const
 {
 	return mTileSize;
 }
 
-const nlohmann::json& TiledTilemap::getRawMapData()
+const nlohmann::json& TiledTilemap::getRawMapData() const
 {
 	return mData;
 }

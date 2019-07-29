@@ -38,14 +38,14 @@ public:
 	 * @param y The y position.
 	 * @return int 0 for nothing, otherwise the tile ID.
 	 */
-	int getTile(int x, int y);
+	int getTile(int x, int y) const;
 
 	/// Get the map size, in tiles.
-	sf::Vector2i getMapSize();
+	sf::Vector2i getMapSize() const;
 	/// Get the tile size, in pixels.
-	sf::Vector2i getTileSize();
+	sf::Vector2i getTileSize() const;
 	/// Get the raw Tiled map json data.
-	const nlohmann::json& getRawMapData();
+	const nlohmann::json& getRawMapData() const;
 
 private:
 	/// SFML draw() override.

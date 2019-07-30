@@ -35,10 +35,10 @@ public:
 	/// Should reset the object back to it's initial state.
 	virtual void reset();
 
-	/// Update priority. Lower values are higher priority. Default 10.
-	unsigned int priority;
-	/// Z-Index, lower values get drawn first. Default 10.
-	unsigned int zindex;
+	/// Get the object's update priority.
+	unsigned int getPriority();
+	/// Get the object's z index.
+	unsigned int getZIndex();
 
 protected:
 	/// Returns a reference to the app resource manager.
@@ -56,6 +56,9 @@ protected:
 	void setViewportScale(float scale);
 	/// Get the level viewport scale.
 	float getViewportScale();
+
+	void setPriority(unsigned int priority);
+	void setZIndex(unsigned int zindex);
 
 	/// Get the static level tilemap.
 	const GFX::TiledTilemap& staticTilemap();
@@ -78,6 +81,15 @@ private:
 	std::function<void(float)> mSetViewportScale;
 	/// Get the level viewport scale.
 	std::function<float()> mGetViewportScale;
+	/// Re-sync the level priority queue.
+	std::function<void()> mUpdatePriorityQueue;
+	/// Re-sync the level ZIndex queue.
+	std::function<void()> mUpdateZIndexQueue;
+
+	/// The update priority (lower -> first)
+	unsigned int mPriority;
+	/// The object Z index (lower -> drawn last)
+	unsigned int mZIndex;
 
 	/// The level static tilemap
 	GFX::TiledTilemap* mStaticTilemap;

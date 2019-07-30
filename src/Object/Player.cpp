@@ -6,13 +6,14 @@ namespace Object
 Player::Player(sf::Vector2i startPos)
 	: mStartPos(startPos)
 {
-	// Always should be updated first.
-	priority = 0;
-	zindex   = 0;
 }
 
 void Player::init()
 {
+	// The player should always should be updated first.
+	setPriority(0);
+	setZIndex(0);
+
 	// Initialize the player sprite.
 	mPlayer.init(resource().texture("assets/sprites/player.png"), { 15, 30 });
 	mPlayer.addAnimation("default", { .frames = { 0 }, .speed = sf::seconds(-1) });

@@ -4,8 +4,8 @@ namespace Object
 {
 
 Object::Object()
-	: priority(10),
-	  zindex(10)
+	: mPriority(10),
+	  mZIndex(10)
 {
 }
 
@@ -27,6 +27,16 @@ void Object::updateTick()
 
 void Object::reset()
 {
+}
+
+unsigned int Object::getPriority()
+{
+	return mPriority;
+}
+
+unsigned int Object::getZIndex()
+{
+	return mZIndex;
 }
 
 ResourceManager& Object::resource()
@@ -62,6 +72,18 @@ void Object::setViewportScale(float scale)
 float Object::getViewportScale()
 {
 	return mGetViewportScale();
+}
+
+void Object::setPriority(unsigned int priority)
+{
+	mPriority = priority;
+	mUpdatePriorityQueue();
+}
+
+void Object::setZIndex(unsigned int zindex)
+{
+	mZIndex = zindex;
+	mUpdateZIndexQueue();
 }
 
 const GFX::TiledTilemap& Object::staticTilemap()

@@ -36,19 +36,20 @@ Object::Object* Level::addObject(Object::Object* object)
 	object->mSetViewportScale  = [this](float scale) { setViewportScale(scale); };
 	object->mGetViewportScale  = [this]() { return getViewportScale(); };
 
-	object->mUpdatePriorityQueue = [this]() { syncPriorityQueue(); };
-	object->mUpdateZIndexQueue   = [this]() { syncZIndexQueue(); };
+	object->mSyncPriorityQueue = [this]() { syncPriorityQueue(); };
+	object->mSyncZIndexQueue   = [this]() { syncZIndexQueue(); };
 
 	object->mGridSize = &GRIDSIZE;
 	object->mTileSize = &TILESIZE;
 
 	object->init();
 
-	mObjects.push_back(ObjectPtr(object));
-	/// Get the newly pushed object shared_ptr.
-	ObjectPtr* obj_ptr = &mObjects.back();
-	mObjectsPriority.push_back(obj_ptr);
-	mObjectsZIndex.push_back(obj_ptr);
+	// Store the object in a smart pointer.
+	ObjectPtr obj(object);
+
+	mObjects.push_back(obj);
+	mObjectsPriority.push_back(obj);
+	mObjectsZIndex.push_back(obj);
 
 	syncPriorityQueue();
 	syncZIndexQueue();
@@ -65,12 +66,12 @@ void Level::removeObject(Object::Object* object)
 
 	// Remove the object from the priority queues as well.
 	std::remove_if(mObjectsPriority.begin(), mObjectsPriority.end(),
-				   [object](auto& objptr) {
-					   return objptr->get() == object;
+				   [object](auto& obj) {
+					   return obj.get() == object;
 				   });
 	std::remove_if(mObjectsZIndex.begin(), mObjectsZIndex.end(),
-				   [object](auto& objptr) {
-					   return objptr->get() == object;
+				   [object](auto& obj) {
+					   return obj.get() == object;
 				   });
 }
 
@@ -79,7 +80,7 @@ void Level::syncPriorityQueue()
 	/// The lower the priority, the quicker it's updated.
 	std::sort(mObjectsPriority.begin(), mObjectsPriority.end(),
 			  [](auto& obj1, auto& obj2) {
-				  return (*obj1)->getPriority() < (*obj2)->getPriority();
+				  return obj1->getPriority() < obj2->getPriority();
 			  });
 }
 
@@ -88,7 +89,7 @@ void Level::syncZIndexQueue()
 	/// The higher the z index, the quicker it's updated.
 	std::sort(mObjectsZIndex.begin(), mObjectsZIndex.end(),
 			  [](auto& obj1, auto& obj2) {
-				  return (*obj1)->getZIndex() < (*obj2)->getZIndex();
+				  return obj1->getZIndex() < obj2->getZIndex();
 			  });
 }
 
@@ -173,15 +174,15 @@ void Level::update()
 		/// Frame update and tick update all objects.
 		for (auto& obj : mObjectsPriority)
 		{
-			(*obj)->update();
-			(*obj)->updateTick();
+			obj->update();
+			obj->updateTick();
 		}
 	}
 	else   // If it's not time to tick updte, just frame update.
 	{
 		for (auto& obj : mObjectsPriority)
 		{
-			(*obj)->update();
+			obj->update();
 		}
 	}
 }
@@ -193,7 +194,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	// Draw all objects
 	for (auto& obj : mObjectsZIndex)
 	{
-		target.draw(**obj, states);
+		target.draw(*obj, states);
 	}
 }
 

@@ -102,9 +102,9 @@ private:
 	/// All level objects.
 	std::vector<ObjectPtr> mObjects;
 	/// All objects, sorted by priority.
-	std::vector<ObjectPtr*> mObjectsPriority;
+	std::vector<ObjectPtr> mObjectsPriority;
 	/// All objects, sorted by Z-index.
-	std::vector<ObjectPtr*> mObjectsZIndex;
+	std::vector<ObjectPtr> mObjectsZIndex;
 
 	/// Sort the priority queue.
 	void syncPriorityQueue();

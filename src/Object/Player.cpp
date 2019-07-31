@@ -112,7 +112,10 @@ void Player::postMove()
 
 void Player::setPosition(sf::Vector2i tilePos)
 {
-	mPlayer.setPosition(getActualPosition(sf::Vector2f(tilePos)));
+	mPlayer.setPosition(getActualPosition(sf::Vector2f(tilePos)) +
+						sf::Vector2f(tileSize().x / 2.f, tileSize().y) -   //tile offset
+						sf::Vector2f(mPlayer.getSize().x / 2.f,
+									 mPlayer.getSize().y));   // player offset
 }
 
 sf::Vector2i Player::getPosition()

@@ -77,13 +77,13 @@ float Object::getViewportScale()
 void Object::setPriority(unsigned int priority)
 {
 	mPriority = priority;
-	mUpdatePriorityQueue();
+	mSyncPriorityQueue();
 }
 
 void Object::setZIndex(unsigned int zindex)
 {
 	mZIndex = zindex;
-	mUpdateZIndexQueue();
+	mSyncZIndexQueue();
 }
 
 const sf::Vector2i& Object::gridSize()

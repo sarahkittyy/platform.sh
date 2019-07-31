@@ -103,9 +103,9 @@ private:
 	/// Get the level viewport scale.
 	std::function<float()> mGetViewportScale;
 	/// Re-sync the level priority queue.
-	std::function<void()> mUpdatePriorityQueue;
+	std::function<void()> mSyncPriorityQueue;
 	/// Re-sync the level ZIndex queue.
-	std::function<void()> mUpdateZIndexQueue;
+	std::function<void()> mSyncZIndexQueue;
 
 	/// The map grid size
 	sf::Vector2i const* mGridSize;

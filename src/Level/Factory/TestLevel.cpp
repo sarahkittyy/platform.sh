@@ -7,7 +7,7 @@ void testLevel(Level* lvl,
 			   sf::RenderWindow* window,
 			   ResourceManager* resource)
 {
-	lvl->init(window, resource, "assets/maps/test_map.json", true);
+	lvl->init(window, resource);
 	lvl->addObject(new Object::Player({ 3, 1 }));
 }
 

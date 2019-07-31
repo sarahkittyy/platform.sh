@@ -6,6 +6,8 @@ namespace Level
 Level::Level()
 	: mTickSpeed(sf::seconds(0.5f)),
 	  mRunning(false),
+	  TILESIZE(32, 32),
+	  GRIDSIZE(50, 50),
 	  mCameraPosition(0, 0),
 	  mViewportScale(1)
 {
@@ -13,15 +15,12 @@ Level::Level()
 }
 
 void Level::init(sf::RenderWindow* window,
-				 ResourceManager* resource,
-				 std::string file,
-				 bool autotile)
+				 ResourceManager* resource)
 {
 	// Save the resource manager.
 	mResource = resource;
 	mWindow   = window;
-	// Load the static tilemap.
-	mStaticMap.load(resource, file, autotile);
+
 	updateCameraTransform();
 }
 
@@ -37,10 +36,11 @@ Object::Object* Level::addObject(Object::Object* object)
 	object->mSetViewportScale  = [this](float scale) { setViewportScale(scale); };
 	object->mGetViewportScale  = [this]() { return getViewportScale(); };
 
-	object->mStaticTilemap = &mStaticMap;
-
 	object->mUpdatePriorityQueue = [this]() { syncPriorityQueue(); };
 	object->mUpdateZIndexQueue   = [this]() { syncZIndexQueue(); };
+
+	object->mGridSize = &GRIDSIZE;
+	object->mTileSize = &TILESIZE;
 
 	object->init();
 
@@ -186,15 +186,9 @@ void Level::update()
 	}
 }
 
-const GFX::TiledTilemap& Level::getTiledTilemap()
-{
-	return mStaticMap;
-}
-
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= mTransform;
-	target.draw(mStaticMap, states);
 
 	// Draw all objects
 	for (auto& obj : mObjectsZIndex)
@@ -202,4 +196,5 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		target.draw(**obj, states);
 	}
 }
+
 }

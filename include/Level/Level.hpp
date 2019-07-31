@@ -31,9 +31,7 @@ public:
 
 	/// Init the level, and load the static tilemap.
 	void init(sf::RenderWindow* window,
-			  ResourceManager* resource,
-			  std::string file,
-			  bool autotile = false);
+			  ResourceManager* resource);
 
 	/**
 	 * @brief Link an object to the level. Also initializes the object.
@@ -72,10 +70,6 @@ public:
 	/// Call once per frame -- updates the level.
 	void update();
 
-protected:
-	/// For objects to retrieve the level's static map.
-	const GFX::TiledTilemap& getTiledTilemap();
-
 private:
 	/// SFML draw() override.
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -91,6 +85,11 @@ private:
 	/// Whether or not the level is updating.
 	bool mRunning;
 
+	/// The size of a map tile, for objects to snap to.
+	const sf::Vector2i TILESIZE;
+	/// The size of the map's whole grid.
+	const sf::Vector2i GRIDSIZE;
+
 	/// Camera position.
 	sf::Vector2f mCameraPosition;
 	/// Viewport scale
@@ -100,8 +99,6 @@ private:
 	/// Update the level transform based on the pos and viewport size.
 	void updateCameraTransform();
 
-	/// The static tiles that make up the map.
-	GFX::TiledTilemap mStaticMap;
 	/// All level objects.
 	std::vector<ObjectPtr> mObjects;
 	/// All objects, sorted by priority.

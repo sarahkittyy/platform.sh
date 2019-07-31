@@ -63,101 +63,71 @@ void Player::updateTick()
 
 bool Player::jump()
 {
-	sf::Vector2i tilePos = getCurrentTilePosition();
+	sf::Vector2i tilePos = getPosition();
 
+	//TODO
 	// If there's something above us, don't jump.
-	if (staticTilemap().getTile(tilePos.x, tilePos.y - 1) != 0)
-		return false;
 	// If there's nothing below us, don't jump.
-	if (staticTilemap().getTile(tilePos.x, tilePos.y + 1) == 0)
-		return false;
 
 	// Jump.
-	setCurrentTilePosition({ tilePos.x, tilePos.y - 1 });
+	setPosition({ tilePos.x, tilePos.y - 1 });
 	return true;
 }
 
 void Player::moveRight()
 {
-	sf::Vector2i tilePos = getCurrentTilePosition();
+	sf::Vector2i tilePos = getPosition();
 
-	// If there's something to the right of us..
-	if (staticTilemap().getTile(tilePos.x + 1, tilePos.y) != 0)
-		return;   // Don't move
+	//TODO
+	// If there's something to the right of us, don't move.
 
-	setCurrentTilePosition({ tilePos.x + 1, tilePos.y });
+	setPosition({ tilePos.x + 1, tilePos.y });
 }
 
 void Player::moveLeft()
 {
-	sf::Vector2i tilePos = getCurrentTilePosition();
+	sf::Vector2i tilePos = getPosition();
 
-	// If there's something to the left of us..
-	if (staticTilemap().getTile(tilePos.x - 1, tilePos.y) != 0)
-		return;   // Don't move
+	//TODO
+	// If there's something to the left of us, don't move.
 
-	setCurrentTilePosition({ tilePos.x - 1, tilePos.y });
+	setPosition({ tilePos.x - 1, tilePos.y });
 }
 
 void Player::postMove()
 {
-	sf::Vector2i tilePos = getCurrentTilePosition();
+	sf::Vector2i tilePos = getPosition();
+
+	//TODO
 	// Fall if there's nothing under the player,
 	// and we didn't jump that frame.
-	if (staticTilemap().getTile(tilePos.x, tilePos.y + 1) == 0)
+	/*if (NOTHING UNDER US)
 	{
 		if (!mJustJumped)
 			setCurrentTilePosition({ tilePos.x, tilePos.y + 1 });
 		else
 			mJustJumped = false;
-	}
+	}*/
 }
 
-void Player::setCurrentTilePosition(sf::Vector2i tilePos)
+void Player::setPosition(sf::Vector2i tilePos)
 {
-	mPlayer.setPosition(getRealPosition(tilePos));
+	mPlayer.setPosition(getActualPosition(sf::Vector2f(tilePos)));
 }
 
-sf::Vector2i Player::getCurrentTilePosition()
+sf::Vector2i Player::getPosition()
 {
-	sf::Vector2i tileSize	 = staticTilemap().getTileSize();
 	sf::Vector2i playerCenter = {
 		(int)mPlayer.getPosition().x + (int)mPlayer.getSize().x / 2,
 		(int)mPlayer.getPosition().y + (int)mPlayer.getSize().y / 2
 	};
 
-	int x, y;
-	x = std::floor(playerCenter.x / tileSize.x);
-	y = std::floor(playerCenter.y / tileSize.y);
-	return { x, y };
+	return (sf::Vector2i)getGridPosition((sf::Vector2f)playerCenter);
 }
 
 void Player::reset()
 {
-	setCurrentTilePosition(mStartPos);
-}
-
-sf::Vector2f Player::getRealPosition(sf::Vector2i tilePos)
-{
-	// Get the tile size
-	sf::Vector2i tileSize = staticTilemap().getTileSize();
-	// Get the offset to center the player on the bottom-middle.
-	sf::Vector2i playerOffset = {
-		-(int)mPlayer.getSize().x / 2,
-		-(int)mPlayer.getSize().y
-	};
-
-	// Center the player's center on the bottom middle of the tile.
-	sf::Vector2i tileOffset = {
-		(int)tileSize.x / 2,
-		(int)tileSize.y
-	};
-
-	// Sum up the player and tile offsets.
-	sf::Vector2i offset = playerOffset + tileOffset;
-
-	// Set the player position.
-	return sf::Vector2f(tilePos.x * tileSize.x + offset.x, tilePos.y * tileSize.y + offset.y);
+	setPosition(mStartPos);
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const

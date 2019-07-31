@@ -86,9 +86,24 @@ void Object::setZIndex(unsigned int zindex)
 	mUpdateZIndexQueue();
 }
 
-const GFX::TiledTilemap& Object::staticTilemap()
+const sf::Vector2i& Object::gridSize()
 {
-	return *mStaticTilemap;
+	return *mGridSize;
+}
+
+const sf::Vector2i& Object::tileSize()
+{
+	return *mTileSize;
+}
+
+sf::Vector2f Object::getGridPosition(sf::Vector2f actualPos)
+{
+	return actualPos / (float)tileSize().x;
+}
+
+sf::Vector2f Object::getActualPosition(sf::Vector2f tilePos)
+{
+	return tilePos * (float)tileSize().x;
 }
 
 void Object::draw(sf::RenderTarget& target, sf::RenderStates states) const

@@ -9,6 +9,7 @@ void testLevel(Level* lvl,
 {
 	lvl->init(window, resource);
 	lvl->addObject(new Object::Player({ 3, 1 }));
+	lvl->addObject(new Object::Tilemap("assets/maps/test_map.json", true));
 }
 
 }

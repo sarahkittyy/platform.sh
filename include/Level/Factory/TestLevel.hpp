@@ -2,6 +2,7 @@
 
 #include "Level/Level.hpp"
 #include "Object/Player.hpp"
+#include "Object/Tilemap.hpp"
 
 namespace Level::Factory
 {

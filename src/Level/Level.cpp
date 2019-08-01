@@ -95,7 +95,7 @@ bool Level::isCollisionAt(sf::Vector2i pos)
 {
 	// Check all objects with the "collideable" prop.
 	auto collideableObjects = queryObjects([](auto& props) {
-		return props.test("collideable"_json_pointer, true);
+		return props.test("/collideable"_json_pointer, true);
 	});
 
 	// Return true if any of the objects are collideable at that point.

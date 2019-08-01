@@ -26,6 +26,9 @@ public:
 	/// Initializes the tilemap graphic
 	void init();
 
+	/// Returns true for non-zero tiles at the given position.
+	bool isSolidAt(sf::Vector2i pos);
+
 private:
 	/// SFML draw() override.
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

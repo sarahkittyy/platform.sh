@@ -19,8 +19,16 @@ void Tilemap::init()
 	/// Should be rendered all the way in the back.
 	setPriority(100);
 
+	/// Possibly collideable.
+	props().set({ { "collideable", true } });
+
 	/// Initialize the map.
 	mMap.load(&resource(), mMapFile, mAutotile);
+}
+
+bool Tilemap::isSolidAt(sf::Vector2i pos)
+{
+	return mMap.getTile(pos.x, pos.y) != 0;
 }
 
 }

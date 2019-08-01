@@ -65,10 +65,12 @@ bool Player::jump()
 {
 	sf::Vector2i tilePos = getPosition();
 
-	//TODO
 	// If there's something above us, don't jump.
+	if (isCollisionAt({ tilePos.x, tilePos.y - 1 }))
+		return false;
 	// If there's nothing below us, don't jump.
-
+	if (!isCollisionAt({ tilePos.x, tilePos.y + 1 }))
+		return false;
 	// Jump.
 	setPosition({ tilePos.x, tilePos.y - 1 });
 	return true;
@@ -78,8 +80,9 @@ void Player::moveRight()
 {
 	sf::Vector2i tilePos = getPosition();
 
-	//TODO
 	// If there's something to the right of us, don't move.
+	if (isCollisionAt({ tilePos.x + 1, tilePos.y }))
+		return;
 
 	setPosition({ tilePos.x + 1, tilePos.y });
 }
@@ -88,8 +91,9 @@ void Player::moveLeft()
 {
 	sf::Vector2i tilePos = getPosition();
 
-	//TODO
 	// If there's something to the left of us, don't move.
+	if (isCollisionAt({ tilePos.x - 1, tilePos.y }))
+		return;
 
 	setPosition({ tilePos.x - 1, tilePos.y });
 }
@@ -98,16 +102,15 @@ void Player::postMove()
 {
 	sf::Vector2i tilePos = getPosition();
 
-	//TODO
 	// Fall if there's nothing under the player,
 	// and we didn't jump that frame.
-	/*if (NOTHING UNDER US)
+	if (!isCollisionAt({ tilePos.x, tilePos.y + 1 }))
 	{
 		if (!mJustJumped)
-			setCurrentTilePosition({ tilePos.x, tilePos.y + 1 });
+			setPosition({ tilePos.x, tilePos.y + 1 });
 		else
 			mJustJumped = false;
-	}*/
+	}
 }
 
 void Player::setPosition(sf::Vector2i tilePos)

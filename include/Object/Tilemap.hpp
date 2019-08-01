@@ -15,6 +15,12 @@ namespace Object
 class Tilemap : public Object
 {
 public:
+	/**
+	 * @brief Initialize the map.
+	 * 
+	 * @param mapFile The path to the map json file.
+	 * @param autotile Whether or not to autotile the given map.
+	 */
 	Tilemap(std::string mapFile, bool autotile = false);
 
 	/// Initializes the tilemap graphic
@@ -27,7 +33,9 @@ private:
 	/// The main tilemap graphical component.
 	GFX::TiledTilemap mMap;
 
+	/// The path to the map json file.
 	std::string mMapFile;
+	/// Whether or not to autotile the map.
 	bool mAutotile;
 };
 

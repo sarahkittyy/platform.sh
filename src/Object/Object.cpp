@@ -64,6 +64,12 @@ void Object::removeObject(Object* object)
 	mRemoveObject(object);
 }
 
+std::vector<std::shared_ptr<Object>>
+Object::queryObjects(std::function<bool(const Props&)> query)
+{
+	return mQueryObjects(query);
+}
+
 void Object::setCameraPosition(sf::Vector2f pos)
 {
 	mSetCameraPosition(pos);

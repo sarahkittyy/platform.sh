@@ -27,9 +27,11 @@ void Level::init(sf::RenderWindow* window,
 Object::Object* Level::addObject(Object::Object* object)
 {
 	// Initialize the object.
-	object->mResource	 = mResource;
+	object->mResource = mResource;
+
 	object->mAddObject	= [this](Object::Object* obj) { return addObject(obj); };
 	object->mRemoveObject = [this](Object::Object* obj) { removeObject(obj); };
+	object->mQueryObjects = [this](std::function<bool(const Object::Props&)> query) { return queryObjects(query); };
 	// Bind camera controls.
 	object->mSetCameraPosition = [this](sf::Vector2f pos) { setCameraPosition(pos); };
 	object->mGetCameraPosition = [this]() { return getCameraPosition(); };
@@ -185,6 +187,17 @@ void Level::update()
 			obj->update();
 		}
 	}
+}
+
+std::vector<Level::ObjectPtr> Level::queryObjects(std::function<bool(const Object::Props&)> query)
+{
+	std::vector<ObjectPtr> ret;
+
+	for (auto& obj : mObjects)
+		if (query(obj->getProps()))
+			ret.push_back(obj);
+
+	return ret;
 }
 
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const

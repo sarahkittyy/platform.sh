@@ -54,6 +54,8 @@ protected:
 	Object* addObject(Object* object);
 	/// Remove an object from the level.
 	void removeObject(Object* object);
+	/// Query the parent level for objects of which the query function returns true.
+	std::vector<std::shared_ptr<Object>> queryObjects(std::function<bool(const Props&)> query);
 
 	/// Set the position of the level camera
 	void setCameraPosition(sf::Vector2f pos);
@@ -104,6 +106,9 @@ private:
 	std::function<Object*(Object*)> mAddObject;
 	/// Initialized by Level::Level, removes & deallocates object from level.
 	std::function<void(Object*)> mRemoveObject;
+	/// Query the parent level for other objects matching a query function.
+	std::function<std::vector<std::shared_ptr<Object>>(std::function<bool(const Props&)>)> mQueryObjects;
+
 	/// Set the level camera position.
 	std::function<void(sf::Vector2f)> mSetCameraPosition;
 	/// Get the camera position.

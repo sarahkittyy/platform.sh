@@ -70,6 +70,9 @@ public:
 	/// Call once per frame -- updates the level.
 	void update();
 
+	/// Grab a list of all objects to which the given query function returns true.
+	std::vector<ObjectPtr> queryObjects(std::function<bool(const Object::Props&)> query);
+
 private:
 	/// SFML draw() override.
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

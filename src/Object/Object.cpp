@@ -75,6 +75,11 @@ Object::queryObjects(std::function<bool(const Props&)> query)
 	return mQueryObjects(query);
 }
 
+bool Object::isCollisionAt(sf::Vector2i pos)
+{
+	return mIsCollisionAt(pos);
+}
+
 void Object::setCameraPosition(sf::Vector2f pos)
 {
 	mSetCameraPosition(pos);

@@ -60,6 +60,9 @@ protected:
 	/// Query the parent level for objects of which the query function returns true.
 	std::vector<std::shared_ptr<Object>> queryObjects(std::function<bool(const Props&)> query);
 
+	/// Check for any collision with any object in the level at a given point.
+	bool isCollisionAt(sf::Vector2i pos);
+
 	/// Set the position of the level camera
 	void setCameraPosition(sf::Vector2f pos);
 	/// Get the position of the level camera
@@ -111,6 +114,9 @@ private:
 	std::function<void(Object*)> mRemoveObject;
 	/// Query the parent level for other objects matching a query function.
 	std::function<std::vector<std::shared_ptr<Object>>(std::function<bool(const Props&)>)> mQueryObjects;
+
+	/// Check for any collision with any object in the level at a given point.
+	std::function<bool(sf::Vector2i)> mIsCollisionAt;
 
 	/// Set the level camera position.
 	std::function<void(sf::Vector2f)> mSetCameraPosition;

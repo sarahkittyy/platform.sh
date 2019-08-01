@@ -50,6 +50,12 @@ public:
 	 */
 	void removeObject(Object::Object* object);
 
+	/// Grab a list of all objects to which the given query function returns true.
+	std::vector<ObjectPtr> queryObjects(std::function<bool(const Object::Props&)> query);
+
+	/// Checks for collision with any object at a given grid point.
+	bool isCollisionAt(sf::Vector2i pos);
+
 	/// Set the position of the camera
 	void setCameraPosition(sf::Vector2f pos);
 	/// Get the position of the camera
@@ -69,9 +75,6 @@ public:
 	void stop();
 	/// Call once per frame -- updates the level.
 	void update();
-
-	/// Grab a list of all objects to which the given query function returns true.
-	std::vector<ObjectPtr> queryObjects(std::function<bool(const Object::Props&)> query);
 
 private:
 	/// SFML draw() override.

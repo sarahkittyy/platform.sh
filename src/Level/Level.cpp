@@ -32,6 +32,9 @@ Object::Object* Level::addObject(Object::Object* object)
 	object->mAddObject	= [this](Object::Object* obj) { return addObject(obj); };
 	object->mRemoveObject = [this](Object::Object* obj) { removeObject(obj); };
 	object->mQueryObjects = [this](std::function<bool(const Object::Props&)> query) { return queryObjects(query); };
+
+	object->mIsCollisionAt = [this](sf::Vector2i pos) { return isCollisionAt(pos); };
+
 	// Bind camera controls.
 	object->mSetCameraPosition = [this](sf::Vector2f pos) { setCameraPosition(pos); };
 	object->mGetCameraPosition = [this]() { return getCameraPosition(); };
@@ -75,6 +78,31 @@ void Level::removeObject(Object::Object* object)
 				   [object](auto& obj) {
 					   return obj.get() == object;
 				   });
+}
+
+std::vector<Level::ObjectPtr> Level::queryObjects(std::function<bool(const Object::Props&)> query)
+{
+	std::vector<ObjectPtr> ret;
+
+	for (auto& obj : mObjects)
+		if (query(obj->getProps()))
+			ret.push_back(obj);
+
+	return ret;
+}
+
+bool Level::isCollisionAt(sf::Vector2i pos)
+{
+	// Check all objects with the "collideable" prop.
+	auto collideableObjects = queryObjects([](auto& props) {
+		return props.test("collideable"_json_pointer, true);
+	});
+
+	// Return true if any of the objects are collideable at that point.
+	return std::any_of(collideableObjects.begin(), collideableObjects.end(),
+					   [&pos](auto& object) {
+						   return object->isSolidAt(pos);
+					   });
 }
 
 void Level::syncPriorityQueue()
@@ -187,17 +215,6 @@ void Level::update()
 			obj->update();
 		}
 	}
-}
-
-std::vector<Level::ObjectPtr> Level::queryObjects(std::function<bool(const Object::Props&)> query)
-{
-	std::vector<ObjectPtr> ret;
-
-	for (auto& obj : mObjects)
-		if (query(obj->getProps()))
-			ret.push_back(obj);
-
-	return ret;
 }
 
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const

@@ -16,7 +16,14 @@ void Props::set(const nlohmann::json::value_type& data)
 bool Props::test(const nlohmann::json::json_pointer& key,
 				 const nlohmann::json::value_type& value) const
 {
-	return mProps[key] == value;
+	try
+	{
+		return mProps[key] == value;
+	}
+	catch (...)   //? Maybe make this catch more robust?
+	{
+		return false;
+	}
 }
 
 const nlohmann::json& Props::get() const

@@ -122,6 +122,11 @@ const sf::Vector2i& Object::tileSize()
 	return *mTileSize;
 }
 
+float Object::interpolationFactor() const
+{
+	return mGetCurrentClockTime().asSeconds() / mGetTickRate().asSeconds();
+}
+
 sf::Vector2f Object::getGridPosition(sf::Vector2f actualPos)
 {
 	return actualPos / (float)tileSize().x;

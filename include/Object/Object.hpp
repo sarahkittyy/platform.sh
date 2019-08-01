@@ -87,6 +87,9 @@ protected:
 	/// Get the size of a single grid tile.
 	const sf::Vector2i& tileSize();
 
+	/// Returns a value 0<=t<=1 representing the fraction of time passed until the next tick.
+	float interpolationFactor() const;
+
 	/// SFML draw() override.
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
@@ -130,6 +133,11 @@ private:
 	std::function<void()> mSyncPriorityQueue;
 	/// Re-sync the level ZIndex queue.
 	std::function<void()> mSyncZIndexQueue;
+
+	/// Get the current time of the restarting clock that manages tickrate.
+	std::function<sf::Time()> mGetCurrentClockTime;
+	/// Get the level's tickrate.
+	std::function<sf::Time()> mGetTickRate;
 
 	/// The map grid size
 	sf::Vector2i const* mGridSize;

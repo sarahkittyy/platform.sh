@@ -47,6 +47,9 @@ Object::Object* Level::addObject(Object::Object* object)
 	object->mGridSize = &GRIDSIZE;
 	object->mTileSize = &TILESIZE;
 
+	object->mGetTickRate		 = [this]() { return mTickSpeed; };
+	object->mGetCurrentClockTime = [this]() { return mClock.getElapsedTime(); };
+
 	object->init();
 
 	// Store the object in a smart pointer.

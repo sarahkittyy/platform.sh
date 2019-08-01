@@ -39,6 +39,11 @@ unsigned int Object::getZIndex()
 	return mZIndex;
 }
 
+bool Object::isSolidAt(sf::Vector2i pos)
+{
+	return false;
+}
+
 const Props& Object::getProps()
 {
 	return mProps;

@@ -41,6 +41,9 @@ public:
 	/// Get the object's z index.
 	unsigned int getZIndex();
 
+	/// Derivable, used by other objects to determine collision. Implement for solid objects.
+	virtual bool isSolidAt(sf::Vector2i pos);
+
 	/// Returns a constant reference to the object's properties.
 	const Props& getProps();
 

@@ -23,10 +23,10 @@ public:
 
 	/// Test if the value at the given key matches the given value.
 	bool test(const nlohmann::json::json_pointer& key,
-			  const nlohmann::json::value_type& value);
+			  const nlohmann::json::value_type& value) const;
 
 	/// Returns a constant reference to all properties.
-	const nlohmann::json& get();
+	const nlohmann::json& get() const;
 
 private:
 	/// The actual held properties.

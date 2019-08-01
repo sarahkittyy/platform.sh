@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <functional>
 #include "GFX/TiledTilemap.hpp"
+#include "Object/Props.hpp"
 #include "ResourceManager.hpp"
 
 // So that Object::Object can friend Level and allow for initialization.
@@ -40,9 +41,15 @@ public:
 	/// Get the object's z index.
 	unsigned int getZIndex();
 
+	/// Returns a constant reference to the object's properties.
+	const Props& getProps();
+
 protected:
 	/// Returns a reference to the app resource manager.
 	ResourceManager& resource();
+	/// Get the object's properties -- editable for derived classes.
+	Props& props();
+
 	/// Add an object to the currently attached level.
 	Object* addObject(Object* object);
 	/// Remove an object from the level.
@@ -80,6 +87,9 @@ private:
 	unsigned int mPriority;
 	/// The object Z index (lower -> drawn last)
 	unsigned int mZIndex;
+
+	/// The object's properties.
+	Props mProps;
 
 	////////////////////////////
 	//

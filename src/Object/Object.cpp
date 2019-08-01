@@ -39,9 +39,19 @@ unsigned int Object::getZIndex()
 	return mZIndex;
 }
 
+const Props& Object::getProps()
+{
+	return mProps;
+}
+
 ResourceManager& Object::resource()
 {
 	return *mResource;
+}
+
+Props& Object::props()
+{
+	return mProps;
 }
 
 Object* Object::addObject(Object* object)
@@ -109,5 +119,4 @@ sf::Vector2f Object::getActualPosition(sf::Vector2f tilePos)
 void Object::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 }
-
 }

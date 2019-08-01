@@ -31,6 +31,13 @@ public:
 private:
 	/// The actual held properties.
 	nlohmann::json mProps;
+
+	/*
+	 * Common properties:
+	 * 
+	 * collideable: true if the object has any collision at all. Used by Level::isCollisionAt()
+	 * 
+	 */
 };
 
 }

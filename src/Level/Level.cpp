@@ -4,7 +4,7 @@ namespace Level
 {
 
 Level::Level()
-	: mTickSpeed(sf::seconds(0.5f)),
+	: mTickSpeed(sf::seconds(0.25f)),
 	  mRunning(false),
 	  TILESIZE(32, 32),
 	  GRIDSIZE(50, 50),

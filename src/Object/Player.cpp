@@ -3,8 +3,10 @@
 namespace Object
 {
 
-Player::Player(sf::Vector2i startPos)
-	: mStartPos(startPos)
+Player::Player(sf::Vector2f startPos)
+	: mStartPos(startPos),
+	  mInitialPosition(startPos),
+	  mNextPosition(startPos)
 {
 }
 
@@ -20,6 +22,12 @@ void Player::init()
 	mPlayer.setAnimation("default");
 	mPlayer.start();
 
+	// Set the origin such that the player's top-left aligns itself perfectly with the tile.
+	mPlayer.setOrigin(
+		-sf::Vector2f(tileSize().x / 2.f, tileSize().y) +   //tile offset
+		sf::Vector2f(mPlayer.getSize().x / 2.f,				//player offset
+					 mPlayer.getSize().y));
+
 	reset();
 }
 
@@ -27,26 +35,35 @@ void Player::update()
 {
 	mPlayer.update();
 
+	//! Interpolation algorithm.
+	// Get the x/y difference between it and the next position.
+	sf::Vector2f diff = sf::Vector2f(mNextPosition - mInitialPosition);
+	// Scale the diff by the interpolation factor.
+	diff *= interpolationFactor();
+	// Set the actual sprite position to the sum of the initial position and the interpolated
+	// intended next position.
+	setPosition((sf::Vector2f)mInitialPosition + diff);
+
+	//* Camera centering.
 	// Keep the level camera centered on the player.
-	setCameraPosition(mPlayer.getPosition() +
-					  sf::Vector2f(mPlayer.getSize().x / 2.f,
-								   mPlayer.getSize().y / 2.f));
+	setCameraPosition(mPlayer.getPosition() + diff +
+					  sf::Vector2f(0, mPlayer.getSize().y / 2.f));
 }
 
 void Player::updateTick()
 {
-	// Jumping
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	// For fluid interpolation
+	setPosition((sf::Vector2f)mNextPosition);
+	mInitialPosition = sf::Vector2i(getPosition());
+
+	// Jumping / falling
+	if (airborne())
 	{
-		if (!mJustJumped)
-		{
-			if (jump())
-				mJustJumped = true;
-		}
-		else
-		{
-			mJustJumped = false;
-		}
+		fall();
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		jump();
 	}
 	// L/R movement.
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
@@ -57,13 +74,18 @@ void Player::updateTick()
 	{
 		moveLeft();
 	}
+}
 
-	postMove();   // Post-move processing.
+bool Player::airborne()
+{
+	sf::Vector2i tilePos = getPositionInterpolated();
+
+	return !isCollisionAt({ tilePos.x, tilePos.y + 1 });
 }
 
 bool Player::jump()
 {
-	sf::Vector2i tilePos = getPosition();
+	sf::Vector2i tilePos = getPositionInterpolated();
 
 	// If there's something above us, don't jump.
 	if (isCollisionAt({ tilePos.x, tilePos.y - 1 }))
@@ -72,63 +94,60 @@ bool Player::jump()
 	if (!isCollisionAt({ tilePos.x, tilePos.y + 1 }))
 		return false;
 	// Jump.
-	setPosition({ tilePos.x, tilePos.y - 1 });
+	moveInterpolated({ 0, -1 });
 	return true;
+}
+
+void Player::fall()
+{
+	moveInterpolated({ 0, 1 });
 }
 
 void Player::moveRight()
 {
-	sf::Vector2i tilePos = getPosition();
+	sf::Vector2i tilePos = getPositionInterpolated();
 
 	// If there's something to the right of us, don't move.
 	if (isCollisionAt({ tilePos.x + 1, tilePos.y }))
 		return;
 
-	setPosition({ tilePos.x + 1, tilePos.y });
+	moveInterpolated({ 1, 0 });
 }
 
 void Player::moveLeft()
 {
-	sf::Vector2i tilePos = getPosition();
+	sf::Vector2i tilePos = getPositionInterpolated();
 
 	// If there's something to the left of us, don't move.
 	if (isCollisionAt({ tilePos.x - 1, tilePos.y }))
 		return;
 
-	setPosition({ tilePos.x - 1, tilePos.y });
+	moveInterpolated({ -1, 0 });
 }
 
-void Player::postMove()
+void Player::setPosition(sf::Vector2f tilePos)
 {
-	sf::Vector2i tilePos = getPosition();
-
-	// Fall if there's nothing under the player,
-	// and we didn't jump that frame.
-	if (!isCollisionAt({ tilePos.x, tilePos.y + 1 }))
-	{
-		if (!mJustJumped)
-			setPosition({ tilePos.x, tilePos.y + 1 });
-		else
-			mJustJumped = false;
-	}
+	mPlayer.setPosition(getActualPosition(tilePos));
 }
 
-void Player::setPosition(sf::Vector2i tilePos)
+sf::Vector2f Player::getPosition()
 {
-	mPlayer.setPosition(getActualPosition(sf::Vector2f(tilePos)) +
-						sf::Vector2f(tileSize().x / 2.f, tileSize().y) -   //tile offset
-						sf::Vector2f(mPlayer.getSize().x / 2.f,
-									 mPlayer.getSize().y));   // player offset
+	return getGridPosition(mPlayer.getPosition());
 }
 
-sf::Vector2i Player::getPosition()
+void Player::setPositionInterpolated(sf::Vector2i pos)
 {
-	sf::Vector2i playerCenter = {
-		(int)mPlayer.getPosition().x + (int)mPlayer.getSize().x / 2,
-		(int)mPlayer.getPosition().y + (int)mPlayer.getSize().y / 2
-	};
+	mNextPosition = pos;
+}
 
-	return (sf::Vector2i)getGridPosition((sf::Vector2f)playerCenter);
+void Player::moveInterpolated(sf::Vector2i offset)
+{
+	mNextPosition += offset;
+}
+
+sf::Vector2i Player::getPositionInterpolated()
+{
+	return mNextPosition;
 }
 
 void Player::reset()

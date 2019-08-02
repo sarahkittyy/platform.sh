@@ -8,6 +8,11 @@ Menu::Menu()
 	mClock.restart();
 }
 
+Menu::~Menu()
+{
+	mBGMusic->stop();
+}
+
 void Menu::init()
 {
 	// Music initialization
@@ -119,18 +124,12 @@ void Menu::drawGUI()
 	// If we should start, change state.
 	if (mShell.shouldStart())
 	{
-		startGame();
+		changeState(new Game());
 	}
 	if (mShell.shouldExit())
 	{
 		window().close();
 	}
-}
-
-void Menu::startGame()
-{
-	mBGMusic->stop();
-	changeState(new Game());
 }
 
 }

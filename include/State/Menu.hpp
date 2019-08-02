@@ -21,6 +21,7 @@ class Menu : public State
 {
 public:
 	Menu();
+	~Menu();
 
 	void init();
 	void update();
@@ -30,9 +31,6 @@ private:
 	void drawGUI();
 	/// Update all title animations.
 	void updateAnimations();
-
-	/// Starts the game (also stopping all music).
-	void startGame();
 
 	/// For animation timing.
 	sf::Clock mClock;

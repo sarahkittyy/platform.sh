@@ -39,6 +39,8 @@ public:
 
 	/// True if the game should begin.
 	bool shouldStart();
+	/// True if the game should exit.
+	bool shouldExit();
 
 private:
 	/// The fake shell prompt.
@@ -54,7 +56,10 @@ private:
 	/// All runnable programs.
 	std::unordered_map<std::string, Program> mPrograms;
 
+	/// Whether or not the game should start/
 	bool mShouldStart;
+	/// True if the game should exit.
+	bool mShouldExit;
 
 	/// The saved shell history.
 	std::vector<std::string> mHistory;

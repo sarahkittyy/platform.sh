@@ -121,6 +121,10 @@ void Menu::drawGUI()
 	{
 		startGame();
 	}
+	if (mShell.shouldExit())
+	{
+		window().close();
+	}
 }
 
 void Menu::startGame()

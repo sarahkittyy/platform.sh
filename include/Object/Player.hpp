@@ -1,7 +1,6 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <iostream>
 #include "GFX/AnimatedSprite.hpp"
 #include "Object/Object.hpp"
 

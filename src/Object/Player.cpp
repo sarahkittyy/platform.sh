@@ -189,6 +189,7 @@ void Player::kill()
 	mDeathCount++;
 	// Emit a death event.
 	emit("playerKilled", { { "deathCount", mDeathCount } });
+	// Reset the player.
 	reset();
 }
 
@@ -220,6 +221,8 @@ sf::Vector2i Player::getPositionInterpolated()
 void Player::reset()
 {
 	setPosition(mStartPos);
+	mInitialPosition = (sf::Vector2i)mStartPos;
+	mNextPosition	= (sf::Vector2i)mStartPos;
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const

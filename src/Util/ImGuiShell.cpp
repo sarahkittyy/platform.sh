@@ -67,6 +67,11 @@ bool ImGuiShell::shouldStart()
 	return mShouldStart;
 }
 
+bool ImGuiShell::shouldExit()
+{
+	return mShouldExit;
+}
+
 void ImGuiShell::onEnter()
 {
 	saveLine();

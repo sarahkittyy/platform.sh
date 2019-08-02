@@ -39,7 +39,7 @@ void Player::update()
 	// Get the x/y difference between it and the next position.
 	sf::Vector2f diff = sf::Vector2f(mNextPosition - mInitialPosition);
 	// Scale the diff by the interpolation factor.
-	diff *= interpolationFactor();
+	diff *= std::min(interpolationFactor() * 2.f, 1.f);
 	// Set the actual sprite position to the sum of the initial position and the interpolated
 	// intended next position.
 	setPosition((sf::Vector2f)mInitialPosition + diff);

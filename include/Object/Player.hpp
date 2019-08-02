@@ -38,7 +38,7 @@ private:
 	/// The player's start position.
 	sf::Vector2f mStartPos;
 
-	/// Set the position of the player, snapped to the grid.
+	/// Immediately set the position of the player, snapped to the grid.
 	void setPosition(sf::Vector2f pos);
 	/// Get the position of the player, aligned to the grid.
 	sf::Vector2f getPosition();

@@ -12,7 +12,7 @@ void testLevel(Level* lvl,
 	lvl->setTickSpeed(sf::seconds(0.6f));
 
 	lvl->on("playerKilled", [lvl](const nlohmann::json& data) {
-		lvl->setDisplayText(std::to_string(data.at("deathCount").get<int>()));
+		lvl->setDisplayText("deaths: " + std::to_string(data.at("deathCount").get<int>()));
 	});
 
 	lvl->addObject(new Object::Player({ 4.f, 1.f }));

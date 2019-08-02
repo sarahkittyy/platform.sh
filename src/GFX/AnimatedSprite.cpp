@@ -81,6 +81,9 @@ void AnimatedSprite::setAnimation(std::string name)
 	// Reset the current frame & the clock.
 	mClock.restart();
 	mCurrentFrame = 0;
+
+	// Set the sprite's rect.
+	mSprite.setTextureRect(getAnimationRect());
 }
 
 void AnimatedSprite::start()

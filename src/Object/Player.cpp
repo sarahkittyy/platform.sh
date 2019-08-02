@@ -112,7 +112,7 @@ bool Player::jump()
 	// Jump.
 	moveInterpolated({ 0, -1 });
 	// Play the jump sound.
-	mSounds.playSound("jump");
+	mSounds.playSound("jump", 75);
 
 	return true;
 }

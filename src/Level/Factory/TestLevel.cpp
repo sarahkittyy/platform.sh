@@ -8,7 +8,7 @@ void testLevel(Level* lvl,
 			   ResourceManager* resource)
 {
 	lvl->init(window, resource);
-	lvl->setDisplayText("hello!");
+	lvl->setDisplayText("deaths: 0");
 	lvl->setTickSpeed(sf::seconds(0.6f));
 
 	lvl->on("playerKilled", [lvl](const nlohmann::json& data) {

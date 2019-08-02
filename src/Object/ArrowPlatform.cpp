@@ -50,7 +50,8 @@ void ArrowPlatform::update()
 	sf::Vector2f diff = mIntendedNextPosition - mInitialTickPosition;
 	// Scale the diff by an interpolation factor, sped up to emulate a ticking game, while
 	// still offering smooth animations.
-	diff *= std::min(interpolationFactor() * 2.f, 1.f);
+	//* The interpolation factor is 8 to smoothly animate, yet still move faster than the player.
+	diff *= std::min(interpolationFactor() * 8.f, 1.f);
 
 	// Set the actual sprite position to the initial position plus the interpolated difference.
 	mPlatform.setPosition(mInitialTickPosition + diff);

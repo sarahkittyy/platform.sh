@@ -26,6 +26,7 @@ void ArrowPlatform::init()
 	mPlatform.addAnimation("right", { .frames = { 2 }, .speed = sf::seconds(-1) });
 	mPlatform.addAnimation("up", { .frames = { 3 }, .speed = sf::seconds(-1) });
 	mPlatform.addAnimation("down", { .frames = { 1 }, .speed = sf::seconds(-1) });
+	mPlatform.start();
 
 	reset();
 }

@@ -72,8 +72,93 @@ void ArrowPlatform::updateTick()
 	// Update "currentPosition" with this offset.
 	currentPosition += offset;
 
+	//! Using the new position, find nearby arrowplatformend instances, and rotate as needed.
+	updateEndpoints(currentPosition);
+
 	// Update the intended next position, for interpolation.
 	mIntendedNextPosition = getActualPosition(currentPosition);
+}
+
+void ArrowPlatform::updateEndpoints(sf::Vector2f& currentPosition)
+{
+	// Get all endpoints.
+	auto ends = queryObjects([](const Props& props) -> bool {
+		return props.test("/arrowPlatformEnd"_json_pointer, true);
+	});
+
+	// Get the next position if we were to continue in this direction.
+	sf::Vector2f nextPos = currentPosition + getDirectionOffset();
+	// The endpoint next to us, if any.
+	Object* nextEndpoint = nullptr;
+
+	for (auto& end : ends)
+	{
+		if (end->getProps().test("/position/0"_json_pointer, nextPos.x) &&
+			end->getProps().test("/position/1"_json_pointer, nextPos.y))
+		{
+			nextEndpoint = end.get();
+			break;
+		}
+	}
+
+	// If there's no endpoint, return.
+	if (!nextEndpoint)
+		return;
+
+	// Test for an intended next direction.
+	if (nextEndpoint->getProps().exists("/turnTo"_json_pointer))
+	{
+		// Get the direction string.
+		std::string dir = nextEndpoint->getProps().get("/turnTo"_json_pointer).get<std::string>();
+		// Convert to a direction, and turn there.
+		mDir = getDirection(dir);
+	}
+	else if (nextEndpoint->getProps().exists("/rotateDegrees"_json_pointer))
+	{
+		// Get the rotation degrees.
+		int degrees = nextEndpoint->getProps().get("/rotateDegrees"_json_pointer).get<int>();
+		// Turn that amount of degrees.
+		mDir = turnDegrees(degrees);
+	}
+	else
+	{
+		//? Shouldn't run.
+		throw std::runtime_error("ArrowPlatformEnd initialized with no required valid props.");
+	}
+}
+
+ArrowPlatform::Direction ArrowPlatform::turnDegrees(int degrees)
+{
+	// Constrain the degrees values.
+	degrees %= 360;
+	degrees = std::max(0, degrees);
+
+	// Get the current direction, as an integer.
+	int cdir = static_cast<int>(mDir);
+
+	// Test for angle ranges.
+	if (degrees < 90)   // 0 rotation here.
+	{
+		// Nothing..
+	}
+	else if (degrees < 180)   // 90 rotation here
+	{
+		cdir += 1;
+	}
+	else if (degrees < 270)   // 180 rotation here.
+	{
+		cdir += 2;
+	}
+	else if (degrees < 360)   // 270 rotation here.
+	{
+		cdir += 3;
+	}
+	//* Note: do nothing on 360 degrees, as that's a full cycle.
+
+	// Keep the dir betwen 0 and 3
+	cdir %= 3;
+	// Return cdir back as a Direction enum object.
+	return static_cast<Direction>(cdir);
 }
 
 void ArrowPlatform::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -118,6 +203,18 @@ sf::Vector2f ArrowPlatform::getDirectionOffset()
 	default:
 		return { 0, 0 };   // Shouldn't ever run.
 	}
+}
+
+ArrowPlatform::Direction ArrowPlatform::getDirection(std::string dirStr)
+{
+	if (dirStr == "left")
+		return LEFT;
+	else if (dirStr == "right")
+		return RIGHT;
+	else if (dirStr == "up")
+		return UP;
+	else
+		return DOWN;
 }
 
 }

@@ -74,16 +74,16 @@ void Player::updateTick()
 	{
 		fall();
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && mQueuedPush.y <= 0)
 	{
 		jump();
 	}
 	// L/R movement.
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && mQueuedPush.x <= 0)
 	{
 		moveRight();
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && mQueuedPush.x >= 0)
 	{
 		moveLeft();
 	}

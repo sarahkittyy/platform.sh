@@ -1,7 +1,12 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+#include <cmath>
 #include "State/Game.hpp"
 #include "State/State.hpp"
+#include "Util/ImGuiShell.hpp"
+#include "imgui/imgui-SFML.h"
+#include "imgui/imgui.h"
 
 namespace State
 {
@@ -13,7 +18,26 @@ namespace State
 class Menu : public State
 {
 public:
+	Menu();
+
 	void init();
+	void update();
+
+private:
+	/// Sets up all menu gui onto the screen. Run before rendering, each frame.
+	void drawGUI();
+	/// Update all title animations.
+	void updateAnimations();
+
+	/// For animation timing.
+	sf::Clock mClock;
+	/// The menu background music.
+	sf::Music* mBGMusic;
+
+	/// The title.
+	sf::Text mTitle;
+	/// The input shell.
+	Util::ImGuiShell mShell;
 };
 
 }

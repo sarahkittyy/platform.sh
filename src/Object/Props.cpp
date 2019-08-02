@@ -31,7 +31,7 @@ bool Props::test(const nlohmann::json::json_pointer& key,
 {
 	try
 	{
-		return mProps[key] == value;
+		return mProps.at(key) == value;
 	}
 	catch (...)   //? Maybe make this catch more robust?
 	{

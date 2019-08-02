@@ -169,7 +169,8 @@ void ArrowPlatform::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 
 bool ArrowPlatform::isSolidAt(sf::Vector2i pos)
 {
-	return pos.x == mIntendedNextPosition.x && pos.y == mIntendedNextPosition.y;
+	sf::Vector2i nextPos = static_cast<sf::Vector2i>(getGridPosition(mInitialTickPosition));
+	return pos.x == nextPos.x && pos.y == nextPos.y;
 }
 
 std::string ArrowPlatform::getDirectionAnimation()

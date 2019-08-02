@@ -77,6 +77,9 @@ private:
 	/// Drops the player down one.
 	void fall();
 
+	/// The player death count.
+	int mDeathCount;
+
 	/**
 	 * @brief For pushing the player.
 	 * Since the player is updating last, the player is pushed before the previous

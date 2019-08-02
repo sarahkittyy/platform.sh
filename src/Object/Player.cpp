@@ -5,6 +5,7 @@ namespace Object
 
 Player::Player(sf::Vector2f startPos)
 	: mStartPos(startPos),
+	  mDeathCount(0),
 	  mQueuedPush(0, 0),
 	  mInitialPosition(startPos),
 	  mNextPosition(startPos)
@@ -184,7 +185,10 @@ sf::Vector2i Player::getPushablePosition()
 
 void Player::kill()
 {
-	//TODO: maybe a death counter?
+	// Increment the death counter.
+	mDeathCount++;
+	// Emit a death event.
+	emit("playerKilled", { { "deathCount", mDeathCount } });
 	reset();
 }
 

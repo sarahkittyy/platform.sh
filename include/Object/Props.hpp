@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdexcept>
 #include <string>
 
 #include "nlohmann/json.hpp"
@@ -30,6 +31,8 @@ public:
 
 	/// Returns a constant reference to all properties.
 	const nlohmann::json& get() const;
+	/// Get the json value at the given key.
+	const nlohmann::json::value_type& get(const nlohmann::json::json_pointer& key) const;
 
 private:
 	/// The actual held properties.

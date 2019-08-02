@@ -44,4 +44,16 @@ const nlohmann::json& Props::get() const
 	return mProps;
 }
 
+const nlohmann::json::value_type& Props::get(const nlohmann::json::json_pointer& key) const
+{
+	try
+	{
+		return mProps.at(key);
+	}
+	catch (...)
+	{
+		throw std::runtime_error("Attempt to grab prop (json ptr) => " + key.to_string() + ", which doesn't exist.");
+	}
+}
+
 }

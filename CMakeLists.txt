@@ -13,11 +13,14 @@ else()
 	set(SFML_LIB sfml-graphics-d sfml-window-d sfml-audio-d sfml-network-d sfml-system-d)
 endif()
 
+# compile ImGui
+add_subdirectory("lib/imgui/imgui")
+
 # get sources
 file(GLOB_RECURSE sources "src/*.cpp")
 
 # create target
 add_executable(platform.sh ${sources})
 target_compile_options(platform.sh PUBLIC -Wall)
-target_include_directories(platform.sh PUBLIC "include/" "lib/nlohmann" "include/Box2D/Box2D")
-target_link_libraries(platform.sh ${SFML_LIB} stdc++fs)
+target_include_directories(platform.sh PUBLIC "include/" "lib/nlohmann" "lib/imgui")
+target_link_libraries(platform.sh ${SFML_LIB} stdc++fs imgui)

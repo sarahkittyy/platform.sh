@@ -127,6 +127,17 @@ float Object::interpolationFactor() const
 	return mGetCurrentClockTime().asSeconds() / mGetTickRate().asSeconds();
 }
 
+void Object::emit(std::string event, nlohmann::json data)
+{
+	mEmit(event, data);
+}
+
+void Object::on(std::string event,
+				std::function<void(const nlohmann::json& data)> callback)
+{
+	mOnEvent(event, callback);
+}
+
 sf::Vector2f Object::getGridPosition(sf::Vector2f actualPos)
 {
 	return actualPos / (float)tileSize().x;

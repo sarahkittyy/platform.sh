@@ -55,6 +55,9 @@ Object::Object* Level::addObject(Object::Object* object)
 	object->mGridSize = &GRIDSIZE;
 	object->mTileSize = &TILESIZE;
 
+	object->mEmit	= [this](std::string event, nlohmann::json data) { emit(event, data); };
+	object->mOnEvent = [this](std::string event, EventCallback callback) { on(event, callback); };
+
 	object->mGetTickRate		 = [this]() { return mTickSpeed; };
 	object->mGetCurrentClockTime = [this]() { return mClock.getElapsedTime(); };
 
@@ -243,6 +246,21 @@ void Level::update()
 			obj->update();
 		}
 	}
+}
+
+void Level::emit(std::string event, nlohmann::json data)
+{
+	// Call each handler for the given event.
+	std::for_each(mEventCallbacks[event].begin(), mEventCallbacks[event].end(),
+				  [&data](EventCallback& callback) {
+					  callback(data);
+				  });
+}
+
+void Level::on(std::string event, std::function<void(const nlohmann::json&)> handler)
+{
+	// Append the handler to the event callback map.
+	mEventCallbacks[event].push_back(handler);
 }
 
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const

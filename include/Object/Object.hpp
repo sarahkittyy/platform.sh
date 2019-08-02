@@ -5,6 +5,7 @@
 #include "GFX/TiledTilemap.hpp"
 #include "Object/Props.hpp"
 #include "ResourceManager.hpp"
+#include "nlohmann/json.hpp"
 
 // So that Object::Object can friend Level and allow for initialization.
 namespace Level
@@ -90,6 +91,11 @@ protected:
 	/// Returns a value 0<=t<=1 representing the fraction of time passed until the next tick.
 	float interpolationFactor() const;
 
+	/// Emit an event to the level.
+	void emit(std::string event, nlohmann::json data);
+	// Attach a callback to be run on level event emitted.
+	void on(std::string event, std::function<void(const nlohmann::json& data)> callback);
+
 	/// SFML draw() override.
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
@@ -138,6 +144,11 @@ private:
 	std::function<sf::Time()> mGetCurrentClockTime;
 	/// Get the level's tickrate.
 	std::function<sf::Time()> mGetTickRate;
+
+	/// Emit an event to the level.
+	std::function<void(std::string, nlohmann::json)> mEmit;
+	/// Attach an event callback to
+	std::function<void(std::string, std::function<void(const nlohmann::json&)>)> mOnEvent;
 
 	/// The map grid size
 	sf::Vector2i const* mGridSize;

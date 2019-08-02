@@ -4,8 +4,11 @@
 #include <algorithm>
 #include <functional>
 #include <string>
+#include <unordered_map>
 #include <utility>
 #include <vector>
+
+#include "nlohmann/json.hpp"
 
 #include "GFX/TiledTilemap.hpp"
 #include "ResourceManager.hpp"
@@ -81,6 +84,34 @@ public:
 	/// Call once per frame -- updates the level.
 	void update();
 
+	////////////////////////////
+	//
+	// Event methods
+	//
+	////////////////////////////
+
+	/**
+	 * @brief Emit an event
+	 * 
+	 * @param event The event name to emit.
+	 * @param data The data tagged along with the event.
+	 * 
+	 * @remarks Can be called by objects.
+	 */
+	void emit(std::string event, nlohmann::json data);
+
+	/**
+	 * @brief Attach a handler to events, to be called when an event is emitted.
+	 * 
+	 * @param event The name of the event. 
+	 * @param handler The event handler to attach.
+	 * 
+	 * @remarks If attached from an object, it can be fired during the update cycle
+	 * of any other object -- so be careful with timings! Attach event data to a
+	 * private object event queue if necessary, to handle in the object's own update() loop.
+	 */
+	void on(std::string event, std::function<void(const nlohmann::json&)> handler);
+
 private:
 	/// SFML draw() override.
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -105,6 +136,11 @@ private:
 	const sf::Vector2i TILESIZE;
 	/// The size of the map's whole grid.
 	const sf::Vector2i GRIDSIZE;
+
+	/// For convenience, see mEventCallbacks.
+	typedef std::function<void(const nlohmann::json&)> EventCallback;
+	/// A map of events to their list of attached event handler functions.
+	std::unordered_map<std::string, std::vector<EventCallback>> mEventCallbacks;
 
 	/// Camera position.
 	sf::Vector2f mCameraPosition;

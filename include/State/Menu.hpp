@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <cmath>
+#include <iostream>
+#include "GFX/TiledTilemap.hpp"
 #include "State/Game.hpp"
 #include "State/State.hpp"
 #include "Util/ImGuiShell.hpp"
@@ -29,6 +31,9 @@ private:
 	/// Update all title animations.
 	void updateAnimations();
 
+	/// Starts the game (also stopping all music).
+	void startGame();
+
 	/// For animation timing.
 	sf::Clock mClock;
 	/// The menu background music.
@@ -38,6 +43,9 @@ private:
 	sf::Text mTitle;
 	/// The input shell.
 	Util::ImGuiShell mShell;
+
+	/// The background demo map to run.
+	GFX::TiledTilemap mDemoMap;
 };
 
 }

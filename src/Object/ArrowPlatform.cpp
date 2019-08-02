@@ -44,8 +44,6 @@ void ArrowPlatform::update()
 {
 	// Update the animated sprite.
 	mPlatform.update();
-	// Change the animation if necessary.
-	mPlatform.setAnimation(getDirectionAnimation());
 
 	//! Interpolation code.
 	// Get the difference between the intended next position and the current position.
@@ -62,6 +60,8 @@ void ArrowPlatform::updateTick()
 {
 	// Assert the platform was moved to the correct position after interpolation.
 	mPlatform.setPosition(mIntendedNextPosition);
+	// Change the animation if necessary.
+	mPlatform.setAnimation(getDirectionAnimation());
 
 	/// Get the current position on the grid.
 	sf::Vector2f currentPosition = getGridPosition(mPlatform.getPosition());

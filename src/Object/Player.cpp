@@ -12,8 +12,9 @@ Player::Player(sf::Vector2f startPos)
 
 void Player::init()
 {
-	// The player should always should be updated first.
-	setPriority(0);
+	// The player should always should be updated last, to allow moving platforms to update first.
+	setPriority(100);
+	// Always draw the player on top.
 	setZIndex(0);
 
 	// Initialize the player sprite.

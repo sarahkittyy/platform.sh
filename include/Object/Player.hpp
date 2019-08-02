@@ -30,10 +30,10 @@ public:
 	void reset();
 
 	//* Methods for Pushable compatibility.
-	void pushRight();
-	void pushLeft();
-	void pushUp();
-	void pushDown();
+	void pushRight();   // Pushes the player right
+	void pushLeft();	// Pushes the player left
+	void pushUp();		// Pushes the player up
+	void pushDown();	// Usually kills and resets the player.
 	sf::Vector2i getPushablePosition();
 
 	/// Resets the player. Use on death.

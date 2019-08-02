@@ -28,6 +28,8 @@ void Level::init(sf::RenderWindow* window,
 
 	/// Load the default font.
 	setFont("assets/fonts/starmap.ttf");
+	/// Load the default music.
+	setMusic("assets/music/bg.flac");
 
 	updateCameraTransform();
 }
@@ -201,16 +203,20 @@ void Level::setDisplayText(std::string text)
 void Level::start()
 {
 	mRunning = true;
+	mBGMusic->play();
 }
 
 void Level::stop()
 {
 	mRunning = false;
+	mBGMusic->pause();
 }
 
 void Level::reset()
 {
 	mClock.restart();
+	mBGMusic->stop();
+	mBGMusic->play();
 
 	// Reset all objects.
 	for (auto& object : mObjects)
@@ -246,6 +252,19 @@ void Level::update()
 			obj->update();
 		}
 	}
+}
+
+void Level::setMusic(std::string path)
+{
+	// Stop the music if necessary.
+	if (mBGMusic != nullptr)
+	{
+		mBGMusic->stop();
+	}
+
+	mBGMusic = mResource->music(path);
+	mBGMusic->setVolume(75);
+	mBGMusic->setLoop(true);
 }
 
 void Level::emit(std::string event, nlohmann::json data)

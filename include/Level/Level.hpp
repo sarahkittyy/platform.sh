@@ -84,6 +84,9 @@ public:
 	/// Call once per frame -- updates the level.
 	void update();
 
+	/// Set the music stream to play in the background.
+	void setMusic(std::string path);
+
 	////////////////////////////
 	//
 	// Event methods
@@ -124,6 +127,9 @@ private:
 	sf::Text mLevelText;
 	/// The main font used for rendering level text.
 	sf::Font* mFont;
+
+	/// The level's background music.
+	sf::Music* mBGMusic;
 
 	/// The main level clock.
 	sf::Clock mClock;

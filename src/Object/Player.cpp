@@ -19,6 +19,11 @@ void Player::init()
 	// Always draw the player on top.
 	setZIndex(0);
 
+	// Init the sound engine.
+	mSounds.init(&resource());
+	mSounds.setSound("death", "assets/sounds/death.wav");
+	mSounds.setSound("jump", "assets/sounds/jump.wav");
+
 	// For objects such as moving platforms to push the player.
 	props().set({ { "pushable", true } });
 
@@ -106,6 +111,9 @@ bool Player::jump()
 		return false;
 	// Jump.
 	moveInterpolated({ 0, -1 });
+	// Play the jump sound.
+	mSounds.playSound("jump");
+
 	return true;
 }
 
@@ -187,6 +195,9 @@ void Player::kill()
 {
 	// Increment the death counter.
 	mDeathCount++;
+	// Play the death sound.
+	mSounds.playSound("death");
+
 	// Emit a death event.
 	emit("playerKilled", { { "deathCount", mDeathCount } });
 	// Reset the player.

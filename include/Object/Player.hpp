@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <bitset>
+#include "Audio/SoundEngine.hpp"
 #include "GFX/AnimatedSprite.hpp"
 #include "Object/Object.hpp"
 #include "Object/Pushable.hpp"
@@ -44,6 +44,8 @@ private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	/// The main player sprite.
 	GFX::AnimatedSprite mPlayer;
+	/// The player's sound engine.
+	Audio::SoundEngine mSounds;
 
 	/// The player's start position.
 	sf::Vector2f mStartPos;

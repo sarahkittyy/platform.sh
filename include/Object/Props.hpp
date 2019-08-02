@@ -21,6 +21,9 @@ public:
 	/// Update properties using a JSON object.
 	void set(const nlohmann::json::value_type& data);
 
+	/// Checks if a given key exists at all.
+	bool exists(const nlohmann::json::json_pointer& key) const;
+
 	/// Test if the value at the given key matches the given value.
 	bool test(const nlohmann::json::json_pointer& key,
 			  const nlohmann::json::value_type& value) const;

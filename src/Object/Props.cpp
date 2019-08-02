@@ -13,6 +13,19 @@ void Props::set(const nlohmann::json::value_type& data)
 	mProps.update(data);
 }
 
+bool Props::exists(const nlohmann::json::json_pointer& key) const
+{
+	try
+	{
+		mProps.at(key);
+		return true;
+	}
+	catch (...)
+	{
+		return false;
+	}
+}
+
 bool Props::test(const nlohmann::json::json_pointer& key,
 				 const nlohmann::json::value_type& value) const
 {

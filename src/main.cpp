@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "ResourceManager.hpp"
-#include "State/Game.hpp"
 #include "State/Machine.hpp"
+#include "State/Menu.hpp"
 #include "imgui/imgui-SFML.h"
 #include "imgui/imgui.h"
 
@@ -15,7 +15,7 @@ int main()
 	ImGui::SFML::Init(window);
 
 	// Init the state machine.
-	State::Machine sm(new State::Game(), &window, &resource);
+	State::Machine sm(new State::Menu(), &window, &resource);
 
 	// For updating ImGui.
 	sf::Clock appClock;
@@ -48,6 +48,9 @@ int main()
 
 		// Update the state machine.
 		sm.update();
+
+		// Assert imgui has ended.
+		ImGui::EndFrame();
 	}
 
 	return 0;

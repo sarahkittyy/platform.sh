@@ -80,6 +80,12 @@ void Menu::drawGUI()
 	mShell.draw();
 
 	ImGui::End();
+
+	// If we should start, change state.
+	if (mShell.shouldStart())
+	{
+		changeState(new Game());
+	}
 }
 
 }

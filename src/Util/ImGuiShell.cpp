@@ -5,7 +5,8 @@ namespace Util
 
 ImGuiShell::ImGuiShell()
 	: PS1("[platform.sh@platform.sh ~] $"),
-	  mInputBufSize(50)
+	  mInputBufSize(50),
+	  mShouldStart(false)
 {
 	// Allocate the input buffer.
 	mInputBuf = new char[mInputBufSize];
@@ -13,12 +14,20 @@ ImGuiShell::ImGuiShell()
 
 	// Print the initial line.
 	println("Welcome! Type \"help\" for help.");
+
+	// Set up programs.
+	initShell();
 }
 
 ImGuiShell::~ImGuiShell()
 {
 	// Deallocate the input buffer.
 	delete[] mInputBuf;
+}
+
+void ImGuiShell::setProgram(std::string name, Program program)
+{
+	mPrograms[name] = program;
 }
 
 void ImGuiShell::draw()
@@ -53,11 +62,61 @@ void ImGuiShell::draw()
 	ImGui::PopStyleVar();
 }
 
+bool ImGuiShell::shouldStart()
+{
+	return mShouldStart;
+}
+
 void ImGuiShell::onEnter()
 {
 	saveLine();
-	println("command\noutput o/w/o");
+	processLine();
 	clearBuffer();
+}
+
+void ImGuiShell::processLine()
+{
+	// Get the line.
+	std::string line(mInputBuf);
+	// Split the line at whitespace, stripping all whitespace.
+	std::vector<std::string> split;
+	std::string curr;
+	for (auto& ch : line)
+	{
+		if (std::isspace(ch))
+		{
+			if (!curr.empty())
+			{
+				split.push_back(curr);
+				curr = "";
+			}
+		}
+		else
+			curr += ch;
+	}
+	if (!curr.empty())
+		split.push_back(curr);
+	if (curr.size() == 0)
+		return;
+
+	//! Vars
+	std::string command = split[0];
+	std::vector<std::string> args;
+
+	if (split.size() > 1)
+		args.insert(args.begin(), split.begin() + 1, split.end());
+
+	//* Command is now split
+
+	// Search the programs for the commmand.
+	auto prog = mPrograms.find(command);
+	if (prog == mPrograms.end())
+		return println("sh: " + command + ": command not found");
+
+	// Run the program.
+	std::stringstream standard_out;
+	prog->second(args, standard_out);
+	println(standard_out.str());
 }
 
 void ImGuiShell::saveLine()
@@ -91,8 +150,23 @@ void ImGuiShell::println(std::string line)
 
 void ImGuiShell::clearBuffer()
 {
-
 	std::fill(mInputBuf, mInputBuf + mInputBufSize, 0);
+}
+
+void ImGuiShell::initShell()
+{
+	// Help program.
+	setProgram("help", [](auto& args, std::ostream& stdout) {
+		stdout << "\n-= /bin/sh help menu =-\n\n";
+		stdout << "help => print this help menu\n";
+		stdout << "start [level: string] => start the game\n";
+	});
+
+	// Start program.
+	//TODO: implement starting at any level.
+	setProgram("start", [this](auto& args, std::ostream& stdout) {
+		mShouldStart = true;
+	});
 }
 
 }

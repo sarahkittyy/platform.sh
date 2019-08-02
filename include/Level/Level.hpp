@@ -67,6 +67,11 @@ public:
 
 	/// Set the game update tick speed.
 	void setTickSpeed(sf::Time speed);
+	/// Sets the level text font. Defaults to starmap.ttf
+	void setFont(std::string path);
+	/// Set the text to display on the top-right of the screen.
+	void setDisplayText(std::string text);
+
 	/// Start the level updating.
 	void start();
 	/// Reset all objects to default.
@@ -83,6 +88,11 @@ private:
 	sf::RenderWindow* mWindow;
 	/// App resource manager.
 	ResourceManager* mResource;
+
+	/// The text displayed at the top-right of the level.
+	sf::Text mLevelText;
+	/// The main font used for rendering level text.
+	sf::Font* mFont;
 
 	/// The main level clock.
 	sf::Clock mClock;

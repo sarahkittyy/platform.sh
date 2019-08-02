@@ -10,3 +10,13 @@ sf::Texture* ResourceManager::texture(std::string path)
 
 	return &mTextures[path];
 }
+
+sf::Font* ResourceManager::font(std::string path)
+{
+	if (mFonts.find(path) == mFonts.end())
+	{
+		mFonts[path].loadFromFile(path);
+	}
+
+	return &mFonts[path];
+}

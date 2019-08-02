@@ -8,6 +8,7 @@ void testLevel(Level* lvl,
 			   ResourceManager* resource)
 {
 	lvl->init(window, resource);
+	lvl->setDisplayText("hello!");
 	lvl->setTickSpeed(sf::seconds(0.6f));
 	lvl->addObject(new Object::Player({ 4.f, 1.f }));
 	lvl->addObject(new Object::Tilemap("assets/maps/test_map.json", true));

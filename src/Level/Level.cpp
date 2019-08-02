@@ -21,6 +21,14 @@ void Level::init(sf::RenderWindow* window,
 	mResource = resource;
 	mWindow   = window;
 
+	/// Default text settings.
+	mLevelText.setFillColor(sf::Color::White);
+	mLevelText.setOutlineThickness(0);
+	mLevelText.setCharacterSize(18);
+
+	/// Load the default font.
+	setFont("assets/fonts/starmap.ttf");
+
 	updateCameraTransform();
 }
 
@@ -170,6 +178,23 @@ void Level::setTickSpeed(sf::Time speed)
 	mTickSpeed = speed;
 }
 
+void Level::setFont(std::string path)
+{
+	mFont = mResource->font(path);
+	mLevelText.setFont(*mFont);
+}
+
+void Level::setDisplayText(std::string text)
+{
+	mLevelText.setString(text);
+
+	// The padding to apply to the text from the top-right corner.
+	const int PADDING = 10;
+	// Update text positioning.
+	mLevelText.setOrigin(mLevelText.getLocalBounds().width, 0);
+	mLevelText.setPosition(mWindow->getSize().x - PADDING, PADDING);
+}
+
 void Level::start()
 {
 	mRunning = true;
@@ -222,8 +247,11 @@ void Level::update()
 
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	states.transform *= mTransform;
+	// Draw the text, untransformed in the top right.
+	target.draw(mLevelText, states);
 
+	// Transform the map for all objects to be drawn.
+	states.transform *= mTransform;
 	// Draw all objects
 	for (auto& obj : mObjectsZIndex)
 	{

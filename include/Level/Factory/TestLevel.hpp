@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Level/Level.hpp"
+#include "Object/ArrowPlatform.hpp"
 #include "Object/Player.hpp"
 #include "Object/Tilemap.hpp"
 

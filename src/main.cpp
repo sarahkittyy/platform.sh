@@ -2,6 +2,8 @@
 #include "ResourceManager.hpp"
 #include "State/Game.hpp"
 #include "State/Machine.hpp"
+#include "imgui/imgui-SFML.h"
+#include "imgui/imgui.h"
 
 int main()
 {
@@ -9,8 +11,14 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(800, 600), "platform.sh");
 	ResourceManager resource;
 
+	// Initialize SFML.
+	ImGui::SFML::Init(window);
+
 	// Init the state machine.
 	State::Machine sm(new State::Game(), &window, &resource);
+
+	// For updating ImGui.
+	sf::Clock appClock;
 
 	// Start the main game loop
 	while (window.isOpen())
@@ -19,6 +27,9 @@ int main()
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
+			// Process the event with ImGui
+			ImGui::SFML::ProcessEvent(event);
+
 			switch (event.type)
 			{
 			default:
@@ -31,6 +42,9 @@ int main()
 			// Pass the event to the state machine.
 			sm.on(event);
 		}
+
+		// Update ImGui
+		ImGui::SFML::Update(window, appClock.restart());
 
 		// Update the state machine.
 		sm.update();

@@ -70,9 +70,12 @@ void ArrowPlatform::updateTick()
 	// Get the x/y offset to move given the direction.
 	sf::Vector2f offset = getDirectionOffset();
 
+
+
+	//* Push pushables.
+	pushPushables(currentPosition, offset);
 	// Update "currentPosition" with this offset.
 	currentPosition += offset;
-
 	//! Using the new position, find nearby arrowplatformend instances, and rotate as needed.
 	updateEndpoints(currentPosition);
 
@@ -80,7 +83,54 @@ void ArrowPlatform::updateTick()
 	mIntendedNextPosition = getActualPosition(currentPosition);
 }
 
-void ArrowPlatform::updateEndpoints(sf::Vector2f& currentPosition)
+void ArrowPlatform::pushPushables(sf::Vector2f currentPosition, sf::Vector2f offset)
+{
+	// Get all pushable objects
+	auto pushables = queryObjects([](const Props& props) {
+		return props.test("/pushable"_json_pointer, true);
+	});
+
+	sf::Vector2f nextPos = currentPosition + offset;
+
+	// Iterate over all pushables.
+	for (auto& object : pushables)
+	{
+		Pushable* pushable;
+		try
+		{
+			pushable = dynamic_cast<Pushable*>(object.get());
+		}
+		catch (std::bad_cast e)   // Try-catch for a more descriptive error.
+		{
+			throw std::runtime_error("Pushable flag was set on an object, but the object did not inherit Object::Pushable");
+		}
+
+		// Check if the pushable is in our next position.
+		sf::Vector2i objpos = pushable->getPushablePosition();
+		if (objpos.x == nextPos.x && objpos.y == nextPos.y)
+		{
+			// The object is in it's way. Push it.
+			if (offset.x == -1)
+			{
+				pushable->pushLeft();
+			}
+			else if (offset.x == 1)
+			{
+				pushable->pushRight();
+			}
+			else if (offset.y == 1)
+			{
+				pushable->pushDown();
+			}
+			else if (offset.y == -1)
+			{
+				pushable->pushUp();
+			}
+		}
+	}
+}
+
+void ArrowPlatform::updateEndpoints(sf::Vector2f currentPosition)
 {
 	// Get all endpoints.
 	auto ends = queryObjects([](const Props& props) -> bool {
@@ -169,7 +219,7 @@ void ArrowPlatform::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 
 bool ArrowPlatform::isSolidAt(sf::Vector2i pos)
 {
-	sf::Vector2i nextPos = static_cast<sf::Vector2i>(getGridPosition(mInitialTickPosition));
+	sf::Vector2i nextPos = static_cast<sf::Vector2i>(getGridPosition(mIntendedNextPosition));
 	return pos.x == nextPos.x && pos.y == nextPos.y;
 }
 

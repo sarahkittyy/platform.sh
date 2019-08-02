@@ -5,6 +5,7 @@ namespace Object
 
 Player::Player(sf::Vector2f startPos)
 	: mStartPos(startPos),
+	  mQueuedPush(0, 0),
 	  mInitialPosition(startPos),
 	  mNextPosition(startPos)
 {
@@ -16,6 +17,9 @@ void Player::init()
 	setPriority(100);
 	// Always draw the player on top.
 	setZIndex(0);
+
+	// For objects such as moving platforms to push the player.
+	props().set({ { "pushable", true } });
 
 	// Initialize the player sprite.
 	mPlayer.init(resource().texture("assets/sprites/player.png"), { 15, 30 });
@@ -57,6 +61,8 @@ void Player::updateTick()
 	setPosition((sf::Vector2f)mNextPosition);
 	mInitialPosition = sf::Vector2i(getPosition());
 
+	moveInterpolated(mQueuedPush);
+
 	// Jumping / falling
 	if (airborne())
 	{
@@ -75,6 +81,9 @@ void Player::updateTick()
 	{
 		moveLeft();
 	}
+
+	// Reset the queue'd push.
+	mQueuedPush = sf::Vector2i(0, 0);
 }
 
 bool Player::airborne()
@@ -124,6 +133,59 @@ void Player::moveLeft()
 		return;
 
 	moveInterpolated({ -1, 0 });
+}
+
+void Player::pushRight()
+{
+	sf::Vector2i tilePos = getPositionInterpolated();
+
+	// If there's something to the right of us, we're squished
+	if (isCollisionAt({ tilePos.x + 1, tilePos.y }))
+		return kill();
+
+	mQueuedPush.x += 1;
+}
+
+void Player::pushLeft()
+{
+	sf::Vector2i tilePos = getPositionInterpolated();
+
+	// If there's something to the left of us, we're squished
+	if (isCollisionAt({ tilePos.x - 1, tilePos.y }))
+		return kill();
+
+	mQueuedPush.x -= 1;
+}
+
+void Player::pushUp()
+{
+	sf::Vector2i tilePos = getPositionInterpolated();
+
+	// If there's something to the left of us, we're squished
+	if (isCollisionAt({ tilePos.x, tilePos.y - 1 }))
+		return kill();
+
+	mQueuedPush.y -= 1;
+}
+
+void Player::pushDown()
+{
+	// Squished.
+	if (!airborne())
+	{
+		kill();
+	}
+}
+
+sf::Vector2i Player::getPushablePosition()
+{
+	return getPositionInterpolated();
+}
+
+void Player::kill()
+{
+	//TODO: maybe a death counter?
+	reset();
 }
 
 void Player::setPosition(sf::Vector2f tilePos)

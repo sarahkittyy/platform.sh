@@ -42,7 +42,7 @@ private:
 	 * Common properties:
 	 * 
 	 * collideable: true if the object has any collision at all. Used by Level::isCollisionAt()
-	 * 
+	 * pushable: true if the object inherits Object::Pushable and is, well, pushable.
 	 */
 };
 

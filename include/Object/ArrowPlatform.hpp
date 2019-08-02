@@ -6,6 +6,7 @@
 #include "GFX/AnimatedSprite.hpp"
 #include "Object/Object.hpp"
 #include "Object/Props.hpp"
+#include "Object/Pushable.hpp"
 #include "ResourceManager.hpp"
 
 namespace Object
@@ -63,9 +64,17 @@ private:
 	sf::Vector2f mIntendedNextPosition;
 
 	/// Find neighboring arrowplatform instances, and act accordingly.
-	void updateEndpoints(sf::Vector2f& currentPosition);
+	void updateEndpoints(sf::Vector2f currentPosition);
 	/// Returns the current dir rotated `degrees` degrees, floored to the nearest 90 degree mark.
 	Direction turnDegrees(int degrees);
+
+	/**
+	 * @brief Push all pushable objects in the level.
+	 * 
+	 * @param currentPosition The position before any movement.
+	 * @param offset The final offset to apply to the object.
+	 */
+	void pushPushables(sf::Vector2f currentPosition, sf::Vector2f offset);
 
 	/// The direction the platform is travelling in.
 	Direction mDir;

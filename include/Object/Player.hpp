@@ -1,8 +1,10 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <bitset>
 #include "GFX/AnimatedSprite.hpp"
 #include "Object/Object.hpp"
+#include "Object/Pushable.hpp"
 
 namespace Object
 {
@@ -11,7 +13,7 @@ namespace Object
  * @brief Main player object, controllable with WASD.
  * 
  */
-class Player : public Object
+class Player : public Object, public Pushable
 {
 public:
 	/**
@@ -25,8 +27,17 @@ public:
 
 	void update();
 	void updateTick();
-
 	void reset();
+
+	//* Methods for Pushable compatibility.
+	void pushRight();
+	void pushLeft();
+	void pushUp();
+	void pushDown();
+	sf::Vector2i getPushablePosition();
+
+	/// Resets the player. Use on death.
+	void kill();
 
 private:
 	/// SFML draw() override.
@@ -65,6 +76,17 @@ private:
 	bool jump();
 	/// Drops the player down one.
 	void fall();
+
+	/**
+	 * @brief For pushing the player.
+	 * Since the player is updating last, the player is pushed before the previous
+	 * position interpolation finishes.
+	 * 
+	 * This queued push is used at the next player update tick, to 
+	 * properly append the motion.
+	 * 
+	 */
+	sf::Vector2i mQueuedPush;
 
 	/// For position interpolation.
 	sf::Vector2i mInitialPosition;

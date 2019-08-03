@@ -5,8 +5,7 @@ namespace Util
 
 ImGuiShell::ImGuiShell()
 	: PS1("[platform.sh@platform.sh ~] $"),
-	  mInputBufSize(50),
-	  mShouldStart(false)
+	  mInputBufSize(50)
 {
 	// Allocate the input buffer.
 	mInputBuf = new char[mInputBufSize];
@@ -60,16 +59,6 @@ void ImGuiShell::draw()
 		ImGui::SetKeyboardFocusHere();
 	ImGui::PopStyleColor();
 	ImGui::PopStyleVar();
-}
-
-bool ImGuiShell::shouldStart()
-{
-	return mShouldStart;
-}
-
-bool ImGuiShell::shouldExit()
-{
-	return mShouldExit;
 }
 
 void ImGuiShell::onEnter()
@@ -165,21 +154,11 @@ void ImGuiShell::initShell()
 		stdout << "\n-= /bin/sh help menu =-\n\n";
 		stdout << "help => print this help menu\n";
 		stdout << "start [level: string] => start the game\n";
+		stdout << "edit => open the editor\n";
 		stdout << "exit => close the game\n";
 	});
 
-	// Start program.
-	//TODO: implement starting at any level.
-	setProgram("start", [this](auto& args, std::ostream& stdout) {
-		stdout << "starting...";
-		mShouldStart = true;
-	});
-
-	// Exit program
-	setProgram("exit", [this](auto& args, std::ostream& stdout) {
-		stdout << "exiting...";
-		mShouldExit = true;
-	});
+	// Programs start, edit, exit set by Menu
 }
 
 }

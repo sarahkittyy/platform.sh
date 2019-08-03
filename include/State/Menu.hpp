@@ -39,8 +39,11 @@ private:
 
 	/// The title.
 	sf::Text mTitle;
+
 	/// The input shell.
 	Util::ImGuiShell mShell;
+	/// Initializes shell programs.
+	void initShell();
 
 	/// The background demo map to run.
 	GFX::TiledTilemap mDemoMap;

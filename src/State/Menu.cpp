@@ -41,6 +41,9 @@ void Menu::init()
 	mDemoMap.setOrigin(mapCenter / 2.f);
 	mDemoMap.setPosition(window().getSize().x / 2.f, window().getSize().y / 2.f);
 	mDemoMap.setScale(2, 2);
+
+	// Init shell programs.
+	initShell();
 }
 
 void Menu::update()
@@ -120,16 +123,23 @@ void Menu::drawGUI()
 	mShell.draw();
 
 	ImGui::End();
+}
 
-	// If we should start, change state.
-	if (mShell.shouldStart())
-	{
+void Menu::initShell()
+{
+	mShell.setProgram("start", [this](auto& args, std::ostream& stdout) {
+		stdout << "starting...";
 		changeState(new Game());
-	}
-	if (mShell.shouldExit())
-	{
+	});
+
+	mShell.setProgram("edit", [this](auto& args, std::ostream& stdout) {
+		stdout << "coming soon...";
+	});
+
+	mShell.setProgram("exit", [this](auto& args, std::ostream& stdout) {
+		stdout << "exiting...";
 		window().close();
-	}
+	});
 }
 
 }

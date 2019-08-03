@@ -8,6 +8,7 @@
 #include "Object/Props.hpp"
 #include "Object/Pushable.hpp"
 #include "ResourceManager.hpp"
+#include "nlohmann/json.hpp"
 
 namespace Object
 {

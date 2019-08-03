@@ -13,9 +13,10 @@ void testLevel(Level* lvl,
 
 	lvl->on("playerKilled", [lvl](const nlohmann::json& data) {
 		lvl->setDisplayText("deaths: " + std::to_string(data.at("deathCount").get<int>()));
+		lvl->reset();
 	});
 
-	lvl->addObject(new Object::Player({ 4.f, 1.f }));
+	lvl->addObject(new Object::Player({ 14.f, 1.f }));
 	lvl->addObject(new Object::Tilemap("assets/maps/test_map.json", true));
 	lvl->addObject(new Object::ArrowPlatform({ 11.f, 4.f }, Object::ArrowPlatform::LEFT));
 	lvl->addObject(new Object::ArrowPlatformEnd({ 10.f, 4.f }, "right"));

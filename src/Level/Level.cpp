@@ -221,7 +221,7 @@ void Level::reset()
 	// Reset all objects.
 	for (auto& object : mObjects)
 	{
-		object.reset();
+		object->reset();
 	}
 }
 

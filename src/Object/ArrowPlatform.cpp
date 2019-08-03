@@ -61,6 +61,11 @@ void ArrowPlatform::updateTick()
 {
 	// Assert the platform was moved to the correct position after interpolation.
 	mPlatform.setPosition(mIntendedNextPosition);
+
+	//* Push pushables.
+	pushPushables(getGridPosition(mPlatform.getPosition()), getDirectionOffset());
+	//! Find approaching endpoints, and update as needed.
+	updateEndpoints(getGridPosition(mPlatform.getPosition()));
 	// Change the animation if necessary.
 	mPlatform.setAnimation(getDirectionAnimation());
 
@@ -71,14 +76,8 @@ void ArrowPlatform::updateTick()
 	// Get the x/y offset to move given the direction.
 	sf::Vector2f offset = getDirectionOffset();
 
-
-
-	//* Push pushables.
-	pushPushables(currentPosition, offset);
 	// Update "currentPosition" with this offset.
 	currentPosition += offset;
-	//! Using the new position, find nearby arrowplatformend instances, and rotate as needed.
-	updateEndpoints(currentPosition);
 
 	// Update the intended next position, for interpolation.
 	mIntendedNextPosition = getActualPosition(currentPosition);

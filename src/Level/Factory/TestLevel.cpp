@@ -17,7 +17,7 @@ void testLevel(Level* lvl,
 
 	lvl->addObject(new Object::Player({ 4.f, 1.f }));
 	lvl->addObject(new Object::Tilemap("assets/maps/test_map.json", true));
-	lvl->addObject(new Object::ArrowPlatform({ 15.f, 4.f }, Object::ArrowPlatform::LEFT));
+	lvl->addObject(new Object::ArrowPlatform({ 11.f, 4.f }, Object::ArrowPlatform::LEFT));
 	lvl->addObject(new Object::ArrowPlatformEnd({ 10.f, 4.f }, "right"));
 	lvl->addObject(new Object::ArrowPlatformEnd({ 20.f, 4.f }, "left"));
 }

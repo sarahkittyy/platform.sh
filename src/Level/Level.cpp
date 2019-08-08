@@ -3,6 +3,12 @@
 namespace Level
 {
 
+std::unordered_map<std::string, Level::ObjectPtr>
+	Level::mObjectTemplates({ { "Player", std::make_shared<Object::Player>() },
+							  { "Tilemap", std::make_shared<Object::Tilemap>() },
+							  { "ArrowPlatform", std::make_shared<Object::ArrowPlatform>() },
+							  { "ArrowPlatformEnd", std::make_shared<Object::ArrowPlatformEnd>() } });
+
 Level::Level()
 	: mTickSpeed(sf::seconds(0.4f)),
 	  mRunning(false),
@@ -76,6 +82,11 @@ Object::Object* Level::addObjectGeneric(Object::Object* object)
 	syncZIndexQueue();
 
 	return mObjects.back().get();
+}
+
+Object::Object* Level::addObjectGeneric(std::string name, Object::Props props)
+{
+	return addObjectGeneric(mObjectTemplates.at(name)->create(props));
 }
 
 void Level::removeObject(Object::Object* object)

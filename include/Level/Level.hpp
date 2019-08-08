@@ -14,6 +14,8 @@
 #include "ResourceManager.hpp"
 
 #include "Object/Object.hpp"
+#include "Object/Objects.hpp"
+#include "Object/Props.hpp"
 
 namespace Level
 {
@@ -48,6 +50,39 @@ public:
 	{
 		return dynamic_cast<Obj*>(addObjectGeneric(object));
 	}
+
+	/**
+	 * @brief Add an object based on the name of the object, and the properties.
+	 * 
+	 * @tparam Obj The type of object to create.
+	 * @param name The name of the object.
+	 * @param props The object properties.
+	 * @return Obj* The object itself.
+	 */
+	template <typename Obj>
+	Obj* addObject(std::string name, Object::Props props)
+	{
+		return dynamic_cast<Obj*>(addObjectGeneric(name, props));
+	}
+
+	/**
+	 * @brief Add an object to a level, without casting to any type.
+	 * 
+	 * @param object The object.
+	 * @return Object::Object* A pointer to the newly created object. 
+	 * 
+	 * @see Level::addObject()
+	 */
+	Object::Object* addObjectGeneric(Object::Object* object);
+
+	/**
+	 * @brief Add the object to the level, without casting to the necessary type.
+	 * 
+	 * @param name The name of the object.
+	 * @param props The object's properties.
+	 * @return Object::Object* A pointer to that object.
+	 */
+	Object::Object* addObjectGeneric(std::string name, Object::Props props);
 
 	/**
 	 * @brief Delete the object from the level.
@@ -127,9 +162,8 @@ private:
 	/// App resource manager.
 	ResourceManager* mResource;
 
-	/// Adds an object to a level generically, for use internally with objects,
-	/// and for the template function above to work.
-	Object::Object* addObjectGeneric(Object::Object* object);
+	/// For naming objects and allowing them to be created via string identifiers.
+	static std::unordered_map<std::string, ObjectPtr> mObjectTemplates;
 
 	/// The text displayed at the top-right of the level.
 	sf::Text mLevelText;

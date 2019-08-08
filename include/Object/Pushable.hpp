@@ -21,9 +21,6 @@ public:
 	virtual void pushLeft()  = 0;
 	virtual void pushUp()	= 0;
 	virtual void pushDown()  = 0;
-
-	/// Used so that objects pushing you know where you are.
-	virtual sf::Vector2i getPushablePosition() = 0;
 };
 
 }

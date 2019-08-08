@@ -43,7 +43,11 @@ public:
 	 * 
 	 * @returns A pointer to that object.
 	 */
-	Object::Object* addObject(Object::Object* object);
+	template <typename Obj>
+	Obj* addObject(Obj* object)
+	{
+		return dynamic_cast<Obj*>(addObjectGeneric(object));
+	}
 
 	/**
 	 * @brief Delete the object from the level.
@@ -122,6 +126,10 @@ private:
 	sf::RenderWindow* mWindow;
 	/// App resource manager.
 	ResourceManager* mResource;
+
+	/// Adds an object to a level generically, for use internally with objects,
+	/// and for the template function above to work.
+	Object::Object* addObjectGeneric(Object::Object* object);
 
 	/// The text displayed at the top-right of the level.
 	sf::Text mLevelText;

@@ -9,6 +9,14 @@ Tilemap::Tilemap(std::string mapFile, bool autotile)
 {
 }
 
+Tilemap* Tilemap::create()
+{
+}
+
+Tilemap* Tilemap::clone()
+{
+}
+
 void Tilemap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(mMap, states);

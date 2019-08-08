@@ -27,6 +27,9 @@ public:
 	/// Initialize the props for use.
 	void init();
 
+	ArrowPlatformEnd* create();
+	ArrowPlatformEnd* clone();
+
 private:
 	/// The position to place the platform.
 	sf::Vector2f mPosition;

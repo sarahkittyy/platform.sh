@@ -34,6 +34,9 @@ public:
 	/// Init the platform, with the initial position and travel direction.
 	ArrowPlatform(sf::Vector2f pos, Direction dir = RIGHT);
 
+	ArrowPlatform* create();
+	ArrowPlatform* clone();
+
 	/// Sprite initialization.
 	void init();
 

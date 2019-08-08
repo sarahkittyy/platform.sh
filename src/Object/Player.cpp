@@ -12,6 +12,14 @@ Player::Player(sf::Vector2f startPos)
 {
 }
 
+Player* Player::create()
+{
+}
+
+Player* Player::clone()
+{
+}
+
 void Player::init()
 {
 	// The player should always should be updated last, to allow moving platforms to update first.
@@ -53,19 +61,19 @@ void Player::update()
 	diff *= std::min(interpolationFactor() * 2.f, 1.f);
 	// Set the actual sprite position to the sum of the initial position and the interpolated
 	// intended next position.
-	setPosition((sf::Vector2f)mInitialPosition + diff);
+	setPosition(getActualPosition((sf::Vector2f)mInitialPosition + diff));
 
 	//* Camera centering.
 	// Keep the level camera centered on the player.
-	setCameraPosition(mPlayer.getPosition() + diff +
+	setCameraPosition(getPosition() + diff +
 					  sf::Vector2f(0, mPlayer.getSize().y / 2.f));
 }
 
 void Player::updateTick()
 {
 	// For fluid interpolation
-	setPosition((sf::Vector2f)mNextPosition);
-	mInitialPosition = sf::Vector2i(getPosition());
+	setPosition(getActualPosition((sf::Vector2f)mNextPosition));
+	mInitialPosition = sf::Vector2i(getGridPosition(getPosition()));
 
 	moveInterpolated(mQueuedPush);
 
@@ -186,11 +194,6 @@ void Player::pushDown()
 	}
 }
 
-sf::Vector2i Player::getPushablePosition()
-{
-	return getPositionInterpolated();
-}
-
 void Player::kill()
 {
 	// Increment the death counter.
@@ -202,16 +205,6 @@ void Player::kill()
 	emit("playerKilled", { { "deathCount", mDeathCount } });
 	// Reset the player.
 	reset();
-}
-
-void Player::setPosition(sf::Vector2f tilePos)
-{
-	mPlayer.setPosition(getActualPosition(tilePos));
-}
-
-sf::Vector2f Player::getPosition()
-{
-	return getGridPosition(mPlayer.getPosition());
 }
 
 void Player::setPositionInterpolated(sf::Vector2i pos)
@@ -231,13 +224,14 @@ sf::Vector2i Player::getPositionInterpolated()
 
 void Player::reset()
 {
-	setPosition(mStartPos);
+	setPosition(getActualPosition(mStartPos));
 	mInitialPosition = (sf::Vector2i)mStartPos;
 	mNextPosition	= (sf::Vector2i)mStartPos;
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	states.transform *= getTransform();
 	target.draw(mPlayer, states);
 }
 

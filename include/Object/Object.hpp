@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <functional>
+#include <iostream>
 #include "GFX/TiledTilemap.hpp"
 #include "Object/Props.hpp"
 #include "ResourceManager.hpp"
@@ -21,13 +22,19 @@ namespace Object
  * drawing, updating, and resetting.
  * 
  */
-class Object : public sf::Drawable
+class Object : public sf::Drawable, public sf::Transformable
 {
 public:
 	/// Sets the default priority.
 	Object();
 	/// For inheritance
 	virtual ~Object();
+
+	/// Re-create this object.
+	virtual Object* create() = 0;
+	/// Clone this object.
+	virtual Object* clone() = 0;
+
 	/// Called once all protected resources are loaded (ResourceManager, etc)
 	virtual void init();
 	/// Called once per frame
@@ -55,9 +62,15 @@ protected:
 	Props& props();
 
 	/// Add an object to the currently attached level.
-	Object* addObject(Object* object);
+	template <typename Obj>
+	Obj* addObject(Obj* object)
+	{
+		return dynamic_cast<Obj*>(object);
+	}
+
 	/// Remove an object from the level.
 	void removeObject(Object* object);
+
 	/// Query the parent level for objects of which the query function returns true.
 	std::vector<std::shared_ptr<Object>> queryObjects(std::function<bool(const Props&)> query);
 

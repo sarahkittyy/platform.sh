@@ -22,6 +22,10 @@ public:
 	 * @param startPos The player's starting position, in tiles.
 	 */
 	Player(sf::Vector2f startPos);
+
+	Player* create();
+	Player* clone();
+
 	/// Sets up the sprite and positioning.
 	void init();
 
@@ -34,7 +38,6 @@ public:
 	void pushLeft();	// Pushes the player left
 	void pushUp();		// Pushes the player up
 	void pushDown();	// Usually kills and resets the player.
-	sf::Vector2i getPushablePosition();
 
 	/// Resets the player. Use on death.
 	void kill();
@@ -49,11 +52,6 @@ private:
 
 	/// The player's start position.
 	sf::Vector2f mStartPos;
-
-	/// Immediately set the position of the player, snapped to the grid.
-	void setPosition(sf::Vector2f pos);
-	/// Get the position of the player, aligned to the grid.
-	sf::Vector2f getPosition();
 	/// Set the position to a tile on the grid, except interpolated across the tickrate.
 	void setPositionInterpolated(sf::Vector2i pos);
 	/// Move the interpolated next position by offset.

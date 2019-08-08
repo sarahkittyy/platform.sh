@@ -11,6 +11,14 @@ ArrowPlatform::ArrowPlatform(sf::Vector2f pos, Direction dir)
 {
 }
 
+ArrowPlatform* ArrowPlatform::create()
+{
+}
+
+ArrowPlatform* ArrowPlatform::clone()
+{
+}
+
 void ArrowPlatform::init()
 {
 	// Only needs to be updated before the player.
@@ -33,10 +41,10 @@ void ArrowPlatform::init()
 
 void ArrowPlatform::reset()
 {
-	mPlatform.setPosition(getActualPosition(mInitialPosition));
+	setPosition(getActualPosition(mInitialPosition));
 	mDir				  = mInitialDirection;
-	mInitialTickPosition  = mPlatform.getPosition();
-	mIntendedNextPosition = mPlatform.getPosition();
+	mInitialTickPosition  = getPosition();
+	mIntendedNextPosition = getPosition();
 	mPlatform.setAnimation(getDirectionAnimation());
 }
 
@@ -54,24 +62,24 @@ void ArrowPlatform::update()
 	diff *= std::min(interpolationFactor() * 8.f, 1.f);
 
 	// Set the actual sprite position to the initial position plus the interpolated difference.
-	mPlatform.setPosition(mInitialTickPosition + diff);
+	setPosition(mInitialTickPosition + diff);
 }
 
 void ArrowPlatform::updateTick()
 {
 	// Assert the platform was moved to the correct position after interpolation.
-	mPlatform.setPosition(mIntendedNextPosition);
+	setPosition(mIntendedNextPosition);
 
 	//* Push pushables.
-	pushPushables(getGridPosition(mPlatform.getPosition()), getDirectionOffset());
+	pushPushables(getGridPosition(getPosition()), getDirectionOffset());
 	//! Find approaching endpoints, and update as needed.
-	updateEndpoints(getGridPosition(mPlatform.getPosition()));
+	updateEndpoints(getGridPosition(getPosition()));
 	// Change the animation if necessary.
 	mPlatform.setAnimation(getDirectionAnimation());
 
 	/// Get the current position on the grid.
-	sf::Vector2f currentPosition = getGridPosition(mPlatform.getPosition());
-	mInitialTickPosition		 = mPlatform.getPosition();   // Save the initial before-tick pos for interpolation.
+	sf::Vector2f currentPosition = getGridPosition(getPosition());
+	mInitialTickPosition		 = getPosition();   // Save the initial before-tick pos for interpolation.
 	//* Position calculations start here
 	// Get the x/y offset to move given the direction.
 	sf::Vector2f offset = getDirectionOffset();
@@ -106,7 +114,7 @@ void ArrowPlatform::pushPushables(sf::Vector2f currentPosition, sf::Vector2f off
 		}
 
 		// Check if the pushable is in our next position.
-		sf::Vector2i objpos = pushable->getPushablePosition();
+		sf::Vector2i objpos = (sf::Vector2i)getGridPosition(object->getPosition());
 		if (objpos.x == nextPos.x && objpos.y == nextPos.y)
 		{
 			// The object is in it's way. Push it.
@@ -214,6 +222,7 @@ ArrowPlatform::Direction ArrowPlatform::turnDegrees(int degrees)
 
 void ArrowPlatform::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	states.transform *= getTransform();
 	target.draw(mPlatform, states);
 }
 

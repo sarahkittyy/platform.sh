@@ -59,11 +59,6 @@ Props& Object::props()
 	return mProps;
 }
 
-Object* Object::addObject(Object* object)
-{
-	return mAddObject(object);
-}
-
 void Object::removeObject(Object* object)
 {
 	mRemoveObject(object);

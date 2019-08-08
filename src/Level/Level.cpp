@@ -34,7 +34,7 @@ void Level::init(sf::RenderWindow* window,
 	updateCameraTransform();
 }
 
-Object::Object* Level::addObject(Object::Object* object)
+Object::Object* Level::addObjectGeneric(Object::Object* object)
 {
 	// Initialize the object.
 	object->mResource = mResource;

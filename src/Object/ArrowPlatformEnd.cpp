@@ -16,6 +16,14 @@ ArrowPlatformEnd::ArrowPlatformEnd(sf::Vector2f pos, int degrees)
 {
 }
 
+ArrowPlatformEnd* ArrowPlatformEnd::create()
+{
+}
+
+ArrowPlatformEnd* ArrowPlatformEnd::clone()
+{
+}
+
 void ArrowPlatformEnd::init()
 {
 	/// Configure this as an ArrowPlatformEnd object.

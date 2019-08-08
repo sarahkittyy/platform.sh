@@ -23,6 +23,9 @@ public:
 	 */
 	Tilemap(std::string mapFile, bool autotile = false);
 
+	Tilemap* create();
+	Tilemap* clone();
+
 	/// Initializes the tilemap graphic
 	void init();
 

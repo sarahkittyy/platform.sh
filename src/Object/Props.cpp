@@ -7,10 +7,21 @@ Props::Props()
 {
 }
 
-void Props::set(const nlohmann::json::value_type& data)
+Props::Props(const nlohmann::json::value_type&& initial)
+	: mProps(initial)
+{
+}
+
+Props::operator nlohmann::json() const
+{
+	return mProps;
+}
+
+Props& Props::set(const nlohmann::json::value_type& data)
 {
 	// Update properties.
 	mProps.update(data);
+	return *this;
 }
 
 bool Props::exists(const nlohmann::json::json_pointer& key) const

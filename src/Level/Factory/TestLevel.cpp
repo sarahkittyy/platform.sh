@@ -19,11 +19,11 @@ void testLevel(Level* lvl,
 	});
 
 	// clang-format off
-	lvl->addObject(new Object::Player(Props()
+	lvl->addObject<Object::Player>("Player", Props()
 		.set({
 			{ "startPos", Object::Props::fromVector<float>(14.f, 1.f) }
 		})
-	));
+	);
 	lvl->addObject(new Object::Tilemap(Props()
 		.set({
 			{"mapFile", "assets/maps/test_map.json"},

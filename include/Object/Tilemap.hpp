@@ -15,6 +15,9 @@ namespace Object
 class Tilemap : public Object
 {
 public:
+	/// Default initialization, for generic creating
+	Tilemap();
+
 	/**
 	 * @brief Initialize the map.
 	 * 

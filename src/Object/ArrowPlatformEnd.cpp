@@ -3,6 +3,10 @@
 namespace Object
 {
 
+ArrowPlatformEnd::ArrowPlatformEnd()
+{
+}
+
 ArrowPlatformEnd::ArrowPlatformEnd(Props props)
 	: Object(props),
 	  mPosition(Props::toVector<float>(props.get("/pos"_json_pointer)))

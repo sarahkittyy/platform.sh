@@ -19,6 +19,9 @@ namespace Object
 class ArrowPlatformEnd : public Object
 {
 public:
+	/// Bare constructor, do not call init(). Used for create() and clone() only.
+	ArrowPlatformEnd();
+
 	/**
 	 * @brief Init the arrow platform end
 	 * 

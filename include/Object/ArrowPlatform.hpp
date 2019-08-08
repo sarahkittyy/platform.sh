@@ -31,6 +31,9 @@ public:
 		DOWN
 	};   //* Conveniently ordered to cycle clockwise. (see turnDegrees)
 
+	/// Bare constructor, do not call init(). Used for create() and clone() only.
+	ArrowPlatform();
+
 	/**
 	 * @brief 
 	 * 

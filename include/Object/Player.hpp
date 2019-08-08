@@ -19,11 +19,12 @@ public:
 	/**
 	 * @brief Init the player
 	 * 
-	 * @param startPos The player's starting position, in tiles.
+	 * @remarks Properties
+	 *  - startPos: int[2] => initial player starting position.
 	 */
-	Player(sf::Vector2f startPos);
+	Player(Props props);
 
-	Player* create();
+	Player* create(Props props);
 	Player* clone();
 
 	/// Sets up the sprite and positioning.

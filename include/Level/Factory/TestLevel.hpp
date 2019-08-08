@@ -4,6 +4,7 @@
 #include "Object/ArrowPlatform.hpp"
 #include "Object/ArrowPlatformEnd.hpp"
 #include "Object/Player.hpp"
+#include "Object/Props.hpp"
 #include "Object/Tilemap.hpp"
 
 namespace Level::Factory

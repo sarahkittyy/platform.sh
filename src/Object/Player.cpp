@@ -3,21 +3,24 @@
 namespace Object
 {
 
-Player::Player(sf::Vector2f startPos)
-	: mStartPos(startPos),
+Player::Player(Props props)
+	: Object(props),
+	  mStartPos(Props::toVector<float>(props.get("/startPos"_json_pointer))),
 	  mDeathCount(0),
 	  mQueuedPush(0, 0),
-	  mInitialPosition(startPos),
-	  mNextPosition(startPos)
+	  mInitialPosition(mStartPos),
+	  mNextPosition(mStartPos)
 {
 }
 
-Player* Player::create()
+Player* Player::create(Props props)
 {
+	return new Player(props);
 }
 
 Player* Player::clone()
 {
+	return new Player(initialProps());
 }
 
 void Player::init()

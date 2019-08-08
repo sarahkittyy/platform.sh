@@ -19,15 +19,20 @@ namespace Object
 class ArrowPlatformEnd : public Object
 {
 public:
-	/// Init the end with "left", "right", etc, as a property.
-	ArrowPlatformEnd(sf::Vector2f pos, std::string turnTo);
-	/// Init the platform so that all interacting platforms turn `degrees` degrees clockwise.
-	ArrowPlatformEnd(sf::Vector2f pos, int degrees);
+	/**
+	 * @brief Init the arrow platform end
+	 * 
+	 * @remarks Properties
+	 * 	- pos: Vector2 => The platform position.
+	 * 	- [degrees: int] => The degrees to rotate the platform by.
+	 * 	- [turnTo: string] => If no degrees specified, the direction to turn the platform to.
+	 */
+	ArrowPlatformEnd(Props props);
 
 	/// Initialize the props for use.
 	void init();
 
-	ArrowPlatformEnd* create();
+	ArrowPlatformEnd* create(Props props);
 	ArrowPlatformEnd* clone();
 
 private:

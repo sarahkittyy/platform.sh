@@ -18,12 +18,13 @@ public:
 	/**
 	 * @brief Initialize the map.
 	 * 
-	 * @param mapFile The path to the map json file.
-	 * @param autotile Whether or not to autotile the given map.
+	 * @remarks Properties
+	 * 	- mapFile: string => Path to the map json file.
+	 * 	- autotile: boolean => Whether or not to autotile the map.
 	 */
-	Tilemap(std::string mapFile, bool autotile = false);
+	Tilemap(Props props);
 
-	Tilemap* create();
+	Tilemap* create(Props props);
 	Tilemap* clone();
 
 	/// Initializes the tilemap graphic

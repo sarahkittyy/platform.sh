@@ -3,20 +3,23 @@
 namespace Object
 {
 
-ArrowPlatform::ArrowPlatform(sf::Vector2f pos, Direction dir)
-	: mInitialPosition(pos),
-	  mInitialDirection(dir),
-	  mInitialTickPosition(pos),
-	  mIntendedNextPosition(pos)
+ArrowPlatform::ArrowPlatform(Props props)
+	: Object(props),
+	  mInitialPosition(Props::toVector<float>(props.get("/pos"_json_pointer))),
+	  mInitialDirection(props.get("/dir"_json_pointer)),
+	  mInitialTickPosition(mInitialPosition),
+	  mIntendedNextPosition(mInitialPosition)
 {
 }
 
-ArrowPlatform* ArrowPlatform::create()
+ArrowPlatform* ArrowPlatform::create(Props props)
 {
+	return new ArrowPlatform(props);
 }
 
 ArrowPlatform* ArrowPlatform::clone()
 {
+	return new ArrowPlatform(initialProps());
 }
 
 void ArrowPlatform::init()

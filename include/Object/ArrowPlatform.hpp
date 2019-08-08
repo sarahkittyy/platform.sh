@@ -31,10 +31,16 @@ public:
 		DOWN
 	};   //* Conveniently ordered to cycle clockwise. (see turnDegrees)
 
-	/// Init the platform, with the initial position and travel direction.
-	ArrowPlatform(sf::Vector2f pos, Direction dir = RIGHT);
+	/**
+	 * @brief 
+	 * 
+	 * @remarks Properties
+	 * 	- pos: Vector2 => Initial platform position
+	 * 	- dir: int => Initial arrow direction (See `Direction`) 
+	 */
+	ArrowPlatform(Props props);
 
-	ArrowPlatform* create();
+	ArrowPlatform* create(Props props);
 	ArrowPlatform* clone();
 
 	/// Sprite initialization.

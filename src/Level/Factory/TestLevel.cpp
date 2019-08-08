@@ -7,6 +7,8 @@ void testLevel(Level* lvl,
 			   sf::RenderWindow* window,
 			   ResourceManager* resource)
 {
+	using Object::Props;
+
 	lvl->init(window, resource);
 	lvl->setDisplayText("deaths: 0");
 	lvl->setTickSpeed(sf::seconds(0.6f));
@@ -16,11 +18,37 @@ void testLevel(Level* lvl,
 		lvl->reset();
 	});
 
-	lvl->addObject(new Object::Player({ 14.f, 1.f }));
-	lvl->addObject(new Object::Tilemap("assets/maps/test_map.json", true));
-	lvl->addObject(new Object::ArrowPlatform({ 11.f, 4.f }, Object::ArrowPlatform::LEFT));
-	lvl->addObject(new Object::ArrowPlatformEnd({ 10.f, 4.f }, "right"));
-	lvl->addObject(new Object::ArrowPlatformEnd({ 20.f, 4.f }, "left"));
+	// clang-format off
+	lvl->addObject(new Object::Player(Props()
+		.set({
+			{ "startPos", Object::Props::fromVector<float>(14.f, 1.f) }
+		})
+	));
+	lvl->addObject(new Object::Tilemap(Props()
+		.set({
+			{"mapFile", "assets/maps/test_map.json"},
+			{"autotile", true}
+		})
+	));
+	lvl->addObject(new Object::ArrowPlatform(Props()
+		.set({
+			{"pos", Props::fromVector<float>(11.f, 4.f)},
+			{"dir", Object::ArrowPlatform::LEFT}
+		})
+	));
+	lvl->addObject(new Object::ArrowPlatformEnd(Props()
+		.set({
+			{"pos", Props::fromVector<float>(10.f, 4.f)},
+			{"turnTo", "right"}
+		})
+	));
+	lvl->addObject(new Object::ArrowPlatformEnd(Props()
+		.set({
+			{"pos", Props::fromVector<float>(20.f, 4.f)},
+			{"turnTo", "left"}
+		})
+	));
+	// clang-format on
 }
 
 }

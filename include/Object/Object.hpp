@@ -25,13 +25,17 @@ namespace Object
 class Object : public sf::Drawable, public sf::Transformable
 {
 public:
-	/// Sets the default priority.
-	Object();
+	/**
+	 * @brief Init the object.
+	 * 
+	 * @param props The object's initial properties.
+	 */
+	Object(Props props);
 	/// For inheritance
 	virtual ~Object();
 
-	/// Re-create this object.
-	virtual Object* create() = 0;
+	/// Create an object of this type.
+	virtual Object* create(Props props) = 0;
 	/// Clone this object.
 	virtual Object* clone() = 0;
 
@@ -106,8 +110,11 @@ protected:
 
 	/// Emit an event to the level.
 	void emit(std::string event, nlohmann::json data);
-	// Attach a callback to be run on level event emitted.
+	/// Attach a callback to be run on level event emitted.
 	void on(std::string event, std::function<void(const nlohmann::json& data)> callback);
+
+	/// Get the intiial object properties.
+	const Props& initialProps();
 
 	/// SFML draw() override.
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -118,7 +125,9 @@ private:
 	/// The object Z index (lower -> drawn last)
 	unsigned int mZIndex;
 
-	/// The object's properties.
+	/// The object's initial properties.
+	Props mInitialProps;
+	/// The object's active properties.
 	Props mProps;
 
 	////////////////////////////

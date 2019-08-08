@@ -3,25 +3,28 @@
 namespace Object
 {
 
-ArrowPlatformEnd::ArrowPlatformEnd(sf::Vector2f pos, std::string turnTo)
-	: mPosition(pos),
-	  mTurnTo(turnTo)
+ArrowPlatformEnd::ArrowPlatformEnd(Props props)
+	: Object(props),
+	  mPosition(Props::toVector<float>(props.get("/pos"_json_pointer)))
 {
+	if (props.exists("/turnTo"_json_pointer))
+	{
+		mTurnTo = props.get("/turnTo"_json_pointer);
+	}
+	if (props.exists("/degrees"_json_pointer))
+	{
+		mDegrees = props.get("/degrees"_json_pointer);
+	}
 }
 
-ArrowPlatformEnd::ArrowPlatformEnd(sf::Vector2f pos, int degrees)
-	: mPosition(pos),
-	  mTurnTo(""),
-	  mDegrees(degrees)
+ArrowPlatformEnd* ArrowPlatformEnd::create(Props props)
 {
-}
-
-ArrowPlatformEnd* ArrowPlatformEnd::create()
-{
+	return new ArrowPlatformEnd(props);
 }
 
 ArrowPlatformEnd* ArrowPlatformEnd::clone()
 {
+	return new ArrowPlatformEnd(initialProps());
 }
 
 void ArrowPlatformEnd::init()

@@ -3,18 +3,21 @@
 namespace Object
 {
 
-Tilemap::Tilemap(std::string mapFile, bool autotile)
-	: mMapFile(mapFile),
-	  mAutotile(autotile)
+Tilemap::Tilemap(Props props)
+	: Object(props),
+	  mMapFile(props.get("/mapFile"_json_pointer)),
+	  mAutotile(props.get("/autotile"_json_pointer))
 {
 }
 
-Tilemap* Tilemap::create()
+Tilemap* Tilemap::create(Props props)
 {
+	return new Tilemap(props);
 }
 
 Tilemap* Tilemap::clone()
 {
+	return new Tilemap(initialProps());
 }
 
 void Tilemap::draw(sf::RenderTarget& target, sf::RenderStates states) const

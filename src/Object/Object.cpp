@@ -3,9 +3,10 @@
 namespace Object
 {
 
-Object::Object()
+Object::Object(Props props)
 	: mPriority(10),
-	  mZIndex(10)
+	  mZIndex(10),
+	  mInitialProps(props)
 {
 }
 
@@ -131,6 +132,11 @@ void Object::on(std::string event,
 				std::function<void(const nlohmann::json& data)> callback)
 {
 	mOnEvent(event, callback);
+}
+
+const Props& Object::initialProps()
+{
+	return mInitialProps;
 }
 
 sf::Vector2f Object::getGridPosition(sf::Vector2f actualPos)

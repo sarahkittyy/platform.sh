@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 # get sfml
 find_package(SFML 2.5 REQUIRED COMPONENTS graphics window audio network system)
 
-if(CMAKE_BUILD_TYPE EQUAL "DEBUG")
+if(NOT CMAKE_BUILD_TYPE EQUAL "DEBUG")
 	set(SFML_LIB sfml-graphics sfml-window sfml-audio sfml-network sfml-system)
 else()
 	set(SFML_LIB sfml-graphics-d sfml-window-d sfml-audio-d sfml-network-d sfml-system-d)

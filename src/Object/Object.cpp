@@ -86,14 +86,14 @@ sf::Vector2f Object::getCameraPosition()
 	return mGetCameraPosition();
 }
 
-void Object::setViewportScale(float scale)
+void Object::setViewportSize(sf::Vector2f size)
 {
-	mSetViewportScale(scale);
+	mSetViewportSize(size);
 }
 
-float Object::getViewportScale()
+sf::Vector2f Object::getViewportSize()
 {
-	return mGetViewportScale();
+	return mGetViewportSize();
 }
 
 void Object::setPriority(unsigned int priority)

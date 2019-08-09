@@ -21,6 +21,8 @@ public:
 	void init();
 	void update();
 
+	void on(const sf::Event& event);
+
 private:
 	Level::Level mTestLevel;
 };

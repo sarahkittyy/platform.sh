@@ -9,6 +9,18 @@ void Game::init()
 	mTestLevel.start();
 }
 
+void Game::on(const sf::Event& event)
+{
+	switch (event.type)
+	{
+	default:
+		break;
+	case sf::Event::Resized:
+		mTestLevel.emit("windowResized", { { "x", event.size.width }, { "y", event.size.height } });
+		break;
+	}
+}
+
 void Game::update()
 {
 	mTestLevel.update();

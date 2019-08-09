@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <algorithm>
 #include <functional>
+#include <iostream>
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -102,10 +103,10 @@ public:
 	void setCameraPosition(sf::Vector2f pos);
 	/// Get the position of the camera
 	sf::Vector2f getCameraPosition();
-	/// Set the scale of the visible area.
-	void setViewportScale(float scale);
-	/// Get the level viewport scale.
-	float getViewportScale();
+	/// Set the size of the visible area.
+	void setViewportSize(sf::Vector2f size);
+	/// Get the level viewport size.
+	sf::Vector2f getViewportSize();
 
 	/// Set the game update tick speed.
 	void setTickSpeed(sf::Time speed);
@@ -190,14 +191,8 @@ private:
 	/// A map of events to their list of attached event handler functions.
 	std::unordered_map<std::string, std::vector<EventCallback>> mEventCallbacks;
 
-	/// Camera position.
-	sf::Vector2f mCameraPosition;
-	/// Viewport scale
-	float mViewportScale;
-	/// The cumulative transform of the camera position and size.
-	sf::Transform mTransform;
-	/// Update the level transform based on the pos and viewport size.
-	void updateCameraTransform();
+	/// The camera viewport.
+	sf::View mViewport;
 
 	/// All level objects.
 	std::vector<ObjectPtr> mObjects;

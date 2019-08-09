@@ -13,9 +13,7 @@ Level::Level()
 	: mTickSpeed(sf::seconds(0.4f)),
 	  mRunning(false),
 	  TILESIZE(32, 32),
-	  GRIDSIZE(50, 50),
-	  mCameraPosition(0, 0),
-	  mViewportScale(1)
+	  GRIDSIZE(50, 50)
 {
 	mClock.restart();
 }
@@ -37,7 +35,15 @@ void Level::init(sf::RenderWindow* window,
 	/// Load the default music.
 	setMusic("assets/music/bg.flac");
 
-	updateCameraTransform();
+	mViewport.setSize(sf::Vector2f(mWindow->getSize()));
+	mWindow->setView(mViewport);
+	on("windowResized", [this](const nlohmann::json& data) {
+		unsigned x, y;
+		x = data.at("x").get<unsigned>();
+		y = data.at("y").get<unsigned>();
+
+		mViewport.setSize(x, y);
+	});
 }
 
 Object::Object* Level::addObjectGeneric(Object::Object* object)
@@ -54,8 +60,8 @@ Object::Object* Level::addObjectGeneric(Object::Object* object)
 	// Bind camera controls.
 	object->mSetCameraPosition = [this](sf::Vector2f pos) { setCameraPosition(pos); };
 	object->mGetCameraPosition = [this]() { return getCameraPosition(); };
-	object->mSetViewportScale  = [this](float scale) { setViewportScale(scale); };
-	object->mGetViewportScale  = [this]() { return getViewportScale(); };
+	object->mSetViewportSize   = [this](sf::Vector2f size) { setViewportSize(size); };
+	object->mGetViewportSize   = [this]() { return getViewportSize(); };
 
 	object->mSyncPriorityQueue = [this]() { syncPriorityQueue(); };
 	object->mSyncZIndexQueue   = [this]() { syncZIndexQueue(); };
@@ -152,41 +158,24 @@ void Level::syncZIndexQueue()
 
 void Level::setCameraPosition(sf::Vector2f pos)
 {
-	mCameraPosition = -1.f * pos;
-	updateCameraTransform();
+	mViewport.setCenter(pos.x, pos.y);
+	mWindow->setView(mViewport);
 }
 
 sf::Vector2f Level::getCameraPosition()
 {
-	return mCameraPosition;
+	return mViewport.getCenter();
 }
 
-void Level::setViewportScale(float scale)
+void Level::setViewportSize(sf::Vector2f size)
 {
-	mViewportScale = scale;
-	updateCameraTransform();
+	mViewport.setSize(size);
+	mWindow->setView(mViewport);
 }
 
-float Level::getViewportScale()
+sf::Vector2f Level::getViewportSize()
 {
-	return mViewportScale;
-}
-
-void Level::updateCameraTransform()
-{
-	// Refresh the transform
-	mTransform = sf::Transform::Identity;
-
-	// Calculate the actual camera position (top-left)
-	sf::Vector2f actualCam(
-		mCameraPosition.x + mWindow->getSize().x / 2.f,
-		mCameraPosition.y + mWindow->getSize().y / 2.f);
-
-	// Move the transform to the camera position.
-	mTransform.translate(actualCam);
-
-	// Scale the viewport.
-	mTransform.scale(mViewportScale, mViewportScale, mCameraPosition.x, mCameraPosition.y);
+	return mViewport.getSize();
 }
 
 void Level::setTickSpeed(sf::Time speed)
@@ -295,11 +284,11 @@ void Level::on(std::string event, std::function<void(const nlohmann::json&)> han
 
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	mWindow->setView(mWindow->getDefaultView());
 	// Draw the text, untransformed in the top right.
 	target.draw(mLevelText, states);
+	mWindow->setView(mViewport);
 
-	// Transform the map for all objects to be drawn.
-	states.transform *= mTransform;
 	// Draw all objects
 	for (auto& obj : mObjectsZIndex)
 	{

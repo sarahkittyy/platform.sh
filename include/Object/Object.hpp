@@ -85,10 +85,10 @@ protected:
 	void setCameraPosition(sf::Vector2f pos);
 	/// Get the position of the level camera
 	sf::Vector2f getCameraPosition();
-	/// Set the scale of the level visible area.
-	void setViewportScale(float scale);
-	/// Get the level viewport scale.
-	float getViewportScale();
+	/// Set the size of the level visible area.
+	void setViewportSize(sf::Vector2f size);
+	/// Get the level viewport size.
+	sf::Vector2f getViewportSize();
 
 	/// Set the object's update priority. (Lower = updated first)
 	void setPriority(unsigned int priority);
@@ -154,9 +154,9 @@ private:
 	/// Get the camera position.
 	std::function<sf::Vector2f()> mGetCameraPosition;
 	/// Set the level viewport scale
-	std::function<void(float)> mSetViewportScale;
+	std::function<void(sf::Vector2f)> mSetViewportSize;
 	/// Get the level viewport scale.
-	std::function<float()> mGetViewportScale;
+	std::function<sf::Vector2f()> mGetViewportSize;
 	/// Re-sync the level priority queue.
 	std::function<void()> mSyncPriorityQueue;
 	/// Re-sync the level ZIndex queue.

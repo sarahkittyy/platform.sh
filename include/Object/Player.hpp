@@ -16,9 +16,6 @@ namespace Object
 class Player : public Object, public Pushable
 {
 public:
-	/// Bare constructor, do not call init(). Used for create() and clone() only.
-	Player();
-
 	/**
 	 * @brief Init the player
 	 * 

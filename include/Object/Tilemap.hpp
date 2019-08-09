@@ -15,9 +15,6 @@ namespace Object
 class Tilemap : public Object
 {
 public:
-	/// Default initialization, for generic creating
-	Tilemap();
-
 	/**
 	 * @brief Initialize the map.
 	 * 
@@ -25,7 +22,10 @@ public:
 	 * 	- mapFile: string => Path to the map json file.
 	 * 	- autotile: boolean => Whether or not to autotile the map.
 	 */
-	Tilemap(Props props);
+	Tilemap(Props props =
+				Props()
+					.set({ { "mapFile", "assets/maps/test_map.json" } })
+					.set({ { "autotile", false } }));
 
 	Tilemap* create(Props props);
 	Tilemap* clone();

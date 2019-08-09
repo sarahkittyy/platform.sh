@@ -25,15 +25,12 @@ namespace Object
 class Object : public sf::Drawable, public sf::Transformable
 {
 public:
-	/// Bare init, for create() and clone() usage only.
-	Object();
-
 	/**
 	 * @brief Init the object.
 	 * 
 	 * @param props The object's initial properties.
 	 */
-	Object(Props props);
+	Object(Props props = {});
 	/// For inheritance
 	virtual ~Object();
 

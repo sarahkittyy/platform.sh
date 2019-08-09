@@ -31,9 +31,6 @@ public:
 		DOWN
 	};   //* Conveniently ordered to cycle clockwise. (see turnDegrees)
 
-	/// Bare constructor, do not call init(). Used for create() and clone() only.
-	ArrowPlatform();
-
 	/**
 	 * @brief 
 	 * 
@@ -41,7 +38,10 @@ public:
 	 * 	- pos: Vector2 => Initial platform position
 	 * 	- dir: int => Initial arrow direction (See `Direction`) 
 	 */
-	ArrowPlatform(Props props);
+	ArrowPlatform(Props props =
+					  Props()
+						  .set({ { "pos", Props::fromVector<float>(0, 0) } })
+						  .set({ { "dir", 0 } }));
 
 	ArrowPlatform* create(Props props);
 	ArrowPlatform* clone();

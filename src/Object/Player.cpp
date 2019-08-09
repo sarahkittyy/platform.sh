@@ -3,10 +3,6 @@
 namespace Object
 {
 
-Player::Player()
-{
-}
-
 Player::Player(Props props)
 	: Object(props),
 	  mStartPos(Props::toVector<float>(props.get("/startPos"_json_pointer))),

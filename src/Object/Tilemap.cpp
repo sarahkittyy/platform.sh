@@ -3,10 +3,6 @@
 namespace Object
 {
 
-Tilemap::Tilemap()
-{
-}
-
 Tilemap::Tilemap(Props props)
 	: Object(props),
 	  mMapFile(props.get("/mapFile"_json_pointer)),

@@ -3,12 +3,6 @@
 namespace Object
 {
 
-Object::Object()
-	: mPriority(10),
-	  mZIndex(10)
-{
-}
-
 Object::Object(Props props)
 	: mPriority(10),
 	  mZIndex(10),

@@ -19,9 +19,6 @@ namespace Object
 class ArrowPlatformEnd : public Object
 {
 public:
-	/// Bare constructor, do not call init(). Used for create() and clone() only.
-	ArrowPlatformEnd();
-
 	/**
 	 * @brief Init the arrow platform end
 	 * 
@@ -30,7 +27,9 @@ public:
 	 * 	- [degrees: int] => The degrees to rotate the platform by.
 	 * 	- [turnTo: string] => If no degrees specified, the direction to turn the platform to.
 	 */
-	ArrowPlatformEnd(Props props);
+	ArrowPlatformEnd(Props props =
+						 Props()
+							 .set({ { "pos", Props::fromVector(0.f, 0.f) } }));
 
 	/// Initialize the props for use.
 	void init();

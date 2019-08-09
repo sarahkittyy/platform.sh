@@ -25,7 +25,9 @@ public:
 	 * @remarks Properties
 	 *  - startPos: int[2] => initial player starting position.
 	 */
-	Player(Props props);
+	Player(Props props =
+			   Props()
+				   .set({ { "startPos", Props::fromVector<float>(0.f, 0.f) } }));
 
 	Player* create(Props props);
 	Player* clone();

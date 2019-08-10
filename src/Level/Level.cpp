@@ -9,11 +9,12 @@ std::unordered_map<std::string, Level::ObjectPtr>
 							  { "ArrowPlatform", std::make_shared<Object::ArrowPlatform>() },
 							  { "ArrowPlatformEnd", std::make_shared<Object::ArrowPlatformEnd>() } });
 
+const sf::Vector2i Level::TILESIZE(32, 32);
+const sf::Vector2i Level::GRIDSIZE(50, 50);
+
 Level::Level()
 	: mTickSpeed(sf::seconds(0.4f)),
-	  mRunning(false),
-	  TILESIZE(32, 32),
-	  GRIDSIZE(50, 50)
+	  mRunning(false)
 {
 	mClock.restart();
 }
@@ -44,6 +45,22 @@ void Level::init(sf::RenderWindow* window,
 
 		mViewport.setSize(x, y);
 	});
+}
+
+nlohmann::json Level::serialize()
+{
+	nlohmann::json lvl;
+
+	/// Base level properties.
+	lvl["text"]		 = mLevelText.getString();
+	lvl["tickSpeed"] = mTickSpeed.asSeconds();
+}
+
+void Level::deserialize(const nlohmann::json& data)
+{
+	mObjects.clear();
+	mObjectsPriority.clear();
+	mObjectsZIndex.clear();
 }
 
 Object::Object* Level::addObjectGeneric(Object::Object* object)

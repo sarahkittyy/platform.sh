@@ -39,6 +39,11 @@ public:
 	void init(sf::RenderWindow* window,
 			  ResourceManager* resource);
 
+	/// Serialize the level, level properties, and objects to JSON
+	nlohmann::json serialize();
+	/// Reset this level from ta.
+	void deserialize(const nlohmann::json& data);
+
 	/**
 	 * @brief Link an object to the level. Also initializes the object.
 	 * 
@@ -182,9 +187,9 @@ private:
 	bool mRunning;
 
 	/// The size of a map tile, for objects to snap to.
-	const sf::Vector2i TILESIZE;
+	static const sf::Vector2i TILESIZE;
 	/// The size of the map's whole grid.
-	const sf::Vector2i GRIDSIZE;
+	static const sf::Vector2i GRIDSIZE;
 
 	/// For convenience, see mEventCallbacks.
 	typedef std::function<void(const nlohmann::json&)> EventCallback;

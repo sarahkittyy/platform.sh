@@ -169,7 +169,9 @@ private:
 	ResourceManager* mResource;
 
 	/// For naming objects and allowing them to be created via string identifiers.
-	static std::unordered_map<std::string, ObjectPtr> mObjectTemplates;
+	static std::vector<ObjectPtr> mObjectTemplates;
+	/// Get the template object instance with the given name.
+	static ObjectPtr getObject(std::string name);
 
 	/// The text displayed at the top-right of the level.
 	sf::Text mLevelText;

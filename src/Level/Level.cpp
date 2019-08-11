@@ -3,11 +3,13 @@
 namespace Level
 {
 
-std::unordered_map<std::string, Level::ObjectPtr>
-	Level::mObjectTemplates({ { "Player", std::make_shared<Object::Player>() },
-							  { "Tilemap", std::make_shared<Object::Tilemap>() },
-							  { "ArrowPlatform", std::make_shared<Object::ArrowPlatform>() },
-							  { "ArrowPlatformEnd", std::make_shared<Object::ArrowPlatformEnd>() } });
+std::vector<Level::ObjectPtr>
+	Level::mObjectTemplates{
+		std::make_shared<Object::Player>(),
+		std::make_shared<Object::Tilemap>(),
+		std::make_shared<Object::ArrowPlatform>(),
+		std::make_shared<Object::ArrowPlatformEnd>()
+	};
 
 const sf::Vector2i Level::TILESIZE(32, 32);
 const sf::Vector2i Level::GRIDSIZE(50, 50);
@@ -134,7 +136,7 @@ Object::Object* Level::addObjectGeneric(Object::Object* object)
 
 Object::Object* Level::addObjectGeneric(std::string name, Object::Props props)
 {
-	return addObjectGeneric(mObjectTemplates.at(name)->create(props));
+	return addObjectGeneric(getObject(name)->create(props));
 }
 
 void Level::removeObject(Object::Object* object)
@@ -336,6 +338,18 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(*obj, states);
 	}
+}
+
+Level::ObjectPtr Level::getObject(std::string name)
+{
+	for (auto& obj : mObjectTemplates)
+	{
+		if (obj->name() == name)
+		{
+			return obj;
+		}
+	}
+	return nullptr;
 }
 
 }

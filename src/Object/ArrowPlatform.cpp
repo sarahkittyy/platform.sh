@@ -27,6 +27,26 @@ const std::string ArrowPlatform::name() const
 	return "ArrowPlatform";
 }
 
+nlohmann::json ArrowPlatform::serialize() const
+{
+	using nlohmann::json;
+
+	json out;
+
+	out["initialTickPosition"]  = Props::fromVector(mInitialTickPosition);
+	out["intendedNextPosition"] = Props::fromVector(mIntendedNextPosition);
+	out["dir"]					= mDir;
+
+	return out;
+}
+
+void ArrowPlatform::deserialize(const nlohmann::json& data)
+{
+	mInitialTickPosition  = Props::toVector<float>(data["initialTickPosition"]);
+	mIntendedNextPosition = Props::toVector<float>(data["intendedNextPosition"]);
+	mDir				  = data["dir"];
+}
+
 void ArrowPlatform::init()
 {
 	// Only needs to be updated before the player.

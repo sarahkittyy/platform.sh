@@ -47,6 +47,8 @@ public:
 	ArrowPlatform* clone();
 
 	const std::string name() const;
+	nlohmann::json serialize() const;
+	void deserialize(const nlohmann::json& data);
 
 	/// Sprite initialization.
 	void init();

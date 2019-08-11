@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <iostream>
-#include "GFX/TiledTilemap.hpp"
+#include "GFX/Tilemap.hpp"
 #include "State/Game.hpp"
 #include "State/State.hpp"
 #include "Util/ImGuiShell.hpp"
@@ -46,7 +46,7 @@ private:
 	void initShell();
 
 	/// The background demo map to run.
-	GFX::TiledTilemap mDemoMap;
+	GFX::Tilemap mDemoMap;
 };
 
 }

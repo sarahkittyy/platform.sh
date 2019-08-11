@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "GFX/TiledTilemap.hpp"
+#include "GFX/Tilemap.hpp"
 #include "Object/Object.hpp"
 #include "ResourceManager.hpp"
 
@@ -45,7 +45,7 @@ private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	/// The main tilemap graphical component.
-	GFX::TiledTilemap mMap;
+	GFX::Tilemap mMap;
 
 	/// The path to the map json file.
 	std::string mMapFile;

@@ -11,7 +11,7 @@
 
 #include "nlohmann/json.hpp"
 
-#include "GFX/TiledTilemap.hpp"
+#include "GFX/Tilemap.hpp"
 #include "ResourceManager.hpp"
 
 #include "Object/Object.hpp"

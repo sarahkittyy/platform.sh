@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <functional>
 #include <iostream>
-#include "GFX/TiledTilemap.hpp"
+#include "GFX/Tilemap.hpp"
 #include "Object/Props.hpp"
 #include "ResourceManager.hpp"
 #include "nlohmann/json.hpp"

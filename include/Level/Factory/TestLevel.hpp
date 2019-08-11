@@ -10,8 +10,6 @@
 namespace Level::Factory
 {
 
-void testLevel(Level* lvl,
-			   sf::RenderWindow* window,
-			   ResourceManager* resource);
+void testLevel(Level* lvl);
 
 }

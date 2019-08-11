@@ -5,6 +5,8 @@ namespace State
 
 void Game::init()
 {
+	mTestLevel.init(&window(), &resource());
+
 	Level::Factory::testLevel(&mTestLevel, &window(), &resource());
 	mTestLevel.start();
 }

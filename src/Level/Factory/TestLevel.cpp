@@ -3,13 +3,10 @@
 namespace Level::Factory
 {
 
-void testLevel(Level* lvl,
-			   sf::RenderWindow* window,
-			   ResourceManager* resource)
+void testLevel(Level* lvl)
 {
 	using Object::Props;
 
-	lvl->init(window, resource);
 	lvl->setDisplayText("deaths: 0");
 	lvl->setTickSpeed(sf::seconds(0.6f));
 

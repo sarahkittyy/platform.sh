@@ -20,6 +20,15 @@ Tilemap* Tilemap::clone()
 	return new Tilemap(initialProps());
 }
 
+nlohmann::json Tilemap::serialize() const
+{
+	return nlohmann::json();
+}
+
+void Tilemap::deserialize(const nlohmann::json& data)
+{
+}
+
 const std::string Tilemap::name() const
 {
 	return "Tilemap";

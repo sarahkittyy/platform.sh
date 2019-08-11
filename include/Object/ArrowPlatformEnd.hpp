@@ -38,6 +38,8 @@ public:
 	ArrowPlatformEnd* clone();
 
 	const std::string name() const;
+	nlohmann::json serialize() const;
+	void deserialize(const nlohmann::json& data);
 
 private:
 	/// The position to place the platform.

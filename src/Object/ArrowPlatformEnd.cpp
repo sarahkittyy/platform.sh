@@ -32,6 +32,17 @@ const std::string ArrowPlatformEnd::name() const
 	return "ArrowPlatformEnd";
 }
 
+/// Object is constant after initialization.
+nlohmann::json ArrowPlatformEnd::serialize() const
+{
+	return nlohmann::json();
+}
+
+void ArrowPlatformEnd::deserialize(const nlohmann::json& data)
+{
+}
+//////////////////
+
 void ArrowPlatformEnd::init()
 {
 	/// Configure this as an ArrowPlatformEnd object.

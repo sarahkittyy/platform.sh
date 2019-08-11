@@ -63,7 +63,10 @@ nlohmann::json Level::serialize()
 	{
 		std::string name  = obj->name();
 		json initialProps = obj->initialProps();
-		objects.push_back({ { "name", name }, { "props", initialProps } });
+		json activeProps  = obj->serialize();
+		objects.push_back({ { "name", name },
+							{ "initialProps", initialProps },
+							{ "activeProps", activeProps } });
 	}
 
 	return lvl;
@@ -80,7 +83,8 @@ void Level::deserialize(const nlohmann::json& data)
 	mTickSpeed = sf::seconds(data["tickSpeed"].get<float>());
 	for (auto& obj : data["objects"])
 	{
-		addObjectGeneric(obj["name"], Object::Props(obj["props"]));
+		Object::Object* newObj = addObjectGeneric(obj["name"], Object::Props(obj["initialProps"]));
+		newObj->deserialize(obj["activeProps"]);
 	}
 }
 

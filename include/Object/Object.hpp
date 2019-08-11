@@ -42,6 +42,11 @@ public:
 	/// The object's name.
 	virtual const std::string name() const = 0;
 
+	/// Serialize the object properties to json
+	virtual nlohmann::json serialize() const = 0;
+	/// Load the object's properties from json data.
+	virtual void deserialize(const nlohmann::json& data) = 0;
+
 	/// Called once all protected resources are loaded (ResourceManager, etc)
 	virtual void init();
 	/// Called once per frame

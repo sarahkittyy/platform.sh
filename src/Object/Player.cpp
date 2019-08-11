@@ -28,6 +28,30 @@ const std::string Player::name() const
 	return "Player";
 }
 
+nlohmann::json Player::serialize() const
+{
+	using nlohmann::json;
+
+	json out;
+
+	out["deathCount"]	  = mDeathCount;
+	out["initialPosition"] = Props::fromVector(mInitialPosition);
+	out["nextPosition"]	= Props::fromVector(mNextPosition);
+	out["queuedPush"]	  = Props::fromVector(mQueuedPush);
+
+	return out;
+}
+
+void Player::deserialize(const nlohmann::json& data)
+{
+	using nlohmann::json;
+
+	mDeathCount		 = data["deathCount"];
+	mInitialPosition = Props::toVector<int>(data["initialPosition"]);
+	mNextPosition	= Props::toVector<int>(data["nextPosition"]);
+	mQueuedPush		 = Props::toVector<int>(data["queuedPush"]);
+}
+
 void Player::init()
 {
 	// The player should always should be updated last, to allow moving platforms to update first.

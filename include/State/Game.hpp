@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <fstream>
 #include <iostream>
 #include "Level/Factory/Levels.hpp"
 #include "Level/Level.hpp"

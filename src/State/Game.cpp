@@ -5,10 +5,7 @@ namespace State
 
 void Game::init()
 {
-	std::ofstream file("leveltest.json");
 	Level::Factory::testLevel(&mTestLevel, &window(), &resource());
-	file << mTestLevel.serialize();
-	file.close();
 	mTestLevel.start();
 }
 

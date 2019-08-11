@@ -63,7 +63,7 @@ nlohmann::json Level::serialize()
 	{
 		std::string name  = obj->name();
 		json initialProps = obj->initialProps();
-		objects.push_back({ { name, initialProps } });
+		objects.push_back({ { "name", name }, { "props", initialProps } });
 	}
 
 	return lvl;
@@ -78,9 +78,9 @@ void Level::deserialize(const nlohmann::json& data)
 	// Load properties.
 	mLevelText.setString(data["text"].get<std::string>());
 	mTickSpeed = sf::seconds(data["tickSpeed"].get<float>());
-	for (auto& [name, props] : data["objects"].items())
+	for (auto& obj : data["objects"])
 	{
-		addObjectGeneric(name, Object::Props(props));
+		addObjectGeneric(obj["name"], Object::Props(obj["props"]));
 	}
 }
 

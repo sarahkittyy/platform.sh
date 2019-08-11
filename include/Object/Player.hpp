@@ -29,6 +29,8 @@ public:
 	Player* create(Props props);
 	Player* clone();
 
+	const std::string name() const;
+
 	/// Sets up the sprite and positioning.
 	void init();
 

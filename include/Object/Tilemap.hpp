@@ -30,6 +30,8 @@ public:
 	Tilemap* create(Props props);
 	Tilemap* clone();
 
+	const std::string name() const;
+
 	/// Initializes the tilemap graphic
 	void init();
 

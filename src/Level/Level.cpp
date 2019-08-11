@@ -49,11 +49,24 @@ void Level::init(sf::RenderWindow* window,
 
 nlohmann::json Level::serialize()
 {
-	nlohmann::json lvl;
+	using nlohmann::json;
+
+	json lvl;
 
 	/// Base level properties.
 	lvl["text"]		 = mLevelText.getString();
 	lvl["tickSpeed"] = mTickSpeed.asSeconds();
+	lvl["objects"]   = json();
+	json& objects	= lvl["objects"];
+
+	for (auto& obj : mObjects)
+	{
+		std::string name  = obj->name();
+		json initialProps = obj->initialProps();
+		objects.push_back({ { name, initialProps } });
+	}
+
+	return lvl;
 }
 
 void Level::deserialize(const nlohmann::json& data)
@@ -61,6 +74,14 @@ void Level::deserialize(const nlohmann::json& data)
 	mObjects.clear();
 	mObjectsPriority.clear();
 	mObjectsZIndex.clear();
+
+	// Load properties.
+	mLevelText.setString(data["text"].get<std::string>());
+	mTickSpeed = sf::seconds(data["tickSpeed"].get<float>());
+	for (auto& [name, props] : data["objects"].items())
+	{
+		addObjectGeneric(name, Object::Props(props));
+	}
 }
 
 Object::Object* Level::addObjectGeneric(Object::Object* object)

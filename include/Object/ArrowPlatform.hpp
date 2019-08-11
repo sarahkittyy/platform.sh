@@ -46,6 +46,8 @@ public:
 	ArrowPlatform* create(Props props);
 	ArrowPlatform* clone();
 
+	const std::string name() const;
+
 	/// Sprite initialization.
 	void init();
 

@@ -27,6 +27,11 @@ ArrowPlatformEnd* ArrowPlatformEnd::clone()
 	return new ArrowPlatformEnd(initialProps());
 }
 
+const std::string ArrowPlatformEnd::name() const
+{
+	return "ArrowPlatformEnd";
+}
+
 void ArrowPlatformEnd::init()
 {
 	/// Configure this as an ArrowPlatformEnd object.

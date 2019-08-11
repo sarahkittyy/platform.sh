@@ -7,7 +7,7 @@ Props::Props()
 {
 }
 
-Props::Props(const nlohmann::json::value_type&& initial)
+Props::Props(const nlohmann::json::value_type& initial)
 	: mProps(initial)
 {
 }

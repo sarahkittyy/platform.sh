@@ -37,6 +37,8 @@ public:
 	ArrowPlatformEnd* create(Props props);
 	ArrowPlatformEnd* clone();
 
+	const std::string name() const;
+
 private:
 	/// The position to place the platform.
 	sf::Vector2f mPosition;

@@ -22,6 +22,11 @@ ArrowPlatform* ArrowPlatform::clone()
 	return new ArrowPlatform(initialProps());
 }
 
+const std::string ArrowPlatform::name() const
+{
+	return "ArrowPlatform";
+}
+
 void ArrowPlatform::init()
 {
 	// Only needs to be updated before the player.

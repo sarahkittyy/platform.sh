@@ -6,6 +6,7 @@ namespace State
 void Game::init()
 {
 	Level::Factory::testLevel(&mTestLevel, &window(), &resource());
+	mTestLevel.serialize();
 	mTestLevel.start();
 }
 

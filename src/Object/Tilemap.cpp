@@ -20,6 +20,11 @@ Tilemap* Tilemap::clone()
 	return new Tilemap(initialProps());
 }
 
+const std::string Tilemap::name() const
+{
+	return "Tilemap";
+}
+
 void Tilemap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(mMap, states);

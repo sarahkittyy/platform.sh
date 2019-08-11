@@ -20,7 +20,7 @@ public:
 	/// Init
 	Props();
 	/// Init with a default value.
-	Props(const nlohmann::json::value_type&& initial);
+	Props(const nlohmann::json::value_type& initial);
 
 	/// Cast to json
 	operator nlohmann::json() const;

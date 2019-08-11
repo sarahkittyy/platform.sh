@@ -23,6 +23,11 @@ Player* Player::clone()
 	return new Player(initialProps());
 }
 
+const std::string Player::name() const
+{
+	return "Player";
+}
+
 void Player::init()
 {
 	// The player should always should be updated last, to allow moving platforms to update first.

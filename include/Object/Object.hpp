@@ -39,6 +39,9 @@ public:
 	/// Clone this object.
 	virtual Object* clone() = 0;
 
+	/// The object's name.
+	virtual const std::string name() const = 0;
+
 	/// Called once all protected resources are loaded (ResourceManager, etc)
 	virtual void init();
 	/// Called once per frame

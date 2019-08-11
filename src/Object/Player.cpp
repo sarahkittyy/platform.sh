@@ -44,8 +44,6 @@ nlohmann::json Player::serialize() const
 
 void Player::deserialize(const nlohmann::json& data)
 {
-	using nlohmann::json;
-
 	mDeathCount		 = data["deathCount"];
 	mInitialPosition = Props::toVector<int>(data["initialPosition"]);
 	mNextPosition	= Props::toVector<int>(data["nextPosition"]);

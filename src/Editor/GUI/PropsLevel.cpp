@@ -14,7 +14,11 @@ void PropsLevel::init()
 
 void PropsLevel::draw()
 {
-	ImGui::Text("Properties");
+	ImGui::Text("Level Text");
+	if (ImGui::InputTextMultiline("###InputText", mLevelText, 100))
+	{
+		props().set({ { "levelText", std::string(mLevelText) } });
+	}
 }
 
 std::string PropsLevel::title() const

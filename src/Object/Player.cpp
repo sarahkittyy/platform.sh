@@ -28,6 +28,11 @@ const std::string Player::name() const
 	return "Player";
 }
 
+const std::string Player::icon() const
+{
+	return "assets/icons/player.png";
+}
+
 nlohmann::json Player::serialize() const
 {
 	using nlohmann::json;

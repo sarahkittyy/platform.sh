@@ -27,6 +27,11 @@ const std::string ArrowPlatform::name() const
 	return "ArrowPlatform";
 }
 
+const std::string ArrowPlatform::icon() const
+{
+	return "assets/icons/arrowplatform.png";
+}
+
 nlohmann::json ArrowPlatform::serialize() const
 {
 	using nlohmann::json;

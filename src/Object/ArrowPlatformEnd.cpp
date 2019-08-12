@@ -32,6 +32,11 @@ const std::string ArrowPlatformEnd::name() const
 	return "ArrowPlatformEnd";
 }
 
+const std::string ArrowPlatformEnd::icon() const
+{
+	return "assets/icons/arrowplatformend.png";
+}
+
 /// Object is constant after initialization.
 nlohmann::json ArrowPlatformEnd::serialize() const
 {

@@ -38,6 +38,7 @@ public:
 	ArrowPlatformEnd* clone();
 
 	const std::string name() const;
+	const std::string icon() const;
 	nlohmann::json serialize() const;
 	void deserialize(const nlohmann::json& data);
 

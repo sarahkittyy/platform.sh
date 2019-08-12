@@ -7,10 +7,15 @@ Game::Game()
 {
 }
 
-Game::Game(Level::Level* level)
+Game::Game(std::shared_ptr<Level::Level> level)
 {
-	mLevel.reset(level);
-	mLevel->start();
+	mLevel = level;
+}
+
+Game::~Game()
+{
+	mLevel->stop();
+	mLevel->reset();
 }
 
 void Game::init()

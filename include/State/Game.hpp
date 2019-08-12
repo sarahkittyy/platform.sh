@@ -2,12 +2,12 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <memory>
 #include "Level/Factory/Levels.hpp"
 #include "Level/Level.hpp"
 #include "Object/Object.hpp"
 #include "ResourceManager.hpp"
 #include "State/State.hpp"
-#include <memory>
 
 namespace State
 {
@@ -22,7 +22,9 @@ public:
 	/// Init the game, and use the test level.
 	Game();
 	/// Init the game with a pre-generated level.
-	Game(Level::Level* level);
+	Game(std::shared_ptr<Level::Level> level);
+	/// Stops the level.
+	~Game();
 
 	void init();
 	void update();

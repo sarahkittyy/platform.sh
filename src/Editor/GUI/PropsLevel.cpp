@@ -3,6 +3,11 @@
 namespace Editor::GUI::State
 {
 
+PropsLevel::PropsLevel(Object::Props initialProps)
+	: State(initialProps)
+{
+}
+
 void PropsLevel::init()
 {
 }

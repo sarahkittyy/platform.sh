@@ -40,7 +40,7 @@ const std::string Tilemap::name() const
 
 const std::string Tilemap::icon() const
 {
-	return "assets/icon/tilemap.png";
+	return "assets/icons/tilemap.png";
 }
 
 void Tilemap::draw(sf::RenderTarget& target, sf::RenderStates states) const

@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <fstream>
+#include <iostream>
 #include "Editor/GUI/State/Machine.hpp"
 #include "Editor/GUI/State/Objects.hpp"
 #include "Editor/GUI/State/PropsLevel.hpp"

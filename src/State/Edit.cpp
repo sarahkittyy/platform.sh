@@ -77,6 +77,25 @@ void Edit::update()
 
 void Edit::on(const sf::Event& event)
 {
+	switch (event.type)
+	{
+	default:
+		break;
+	case sf::Event::MouseWheelScrolled:
+	{
+		int delta = event.mouseWheelScroll.delta;
+		if (delta > 0)
+		{
+			// Zoom in.
+			mLevel->setViewportSize(mLevel->getViewportSize() * 0.8f);
+		}
+		else if (delta < 0)
+		{
+			// Zoom out.
+			mLevel->setViewportSize(mLevel->getViewportSize() * 1.2f);
+		}
+	}
+	}
 }
 
 void Edit::newLevel()

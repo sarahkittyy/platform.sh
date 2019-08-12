@@ -3,8 +3,8 @@
 namespace Editor::GUI::State
 {
 
-Objects::Objects(Object::Props props)
-	: State(props)
+Objects::Objects(Object::Props initialProps)
+	: State(initialProps)
 {
 }
 

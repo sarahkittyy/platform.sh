@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include "GFX/Tilemap.hpp"
+#include "State/Edit.hpp"
 #include "State/Game.hpp"
 #include "State/State.hpp"
 #include "Util/ImGuiShell.hpp"

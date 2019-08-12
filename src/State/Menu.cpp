@@ -135,7 +135,8 @@ void Menu::initShell()
 	});
 
 	mShell.setProgram("edit", [this](auto& args, std::ostream& stdout) {
-		stdout << "coming soon...";
+		stdout << "opening editor...";
+		changeState(new Edit());
 	});
 
 	mShell.setProgram("exit", [this](auto& args, std::ostream& stdout) {

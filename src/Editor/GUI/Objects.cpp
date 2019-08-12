@@ -14,7 +14,7 @@ void Objects::init()
 	for (auto& templateObject : Level::Level::getObjectTemplates())
 	{
 		// Store the icon with the template object
-		ObjectButton out{
+		Objects::ObjectButton out{
 			.sample  = templateObject,
 			.texture = resource().texture(templateObject->icon())
 		};

@@ -4,9 +4,7 @@ namespace Object
 {
 
 Tilemap::Tilemap(Props props)
-	: Object(props),
-	  mMapFile(props.get("/mapFile"_json_pointer)),
-	  mAutotile(props.get("/autotile"_json_pointer))
+	: Object(props)
 {
 }
 
@@ -20,13 +18,19 @@ Tilemap* Tilemap::clone()
 	return new Tilemap(initialProps());
 }
 
+GFX::Tilemap& Tilemap::map()
+{
+	return mMap;
+}
+
 nlohmann::json Tilemap::serialize() const
 {
-	return nlohmann::json();
+	return nlohmann::json({ { "map", mMap.serialize() } });
 }
 
 void Tilemap::deserialize(const nlohmann::json& data)
 {
+	mMap.deserialize(data["map"]);
 }
 
 const std::string Tilemap::name() const
@@ -45,12 +49,10 @@ void Tilemap::init()
 	setPriority(100);
 
 	/// Possibly collideable.
-	props().set({ { "collideable", true } });
+	props().set({ { "collideable", true } }).set({ { "tilemap", true } });
 
 	/// Initialize the map.
 	mMap.init(&resource());
-	mMap.loadFromTiled(mMapFile);
-	mMap.autotile();
 }
 
 bool Tilemap::isSolidAt(sf::Vector2i pos)

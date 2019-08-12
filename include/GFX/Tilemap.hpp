@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
+#include "Object/Props.hpp"
 #include "ResourceManager.hpp"
 #include "nlohmann/json.hpp"
 
@@ -42,6 +43,10 @@ public:
 	void load(sf::Vector2i mapSize,
 			  sf::Vector2i tileSize,
 			  std::string image);
+
+	/// Serialization and deserialization methods
+	nlohmann::json serialize() const;
+	void deserialize(const nlohmann::json& data);
 
 	/**
 	 * @brief If the map tilemap image is configured
@@ -118,6 +123,8 @@ private:
 	sf::VertexArray mVertices;
 	/// Pointer to the tilemap texture.
 	sf::Texture* mTexture;
+	/// The path to the texture image.
+	std::string mTextureImage;
 	/// The tiled json data loaded.
 	nlohmann::json mData;
 

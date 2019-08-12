@@ -22,13 +22,13 @@ public:
 	 * 	- mapFile: string => Path to the map json file.
 	 * 	- autotile: boolean => Whether or not to autotile the map.
 	 */
-	Tilemap(Props props =
-				Props()
-					.set({ { "mapFile", "assets/maps/test_map.json" } })
-					.set({ { "autotile", false } }));
+	Tilemap(Props props = Props());
 
 	Tilemap* create(Props props);
 	Tilemap* clone();
+
+	/// Returns the internal map.
+	GFX::Tilemap& map();
 
 	const std::string name() const;
 	nlohmann::json serialize() const;
@@ -46,11 +46,6 @@ private:
 
 	/// The main tilemap graphical component.
 	GFX::Tilemap mMap;
-
-	/// The path to the map json file.
-	std::string mMapFile;
-	/// Whether or not to autotile the map.
-	bool mAutotile;
 };
 
 }

@@ -31,10 +31,11 @@ void Tilemap::loadFromTiled(std::string json_file)
 	fs::path mapFolder(json_file);
 	mapFolder = mapFolder.parent_path();
 
-	mTiles	= mData["layers"][0]["data"].get<std::vector<int>>();
-	mMapSize  = { mData["width"].get<int>(), mData["height"].get<int>() };
-	mTexture  = mResource->texture(mapFolder / mData["tilesets"][0]["image"].get<std::string>());
-	mTileSize = { mData["tilewidth"].get<int>(), mData["tileheight"].get<int>() };
+	mTiles		  = mData["layers"][0]["data"].get<std::vector<int>>();
+	mMapSize	  = { mData["width"].get<int>(), mData["height"].get<int>() };
+	mTextureImage = (mapFolder / mData["tilesets"][0]["image"].get<std::string>()).string();
+	mTexture	  = mResource->texture(mTextureImage);
+	mTileSize	 = { mData["tilewidth"].get<int>(), mData["tileheight"].get<int>() };
 
 	reloadVertices();
 }
@@ -44,9 +45,41 @@ void Tilemap::load(sf::Vector2i mapSize,
 				   std::string image)
 {
 	mTiles.resize(mapSize.x * mapSize.y);
-	mMapSize  = mapSize;
-	mTileSize = tileSize;
-	mTexture  = mResource->texture(image);
+	mMapSize	  = mapSize;
+	mTileSize	 = tileSize;
+	mTextureImage = image;
+	mTexture	  = mResource->texture(image);
+
+	reloadVertices();
+}
+
+nlohmann::json Tilemap::serialize() const
+{
+	using nlohmann::json;
+	using Object::Props;
+
+	json out;
+
+	out["tiles"]		  = mTiles;
+	out["textureImage"]   = mTextureImage;
+	out["data"]			  = mData;
+	out["mapSize"]		  = Props::fromVector(mMapSize);
+	out["tileSize"]		  = Props::fromVector(mTileSize);
+	out["textureMapSize"] = Props::fromVector(mTextureMapSize);
+
+	return out;
+}
+
+void Tilemap::deserialize(const nlohmann::json& data)
+{
+	using Object::Props;
+
+	mTiles			= data["tiles"].get<std::vector<int>>();
+	mTextureImage   = data["textureImage"];
+	mData			= data["data"];
+	mMapSize		= Props::toVector<int>(data["mapSize"]);
+	mTileSize		= Props::toVector<int>(data["mapSize"]);
+	mTextureMapSize = Props::toVector<int>(data["textureMapSize"]);
 
 	reloadVertices();
 }

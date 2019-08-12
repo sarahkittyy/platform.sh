@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "Editor/GUI/State/Machine.hpp"
 #include "Editor/GUI/State/Props.hpp"
+#include "Level/Level.hpp"
 #include "State/Menu.hpp"
 #include "State/State.hpp"
 #include "imgui/imgui-SFML.h"
@@ -31,6 +32,12 @@ public:
 private:
 	/// Editor background music.
 	sf::Music* mBGMusic;
+
+	/// The main level used to edit.
+	std::shared_ptr<Level::Level> mLevel;
+	//! Level-related functions
+	/// Reset the level to empty.
+	void newLevel();
 
 	/// Draws all static, base GUI.
 	void drawBaseGUI();

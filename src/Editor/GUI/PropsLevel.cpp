@@ -6,6 +6,7 @@ namespace Editor::GUI::State
 PropsLevel::PropsLevel(Level::Level* level)
 	: mLevel(level)
 {
+	std::fill(mLevelText, mLevelText + 100, (char)0);
 }
 
 void PropsLevel::init()
@@ -22,10 +23,13 @@ void PropsLevel::draw()
 								ImGuiInputTextFlags_CtrlEnterForNewLine;
 
 	std::string levelText = mLevel->getDisplayText();
-	levelText.reserve(100);
-	if (ImGui::InputTextMultiline("###InputText", levelText.data(), 100, ImVec2(150, 50), flags))
+	std::fill(mLevelText, mLevelText + 100, (char)0);
+	std::strcpy(mLevelText, levelText.c_str());
+	if (ImGui::InputTextMultiline("###InputText",
+								  mLevelText, 100,
+								  ImVec2(150, 50), flags))
 	{
-		mLevel->setDisplayText(levelText);
+		mLevel->setDisplayText(mLevelText);
 	}
 
 	/// Tickrate setting.

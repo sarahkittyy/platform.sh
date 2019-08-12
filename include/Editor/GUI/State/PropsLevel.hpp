@@ -25,7 +25,8 @@ private:
 	Level::Level* mLevel;
 
 	//* Storage
-	float mTickrate;   /// Level tickrate.
+	char mLevelText[100];   /// Level text.
+	float mTickrate;		/// Level tickrate.
 
 	//* ------
 };

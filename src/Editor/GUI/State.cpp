@@ -4,6 +4,7 @@ namespace Editor::GUI::State
 {
 
 State::State(Object::Props initialProps)
+	: mProps(initialProps)
 {
 }
 

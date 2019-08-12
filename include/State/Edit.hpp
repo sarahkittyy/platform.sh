@@ -74,6 +74,11 @@ private:
 
 	/// Draw a panel to the screen.
 	void drawPanel(Panel& panel);
+
+	//! Camera panning.
+	sf::Vector2i mMouseStart;
+	sf::Vector2i mLevelStart;
+	bool mPanning;
 };
 
 }

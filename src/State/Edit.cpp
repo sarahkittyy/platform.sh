@@ -24,7 +24,11 @@ void Edit::init()
 	mBGMusic->setLoop(true);
 	mBGMusic->play();
 
-	/// Reset the level, if it's not already set.
+	// Camera control init.
+	mPanning	= false;
+	mMouseStart = { 0, 0 };
+
+	// Reset the level, if it's not already set.
 	if (!mLevel)
 		newLevel();
 
@@ -42,6 +46,23 @@ void Edit::update()
 	drawPanel(mProperties);
 	drawPanel(mObjects);
 
+	// Update mouse panning
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) &&
+		!(ImGui::IsMouseHoveringAnyWindow() && mPanning))
+	{
+		sf::Vector2i mousePos = sf::Mouse::getPosition(window());
+		if (!mPanning)
+		{
+			mPanning	= true;
+			mMouseStart = mousePos;
+			mLevelStart = (sf::Vector2i)mLevel->getCameraPosition();
+		}
+		mLevel->setCameraPosition(sf::Vector2f(mMouseStart - mousePos + mLevelStart));
+	}
+	else
+	{
+		mPanning = false;
+	}
 	// Draw sfml.
 	window().clear(sf::Color::Black);
 
@@ -67,6 +88,7 @@ void Edit::newLevel()
 	}
 	mLevel.reset(new Level::Level());
 	mLevel->init(&window(), &resource());
+	mLevel->addObject("Player", Object::Props().set({ { "startPos", Object::Props::fromVector(sf::Vector2f(0.f, 0.f)) } }));
 	mBGMusic->play();
 }
 

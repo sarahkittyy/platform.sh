@@ -45,6 +45,20 @@ public:
 	void deserialize(const nlohmann::json& data);
 
 	/**
+	 * @brief Add an object based on the name of the object, and the properties.
+	 * 
+	 * @tparam Obj The type of object to create.
+	 * @param name The name of the object.
+	 * @param props The object properties.
+	 * @return Obj* The object itself.
+	 */
+	template <typename Obj = Object::Object>
+	Obj* addObject(std::string name, Object::Props props)
+	{
+		return dynamic_cast<Obj*>(addObjectGeneric(name, props));
+	}
+
+	/**
 	 * @brief Link an object to the level. Also initializes the object.
 	 * 
 	 * @param object The object itself (new-allocated, i.e. new Object())
@@ -55,20 +69,6 @@ public:
 	Obj* addObject(Obj* object)
 	{
 		return dynamic_cast<Obj*>(addObjectGeneric(object));
-	}
-
-	/**
-	 * @brief Add an object based on the name of the object, and the properties.
-	 * 
-	 * @tparam Obj The type of object to create.
-	 * @param name The name of the object.
-	 * @param props The object properties.
-	 * @return Obj* The object itself.
-	 */
-	template <typename Obj>
-	Obj* addObject(std::string name, Object::Props props)
-	{
-		return dynamic_cast<Obj*>(addObjectGeneric(name, props));
 	}
 
 	/**

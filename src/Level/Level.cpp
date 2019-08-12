@@ -20,6 +20,7 @@ Level::Level()
 	  mRunning(false)
 {
 	mClock.restart();
+	mViewport.setCenter(0.f, 0.f);
 }
 
 void Level::init(sf::RenderWindow* window,

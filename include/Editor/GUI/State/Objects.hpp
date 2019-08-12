@@ -22,6 +22,9 @@ public:
 private:
 	/// The level this gui panel edits.
 	Level::Level* mLevel;
+
+	/// Object names mapped to their icon textures.
+	std::unordered_map<std::string, sf::Texture*> mObjects;
 };
 
 }

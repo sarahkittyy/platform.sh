@@ -3,12 +3,25 @@
 namespace State
 {
 
+Game::Game()
+{
+}
+
+Game::Game(Level::Level* level)
+{
+	mLevel.reset(level);
+	mLevel->start();
+}
+
 void Game::init()
 {
-	mTestLevel.init(&window(), &resource());
+	// Use the test level if no level is specified.
+	if (!mLevel)
+	{
+		Level::Factory::testLevel(mLevel.get());
+	}
 
-	Level::Factory::testLevel(&mTestLevel);
-	mTestLevel.start();
+	mLevel->start();
 }
 
 void Game::on(const sf::Event& event)
@@ -18,17 +31,17 @@ void Game::on(const sf::Event& event)
 	default:
 		break;
 	case sf::Event::Resized:
-		mTestLevel.emit("windowResized", { { "x", event.size.width }, { "y", event.size.height } });
+		mLevel->emit("windowResized", { { "x", event.size.width }, { "y", event.size.height } });
 		break;
 	}
 }
 
 void Game::update()
 {
-	mTestLevel.update();
+	mLevel->update();
 
 	window().clear(sf::Color::Black);
-	window().draw(mTestLevel);
+	window().draw(*mLevel);
 
 	window().display();
 }

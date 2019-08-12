@@ -118,7 +118,7 @@ void Edit::newLevel()
 	}
 	mLevel.reset(new Level::Level());
 	mLevel->init(&window(), &resource());
-	mLevel->addObject("Player", Object::Props().set({ { "startPos", Object::Props::fromVector(sf::Vector2f(0.f, 0.f)) } }));
+	////mLevel->addObject("Player", Object::Props().set({ { "startPos", Object::Props::fromVector(sf::Vector2f(0.f, 0.f)) } }));
 	mBGMusic->play();
 }
 

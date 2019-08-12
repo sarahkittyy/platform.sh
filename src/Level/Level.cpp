@@ -169,6 +169,11 @@ std::vector<Level::ObjectPtr> Level::queryObjects(std::function<bool(const Objec
 	return ret;
 }
 
+const std::vector<Level::ObjectPtr>& Level::getObjectTemplates()
+{
+	return mObjectTemplates;
+}
+
 bool Level::isCollisionAt(sf::Vector2i pos)
 {
 	// Check all objects with the "collideable" prop.

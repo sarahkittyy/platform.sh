@@ -30,6 +30,7 @@ void Objects::draw()
 	{
 		if (ImGui::ImageButton(*button.texture, sf::Vector2f(32, 32)))
 		{
+			//TODO: Begin placing the object.
 		}
 		// Hover tooltip
 		if (ImGui::IsItemHovered())

@@ -47,11 +47,24 @@ void Tilemap::load(sf::Vector2i mapSize,
 	mMapSize  = mapSize;
 	mTileSize = tileSize;
 	mTexture  = mResource->texture(image);
+
+	reloadVertices();
 }
 
 void Tilemap::autotile()
 {
 	reloadVertices(true);
+}
+
+void Tilemap::setTile(int x, int y, int id)
+{
+	int pos = x + y * mMapSize.x;
+	if (pos < mTiles.size())
+	{
+		mTiles[pos] = id;
+		// Update the vertices too.
+		setQuad(pos, id);
+	}
 }
 
 int Tilemap::getTile(int x, int y) const
@@ -108,10 +121,11 @@ unsigned char Tilemap::getNeighborBitmask(int index)
 void Tilemap::reloadVertices(bool autotile)
 {
 	mVertices.clear();
+	mVertices.resize(mMapSize.x * mMapSize.y * 4);
 
 	// Get the texture tilemap dimensions.
-	sf::Vector2i tMapDim(mTexture->getSize().x / mTileSize.x,
-						 mTexture->getSize().y / mTileSize.y);
+	mTextureMapSize = sf::Vector2i(mTexture->getSize().x / mTileSize.x,
+								   mTexture->getSize().y / mTileSize.y);
 
 	// Iter through all tiles
 	int index = -1;   //< index++ is run first in the loop, so this is -1 to start.
@@ -119,54 +133,67 @@ void Tilemap::reloadVertices(bool autotile)
 	{
 		index++;
 
-		// Skip if the tile_id is 0 (empty)
-		if (tile_id == 0)
-		{
-			continue;
-		}
-		// Otherwise, get the texture id.
-		int id = tile_id - 1;
-		// Get the x and y position.
-		int x = (index % mMapSize.x) * mTileSize.x;
-		int y = (index / mMapSize.y) * mTileSize.y;
-
-		// Get the tile's vertex positions on-screen.
-		sf::Vector2i position[4] = {
-			{ x, y },
-			{ x + mTileSize.x, y },
-			{ x + mTileSize.x, y + mTileSize.y },
-			{ x, y + mTileSize.y }
-		};
-
-		// Get the texture index to use..
-		int tex_index = autotile ? getNeighborBitmask(index) : id;
-		// Get the texture x and y
-		int tx, ty;
-		tx = (tex_index % tMapDim.x) * mTileSize.x;
-		ty = (tex_index / tMapDim.x) * mTileSize.y;
-
-		// Get the texture coords.
-		sf::Vector2i texture[4] = {
-			{ tx, ty },
-			{ tx + mTileSize.x, ty },
-			{ tx + mTileSize.x, ty + mTileSize.y },
-			{ tx, ty + mTileSize.y }
-		};
-
-		// Create the four vertices.
-		mVertices.append(sf::Vertex(
-			sf::Vector2f(position[0]),
-			sf::Vector2f(texture[0])));
-		mVertices.append(sf::Vertex(
-			sf::Vector2f(position[1]),
-			sf::Vector2f(texture[1])));
-		mVertices.append(sf::Vertex(
-			sf::Vector2f(position[2]),
-			sf::Vector2f(texture[2])));
-		mVertices.append(sf::Vertex(
-			sf::Vector2f(position[3]),
-			sf::Vector2f(texture[3])));
+		setQuad(index, tile_id, autotile);
 	}
+}
+
+void Tilemap::setQuad(int pos, int id, bool autotile)
+{
+	// Move the position to vertexarray position
+	int arr_pos = pos * 4;
+
+	// Clear vertices for air.
+	if (id == 0)
+	{
+		for (int i = 0; i < 4; ++i)
+		{
+			mVertices[arr_pos + i] = sf::Vertex(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
+		}
+		return;
+	}
+	// Otherwise, convert to real texture position.
+	id--;
+
+	// Get the x and y position.
+	int x = (pos % mMapSize.x) * mTileSize.x;
+	int y = (pos / mMapSize.y) * mTileSize.y;
+
+	// Get the tile's vertex positions on-screen.
+	sf::Vector2i position[4] = {
+		{ x, y },
+		{ x + mTileSize.x, y },
+		{ x + mTileSize.x, y + mTileSize.y },
+		{ x, y + mTileSize.y }
+	};
+
+	// Get the texture index to use..
+	int tex_index = autotile ? getNeighborBitmask(pos) : id;
+	// Get the texture x and y
+	int tx, ty;
+	tx = (tex_index % mTextureMapSize.x) * mTileSize.x;
+	ty = (tex_index / mTextureMapSize.x) * mTileSize.y;
+
+	// Get the texture coords.
+	sf::Vector2i texture[4] = {
+		{ tx, ty },
+		{ tx + mTileSize.x, ty },
+		{ tx + mTileSize.x, ty + mTileSize.y },
+		{ tx, ty + mTileSize.y }
+	};
+
+	// Set the four vertices.
+	mVertices[arr_pos + 0] = (sf::Vertex(
+		sf::Vector2f(position[0]),
+		sf::Vector2f(texture[0])));
+	mVertices[arr_pos + 1] = (sf::Vertex(
+		sf::Vector2f(position[1]),
+		sf::Vector2f(texture[1])));
+	mVertices[arr_pos + 2] = (sf::Vertex(
+		sf::Vector2f(position[2]),
+		sf::Vector2f(texture[2])));
+	mVertices[arr_pos + 3] = (sf::Vertex(
+		sf::Vector2f(position[3]),
+		sf::Vector2f(texture[3])));
 }
 
 void Tilemap::draw(sf::RenderTarget& target, sf::RenderStates states) const

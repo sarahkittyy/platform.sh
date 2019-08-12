@@ -61,6 +61,15 @@ public:
 	void autotile();
 
 	/**
+	 * @brief Update a specific tilemap tile.
+	 * 
+	 * @param x The x position of the tile.
+	 * @param y The y position of the tile.
+	 * @param id The tile ID.
+	 */
+	void setTile(int x, int y, int id);
+
+	/**
 	 * @brief Get the tile ID at a given position.
 	 * 
 	 * @param x The x position.
@@ -88,6 +97,15 @@ private:
 	void reloadVertices(bool autotile = false);
 
 	/**
+	 * @brief Update a specific vertexarray quad to a new texture/tile id.
+	 * 
+	 * @param pos The vertexarray position.
+	 * @param id The tile id.
+	 * @param autotile Whether or not to autotile this tile.
+	 */
+	void setQuad(int pos, int id, bool autotile = false);
+
+	/**
 	 * @brief Get the bitmask sum of all non-zero neighbors surrounding a tile.
 	 * @see loadVertices
 	 * 
@@ -109,6 +127,8 @@ private:
 	sf::Vector2i mMapSize;
 	/// The tile size.
 	sf::Vector2i mTileSize;
+	/// The size of the texture, in tiles.
+	sf::Vector2i mTextureMapSize;
 };
 
 }

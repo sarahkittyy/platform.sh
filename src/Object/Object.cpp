@@ -26,7 +26,7 @@ const std::string Object::icon() const
 
 const std::string Object::desc() const
 {
-	return "Undefined Object";
+	return "No description.";
 }
 
 void Object::init()

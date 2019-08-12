@@ -21,7 +21,7 @@ void testLevel(Level* lvl)
 			{ "startPos", Object::Props::fromVector<float>(14.f, 1.f) }
 		})
 	);
-	lvl->addObject(new Object::Tilemap(Props()));
+	Object::Tilemap* tmap = lvl->addObject(new Object::Tilemap(Props()));
 	lvl->addObject(new Object::ArrowPlatform(Props()
 		.set({
 			{"pos", Props::fromVector<float>(11.f, 4.f)},
@@ -41,6 +41,9 @@ void testLevel(Level* lvl)
 		})
 	));
 	// clang-format on
+
+	tmap->map().loadFromTiled("assets/maps/test_map.json");
+	tmap->map().autotile();
 }
 
 }

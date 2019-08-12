@@ -48,7 +48,9 @@ void Tilemap::init()
 	props().set({ { "collideable", true } });
 
 	/// Initialize the map.
-	mMap.loadFromTiled(&resource(), mMapFile, mAutotile);
+	mMap.init(&resource());
+	mMap.loadFromTiled(mMapFile);
+	mMap.autotile();
 }
 
 bool Tilemap::isSolidAt(sf::Vector2i pos)

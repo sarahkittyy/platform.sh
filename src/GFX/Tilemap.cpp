@@ -8,9 +8,12 @@ Tilemap::Tilemap()
 	mVertices.setPrimitiveType(sf::Quads);
 }
 
-void Tilemap::loadFromTiled(ResourceManager* resource,
-							std::string json_file,
-							bool autotile)
+void Tilemap::init(ResourceManager* resource)
+{
+	mResource = resource;
+}
+
+void Tilemap::loadFromTiled(std::string json_file)
 {
 	namespace fs = std::filesystem;
 
@@ -30,10 +33,25 @@ void Tilemap::loadFromTiled(ResourceManager* resource,
 
 	mTiles	= mData["layers"][0]["data"].get<std::vector<int>>();
 	mMapSize  = { mData["width"].get<int>(), mData["height"].get<int>() };
-	mTexture  = resource->texture(mapFolder / mData["tilesets"][0]["image"].get<std::string>());
+	mTexture  = mResource->texture(mapFolder / mData["tilesets"][0]["image"].get<std::string>());
 	mTileSize = { mData["tilewidth"].get<int>(), mData["tileheight"].get<int>() };
 
-	loadVertices(autotile);
+	reloadVertices();
+}
+
+void Tilemap::load(sf::Vector2i mapSize,
+				   sf::Vector2i tileSize,
+				   std::string image)
+{
+	mTiles.resize(mapSize.x * mapSize.y);
+	mMapSize  = mapSize;
+	mTileSize = tileSize;
+	mTexture  = mResource->texture(image);
+}
+
+void Tilemap::autotile()
+{
+	reloadVertices(true);
 }
 
 int Tilemap::getTile(int x, int y) const
@@ -55,11 +73,6 @@ sf::Vector2i Tilemap::getMapSize() const
 sf::Vector2i Tilemap::getTileSize() const
 {
 	return mTileSize;
-}
-
-const nlohmann::json& Tilemap::getRawMapData() const
-{
-	return mData;
 }
 
 unsigned char Tilemap::getNeighborBitmask(int index)
@@ -92,7 +105,7 @@ unsigned char Tilemap::getNeighborBitmask(int index)
 	return sum;
 }
 
-void Tilemap::loadVertices(bool autotile)
+void Tilemap::reloadVertices(bool autotile)
 {
 	mVertices.clear();
 

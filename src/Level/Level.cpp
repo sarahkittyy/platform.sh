@@ -15,7 +15,8 @@ const sf::Vector2i Level::TILESIZE(32, 32);
 const sf::Vector2i Level::GRIDSIZE(50, 50);
 
 Level::Level()
-	: mTickSpeed(sf::seconds(0.4f)),
+	: mBGMusic(nullptr),
+	  mTickSpeed(sf::seconds(0.4f)),
 	  mRunning(false)
 {
 	mClock.restart();
@@ -58,7 +59,7 @@ nlohmann::json Level::serialize()
 	/// Base level properties.
 	lvl["text"]		 = mLevelText.getString();
 	lvl["tickSpeed"] = mTickSpeed.asSeconds();
-	lvl["objects"]   = json();
+	lvl["objects"]   = json::array();
 	json& objects	= lvl["objects"];
 
 	for (auto& obj : mObjects)
@@ -83,7 +84,7 @@ void Level::deserialize(const nlohmann::json& data)
 	// Load properties.
 	mLevelText.setString(data["text"].get<std::string>());
 	mTickSpeed = sf::seconds(data["tickSpeed"].get<float>());
-	for (auto& obj : data["objects"])
+	for (auto& obj : data["objects"].get<nlohmann::json::array_t>())
 	{
 		Object::Object* newObj = addObjectGeneric(obj["name"], Object::Props(obj["initialProps"]));
 		newObj->deserialize(obj["activeProps"]);
@@ -301,7 +302,7 @@ void Level::update()
 void Level::setMusic(std::string path)
 {
 	// Stop the music if necessary.
-	if (mBGMusic != nullptr)
+	if (mBGMusic)
 	{
 		mBGMusic->stop();
 	}

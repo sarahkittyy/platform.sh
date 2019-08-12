@@ -25,6 +25,8 @@ void Game::init()
 	// Use the test level if no level is specified.
 	if (!mLevel)
 	{
+		mLevel.reset(new Level::Level());
+		mLevel->init(&window(), &resource());
 		Level::Factory::testLevel(mLevel.get());
 	}
 

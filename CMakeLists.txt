@@ -29,5 +29,9 @@ file(GLOB_RECURSE sources "src/*.cpp")
 add_executable(platform.sh ${sources})
 target_compile_options(platform.sh PUBLIC -Wall)
 target_link_directories(platform.sh PUBLIC ${NFD_PATH})
-target_include_directories(platform.sh PUBLIC "include/" "lib/nlohmann" "lib/imgui")
+target_include_directories(platform.sh PUBLIC 
+	"include/" 
+	"lib/nlohmann" 
+	"lib/imgui" 
+	"lib/nativefiledialog/src/include")
 target_link_libraries(platform.sh ${SFML_LIB} stdc++fs imgui nfd)

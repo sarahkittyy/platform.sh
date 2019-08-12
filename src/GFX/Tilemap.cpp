@@ -8,9 +8,9 @@ Tilemap::Tilemap()
 	mVertices.setPrimitiveType(sf::Quads);
 }
 
-void Tilemap::load(ResourceManager* resource,
-				   std::string json_file,
-				   bool autotile)
+void Tilemap::loadFromTiled(ResourceManager* resource,
+							std::string json_file,
+							bool autotile)
 {
 	namespace fs = std::filesystem;
 

@@ -29,7 +29,7 @@ public:
 	 * @param file The json map file
 	 * @param autotile If true, all tiles will be considered equal, and the texture will be assumed to be able to handle autotiling. The map will then be autotiled.
 	 */
-	void load(ResourceManager* resource, std::string file, bool autotile = false);
+	void loadFromTiled(ResourceManager* resource, std::string file, bool autotile = false);
 
 	/**
 	 * @brief Get the tile ID at a given position.

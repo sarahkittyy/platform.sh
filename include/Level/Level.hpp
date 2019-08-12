@@ -115,10 +115,12 @@ public:
 
 	/// Set the game update tick speed.
 	void setTickSpeed(sf::Time speed);
+	sf::Time getTickSpeed();
 	/// Sets the level text font. Defaults to starmap.ttf
 	void setFont(std::string path);
 	/// Set the text to display on the top-right of the screen.
 	void setDisplayText(std::string text);
+	std::string getDisplayText();
 
 	/// Start the level updating.
 	void start();

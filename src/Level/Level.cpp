@@ -228,6 +228,11 @@ void Level::setTickSpeed(sf::Time speed)
 	mTickSpeed = speed;
 }
 
+sf::Time Level::getTickSpeed()
+{
+	return mTickSpeed;
+}
+
 void Level::setFont(std::string path)
 {
 	mFont = mResource->font(path);
@@ -243,6 +248,11 @@ void Level::setDisplayText(std::string text)
 	// Update text positioning.
 	mLevelText.setOrigin(mLevelText.getLocalBounds().width, 0);
 	mLevelText.setPosition(mWindow->getSize().x - PADDING, PADDING);
+}
+
+std::string Level::getDisplayText()
+{
+	return mLevelText.getString();
 }
 
 void Level::start()

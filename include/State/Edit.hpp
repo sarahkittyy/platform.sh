@@ -51,6 +51,8 @@ private:
 
 	/// Draws all static, base GUI.
 	void drawBaseGUI();
+	/// Reads and updates content from panels to the editor.
+	void updateFromPanels();
 
 	/// A panel, with a gui state machine and a visibility flag.
 	struct _Panel
@@ -59,6 +61,7 @@ private:
 		std::string name;
 		bool visible;
 	};
+	// For convenience.
 	typedef std::shared_ptr<_Panel> Panel;
 
 	/// Create and initialize a panel.

@@ -19,9 +19,6 @@ Edit::~Edit()
 
 void Edit::init()
 {
-	mProperties = createPanel(new Editor::GUI::State::PropsLevel(), "Properties");
-	mObjects	= createPanel(new Editor::GUI::State::Objects(), "Objects");
-
 	mBGMusic = resource().music("assets/music/bg.flac");
 	mBGMusic->setVolume(75);
 	mBGMusic->setLoop(true);
@@ -30,6 +27,17 @@ void Edit::init()
 	/// Reset the level, if it's not already set.
 	if (!mLevel)
 		newLevel();
+
+	//* Create panels
+	// clang-format off
+	mProperties = createPanel(new Editor::GUI::State::PropsLevel(
+		Object::Props().set({
+			{"levelText", mLevel->getDisplayText()},
+			{"tickrate", mLevel->getTickSpeed().asSeconds()}
+		})), 
+		"Properties");
+	// clang-format on
+	mObjects = createPanel(new Editor::GUI::State::Objects(), "Objects");
 }
 
 void Edit::update()
@@ -38,6 +46,9 @@ void Edit::update()
 	drawBaseGUI();
 	drawPanel(mProperties);
 	drawPanel(mObjects);
+
+	// Update content from panels
+	updateFromPanels();
 
 	// Draw sfml.
 	window().clear(sf::Color::Black);
@@ -49,6 +60,12 @@ void Edit::update()
 	ImGui::SFML::Render(window());
 	// Finish drawing.
 	window().display();
+}
+
+void Edit::updateFromPanels()
+{
+	mLevel->setDisplayText(mProperties->machine.getProps().get("/levelText"_json_pointer));
+	mLevel->setTickSpeed(sf::seconds(mProperties->machine.getProps().get("/tickrate"_json_pointer)));
 }
 
 void Edit::on(const sf::Event& event)
@@ -170,7 +187,8 @@ void Edit::drawPanel(Edit::Panel& panel)
 
 Edit::Panel Edit::createPanel(Editor::GUI::State::State* initialState, std::string name)
 {
-	Panel ret(new _Panel());
+	Panel ret;
+	ret.reset(new Edit::_Panel());
 	ret->machine.init(initialState, &window(), &resource());
 	ret->visible = true;
 	ret->name	= name;

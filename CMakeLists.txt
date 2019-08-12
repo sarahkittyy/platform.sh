@@ -16,6 +16,9 @@ endif()
 # compile ImGui
 add_subdirectory("lib/imgui/imgui")
 
+# compile pfd
+add_subdirectory("lib/pfd/pfd")
+
 # get sources
 file(GLOB_RECURSE sources "src/*.cpp")
 
@@ -25,5 +28,6 @@ target_compile_options(platform.sh PUBLIC -Wall)
 target_include_directories(platform.sh PUBLIC 
 	"include/" 
 	"lib/nlohmann" 
-	"lib/imgui")
-target_link_libraries(platform.sh ${SFML_LIB} stdc++fs imgui)
+	"lib/imgui"
+	"lib/pfd")
+target_link_libraries(platform.sh ${SFML_LIB} stdc++fs imgui portable_file_dialogs)

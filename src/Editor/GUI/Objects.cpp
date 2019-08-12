@@ -3,12 +3,17 @@
 namespace Editor::GUI::State
 {
 
-Objects::Objects()
+Objects::Objects(Level::Level* level)
+	: mLevel(level)
 {
 }
 
 void Objects::init()
 {
+	// Iterate over all template objects
+	for (auto& templateObject : Level::Level::getObjectTemplates())
+	{
+	}
 }
 
 void Objects::draw()

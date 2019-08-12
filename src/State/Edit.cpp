@@ -3,6 +3,16 @@
 namespace State
 {
 
+Edit::Edit()
+{
+	mPropertiesPanelVisible = true;
+}
+
+Edit::~Edit()
+{
+	mBGMusic->stop();
+}
+
 void Edit::init()
 {
 	mPropertiesPanel.init(new Editor::GUI::State::Props(), &window(), &resource());
@@ -17,6 +27,7 @@ void Edit::update()
 {
 	// Draw GUI.
 	drawPropertiesPanel();
+	drawBaseGUI();
 
 
 	// Draw sfml.
@@ -33,11 +44,39 @@ void Edit::on(const sf::Event& event)
 {
 }
 
+void Edit::drawBaseGUI()
+{
+	//! Main menu bar
+	ImGui::PushStyleColor(ImGuiCol_MenuBarBg, ImVec4(0.3, 0.3, 0.6, 0.8));
+	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.5, 0.5, 1, 1));
+	ImGui::BeginMainMenuBar();
+
+	if (ImGui::BeginMenu("Editor"))
+	{
+		if (ImGui::MenuItem("Exit"))
+		{
+			changeState(new Menu());
+		}
+		ImGui::EndMenu();
+	}
+	if (ImGui::BeginMenu("View"))
+	{
+		ImGui::MenuItem("Properties", nullptr, &mPropertiesPanelVisible);
+		ImGui::EndMenu();
+	}
+
+	ImGui::EndMainMenuBar();
+	ImGui::PopStyleColor(2);
+}
+
 void Edit::drawPropertiesPanel()
 {
-	ImGui::Begin(mPropertiesPanel.title("Properties").c_str(), nullptr);
-	mPropertiesPanel.draw();
-	ImGui::End();
+	if (mPropertiesPanelVisible)
+	{
+		ImGui::Begin(mPropertiesPanel.title("Properties").c_str(), &mPropertiesPanelVisible);
+		mPropertiesPanel.draw();
+		ImGui::End();
+	}
 }
 
 }

@@ -6,6 +6,7 @@ namespace Editor::GUI::State
 PropsLevel::PropsLevel(Object::Props initialProps)
 	: State(initialProps)
 {
+	std::fill(mLevelText, mLevelText + 100, '\0');
 }
 
 void PropsLevel::init()

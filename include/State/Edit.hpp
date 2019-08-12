@@ -1,6 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "Editor/GUI/State/Machine.hpp"
+#include "Editor/GUI/State/Props.hpp"
 #include "State/State.hpp"
 #include "imgui/imgui-SFML.h"
 #include "imgui/imgui.h"
@@ -26,6 +28,8 @@ private:
 
 	/// The left-hand properties panel.
 	void drawPropertiesPanel();
+	/// The state machine for the properties panel.
+	Editor::GUI::State::Machine mPropertiesPanel;
 };
 
 }

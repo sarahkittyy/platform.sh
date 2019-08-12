@@ -4,10 +4,12 @@ namespace State
 {
 
 Game::Game()
+	: mFromEditor(false)
 {
 }
 
-Game::Game(std::shared_ptr<Level::Level> level)
+Game::Game(std::shared_ptr<Level::Level> level, bool fromEditor)
+	: mFromEditor(fromEditor)
 {
 	mLevel = level;
 }
@@ -43,12 +45,30 @@ void Game::on(const sf::Event& event)
 
 void Game::update()
 {
+	// Editor-redirect specific functionality.
+	if (mFromEditor)
+	{
+		// Main function to implement editor functionality.
+		fromEditor();
+	}
 	mLevel->update();
 
 	window().clear(sf::Color::Black);
 	window().draw(*mLevel);
 
 	window().display();
+}
+
+void Game::fromEditor()
+{
+	// SFML Keyboard Shortcuts
+	using Key	= sf::Keyboard;
+	auto& KeyHit = Key::isKeyPressed;
+
+	if (KeyHit(Key::Escape))
+	{
+		changeState(new Edit(mLevel));
+	}
 }
 
 }

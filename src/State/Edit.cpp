@@ -50,14 +50,24 @@ void Edit::update()
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) &&
 		!(ImGui::IsMouseHoveringAnyWindow() && mPanning))
 	{
-		sf::Vector2i mousePos = sf::Mouse::getPosition(window());
+		sf::Vector2f mousePos = (sf::Vector2f)sf::Mouse::getPosition(window());
 		if (!mPanning)
 		{
 			mPanning	= true;
 			mMouseStart = mousePos;
-			mLevelStart = (sf::Vector2i)mLevel->getCameraPosition();
+			mLevelStart = mLevel->getCameraPosition();
 		}
-		mLevel->setCameraPosition(sf::Vector2f(mMouseStart - mousePos + mLevelStart));
+		// Movement scaling based on viewport size.
+		sf::Vector2f defaultSize = window().getDefaultView().getSize();
+		sf::Vector2f currentSize = mLevel->getViewportSize();
+
+		// Get the scaling factor.
+		float scaleX = defaultSize.x / currentSize.x;
+		float scaleY = defaultSize.y / currentSize.y;
+		float scale  = (scaleX + scaleY) / 2.f;
+		scale		 = 1.f / scale;   // Invert.
+
+		mLevel->setCameraPosition((mMouseStart - mousePos) * scale + mLevelStart);
 	}
 	else
 	{

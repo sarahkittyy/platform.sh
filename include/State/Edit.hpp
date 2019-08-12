@@ -77,8 +77,8 @@ private:
 	void drawPanel(Panel& panel);
 
 	//! Camera panning.
-	sf::Vector2i mMouseStart;
-	sf::Vector2i mLevelStart;
+	sf::Vector2f mMouseStart;
+	sf::Vector2f mLevelStart;
 	bool mPanning;
 };
 

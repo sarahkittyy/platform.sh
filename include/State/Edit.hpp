@@ -51,7 +51,7 @@ private:
 	/// Draws all static, base GUI.
 	void drawBaseGUI();
 
-	/// The left-hand properties panel.
+	/// The properties panel.
 	void drawPropertiesPanel();
 	Editor::GUI::State::Machine mPropertiesPanel;
 	bool mPropertiesPanelVisible;

@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include "Editor/GUI/State/Machine.hpp"
+#include "Editor/GUI/State/Objects.hpp"
 #include "Editor/GUI/State/PropsLevel.hpp"
 #include "Level/Level.hpp"
 #include "State/Menu.hpp"
@@ -51,10 +52,24 @@ private:
 	/// Draws all static, base GUI.
 	void drawBaseGUI();
 
-	/// The properties panel.
-	void drawPropertiesPanel();
-	Editor::GUI::State::Machine mPropertiesPanel;
-	bool mPropertiesPanelVisible;
+	/// A panel, with a gui state machine and a visibility flag.
+	struct _Panel
+	{
+		Editor::GUI::State::Machine machine;
+		std::string name;
+		bool visible;
+	};
+	typedef std::shared_ptr<_Panel> Panel;
+
+	/// Create and initialize a panel.
+	Panel createPanel(Editor::GUI::State::State* initialState, std::string name);
+
+	//! Panels
+	Panel mProperties;
+	Panel mObjects;
+
+	/// Draw a panel to the screen.
+	void drawPanel(Panel& panel);
 };
 
 }

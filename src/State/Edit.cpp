@@ -5,13 +5,11 @@ namespace State
 
 Edit::Edit()
 {
-	mPropertiesPanelVisible = true;
 }
 
 Edit::Edit(std::shared_ptr<Level::Level> level)
 {
-	mLevel					= level;
-	mPropertiesPanelVisible = true;
+	mLevel = level;
 }
 
 Edit::~Edit()
@@ -21,7 +19,8 @@ Edit::~Edit()
 
 void Edit::init()
 {
-	mPropertiesPanel.init(new Editor::GUI::State::PropsLevel(), &window(), &resource());
+	mProperties = createPanel(new Editor::GUI::State::PropsLevel(), "Properties");
+	mObjects	= createPanel(new Editor::GUI::State::Objects(), "Objects");
 
 	mBGMusic = resource().music("assets/music/bg.flac");
 	mBGMusic->setVolume(75);
@@ -36,9 +35,9 @@ void Edit::init()
 void Edit::update()
 {
 	// Draw GUI.
-	drawPropertiesPanel();
 	drawBaseGUI();
-
+	drawPanel(mProperties);
+	drawPanel(mObjects);
 
 	// Draw sfml.
 	window().clear(sf::Color::Black);
@@ -142,7 +141,8 @@ void Edit::drawBaseGUI()
 	}
 	if (ImGui::BeginMenu("View"))
 	{
-		ImGui::MenuItem("Properties", nullptr, &mPropertiesPanelVisible);
+		ImGui::MenuItem("Properties", nullptr, &mProperties->visible);
+		ImGui::MenuItem("Objects", nullptr, &mObjects->visible);
 		ImGui::EndMenu();
 	}
 	if (ImGui::BeginMenu("Editor"))
@@ -158,14 +158,23 @@ void Edit::drawBaseGUI()
 	ImGui::PopStyleColor(2);
 }
 
-void Edit::drawPropertiesPanel()
+void Edit::drawPanel(Edit::Panel& panel)
 {
-	if (mPropertiesPanelVisible)
+	if (panel->visible)
 	{
-		ImGui::Begin(mPropertiesPanel.title("Properties").c_str(), &mPropertiesPanelVisible);
-		mPropertiesPanel.draw();
+		ImGui::Begin(panel->machine.title(panel->name).c_str(), &panel->visible);
+		panel->machine.draw();
 		ImGui::End();
 	}
+}
+
+Edit::Panel Edit::createPanel(Editor::GUI::State::State* initialState, std::string name)
+{
+	Panel ret(new _Panel());
+	ret->machine.init(initialState, &window(), &resource());
+	ret->visible = true;
+	ret->name	= name;
+	return ret;
 }
 
 }

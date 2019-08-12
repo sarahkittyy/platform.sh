@@ -22,7 +22,6 @@ file(GLOB_RECURSE sources "src/*.cpp")
 # create target
 add_executable(platform.sh ${sources})
 target_compile_options(platform.sh PUBLIC -Wall)
-target_link_directories(platform.sh PUBLIC ${NFD_PATH})
 target_include_directories(platform.sh PUBLIC 
 	"include/" 
 	"lib/nlohmann" 

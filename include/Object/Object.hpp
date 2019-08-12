@@ -40,7 +40,13 @@ public:
 	virtual Object* clone() = 0;
 
 	/// The object's name.
-	virtual const std::string name() const = 0;
+	virtual const std::string name() const;
+
+	//* Editor vars
+	/// Path to an icon image representing this object.
+	virtual const std::string icon() const;
+	/// A description of this object.
+	virtual const std::string desc() const;
 
 	/// Serialize the object properties to json
 	virtual nlohmann::json serialize() const = 0;
@@ -55,9 +61,6 @@ public:
 	virtual void updateTick();
 	/// Should reset the object back to it's initial state.
 	virtual void reset();
-
-	/// Path to an icon image representing this object.
-	virtual const std::string icon() const = 0;
 
 	/// Get the object's update priority.
 	unsigned int getPriority();

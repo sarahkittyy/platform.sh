@@ -14,6 +14,21 @@ Object::~Object()
 {
 }
 
+const std::string Object::name() const
+{
+	return "Object";
+}
+
+const std::string Object::icon() const
+{
+	return "assets/icons/default.png";
+}
+
+const std::string Object::desc() const
+{
+	return "Undefined Object";
+}
+
 void Object::init()
 {
 }

@@ -21,7 +21,7 @@ Edit::~Edit()
 
 void Edit::init()
 {
-	mPropertiesPanel.init(new Editor::GUI::State::Props(), &window(), &resource());
+	mPropertiesPanel.init(new Editor::GUI::State::PropsLevel(), &window(), &resource());
 
 	mBGMusic = resource().music("assets/music/bg.flac");
 	mBGMusic->setVolume(75);

@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include "Editor/GUI/State/Machine.hpp"
-#include "Editor/GUI/State/Props.hpp"
+#include "Editor/GUI/State/PropsLevel.hpp"
 #include "Level/Level.hpp"
 #include "State/Menu.hpp"
 #include "State/State.hpp"

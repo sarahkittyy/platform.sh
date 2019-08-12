@@ -1,18 +1,19 @@
 #pragma once
 
 #include "Editor/GUI/State/State.hpp"
+#include "Level/Level.hpp"
 
 namespace Editor::GUI::State
 {
 
 /**
- * @brief The base gui properties panel.
+ * @brief The base gui properties panel, for editing level properties.
  * 
  */
 class PropsLevel : public State
 {
 public:
-	PropsLevel(Object::Props initialProps = Object::Props());
+	PropsLevel(Level::Level* level);
 
 	void init();
 	void draw();
@@ -20,9 +21,11 @@ public:
 	std::string title() const;
 
 private:
+	/// The level we are modifying.
+	Level::Level* mLevel;
+
 	//* Storage
-	char mLevelText[100];   /// Level text
-	float mTickrate;		/// Level tickrate.
+	float mTickrate;   /// Level tickrate.
 
 	//* ------
 };

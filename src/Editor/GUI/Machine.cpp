@@ -39,11 +39,6 @@ void Machine::draw()
 	}
 }
 
-const Object::Props& Machine::getProps()
-{
-	return mCurrentState->getProps();
-}
-
 void Machine::forceSetState(State* newState)
 {
 	/// Init state vars.

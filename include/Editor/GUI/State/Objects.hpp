@@ -8,7 +8,7 @@ namespace Editor::GUI::State
 class Objects : public State
 {
 public:
-	Objects(Object::Props initialProps = Object::Props());
+	Objects();
 
 	void init();
 	void draw();

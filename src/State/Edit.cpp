@@ -30,12 +30,7 @@ void Edit::init()
 
 	//* Create panels
 	// clang-format off
-	mProperties = createPanel(new Editor::GUI::State::PropsLevel(
-		Object::Props().set({
-			{"levelText", mLevel->getDisplayText()},
-			{"tickrate", mLevel->getTickSpeed().asSeconds()}
-		})), 
-		"Properties");
+	mProperties = createPanel(new Editor::GUI::State::PropsLevel(mLevel.get()), "Properties");
 	// clang-format on
 	mObjects = createPanel(new Editor::GUI::State::Objects(), "Objects");
 }
@@ -47,9 +42,6 @@ void Edit::update()
 	drawPanel(mProperties);
 	drawPanel(mObjects);
 
-	// Update content from panels
-	updateFromPanels();
-
 	// Draw sfml.
 	window().clear(sf::Color::Black);
 
@@ -60,12 +52,6 @@ void Edit::update()
 	ImGui::SFML::Render(window());
 	// Finish drawing.
 	window().display();
-}
-
-void Edit::updateFromPanels()
-{
-	mLevel->setDisplayText(mProperties->machine.getProps().get("/levelText"_json_pointer));
-	mLevel->setTickSpeed(sf::seconds(mProperties->machine.getProps().get("/tickrate"_json_pointer)));
 }
 
 void Edit::on(const sf::Event& event)

@@ -41,9 +41,6 @@ public:
 	/// Draw the active state to the current ImGui window.
 	void draw();
 
-	/// Get the properties of the current state.
-	const Object::Props& getProps();
-
 private:
 	/// The current active state.
 	std::shared_ptr<State> mCurrentState;

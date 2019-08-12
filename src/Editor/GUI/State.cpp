@@ -3,8 +3,7 @@
 namespace Editor::GUI::State
 {
 
-State::State(Object::Props initialProps)
-	: mProps(initialProps)
+State::State()
 {
 }
 
@@ -23,16 +22,6 @@ void State::draw()
 std::string State::title() const
 {
 	return "Untitled";
-}
-
-const Object::Props& State::getProps()
-{
-	return mProps;
-}
-
-Object::Props& State::props()
-{
-	return mProps;
 }
 
 sf::RenderWindow& State::window()

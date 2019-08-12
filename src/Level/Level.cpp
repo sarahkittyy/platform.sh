@@ -32,7 +32,7 @@ void Level::init(sf::RenderWindow* window,
 	/// Default text settings.
 	mLevelText.setFillColor(sf::Color::White);
 	mLevelText.setOutlineThickness(0);
-	mLevelText.setCharacterSize(18);
+	mLevelText.setCharacterSize(20);
 
 	/// Load the default font.
 	setFont("assets/fonts/starmap.ttf");

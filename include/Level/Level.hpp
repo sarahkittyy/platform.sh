@@ -101,6 +101,7 @@ public:
 	/// Grab a list of all objects to which the given query function returns true.
 	std::vector<ObjectPtr> queryObjects(std::function<bool(const Object::Props&)> query);
 
+	/// Gets all object templates.
 	static const std::vector<ObjectPtr>& getObjectTemplates();
 
 	/// Checks for collision with any object at a given grid point.

@@ -56,6 +56,9 @@ public:
 	/// Should reset the object back to it's initial state.
 	virtual void reset();
 
+	/// Path to an icon image representing this object.
+	virtual const std::string icon() const = 0;
+
 	/// Get the object's update priority.
 	unsigned int getPriority();
 	/// Get the object's z index.

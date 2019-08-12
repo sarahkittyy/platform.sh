@@ -30,4 +30,4 @@ target_include_directories(platform.sh PUBLIC
 	"lib/nlohmann" 
 	"lib/imgui"
 	"lib/pfd")
-target_link_libraries(platform.sh ${SFML_LIB} stdc++fs imgui portable_file_dialogs)
+target_link_libraries(platform.sh ${SFML_LIB} stdc++fs imgui)

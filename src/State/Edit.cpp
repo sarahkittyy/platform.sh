@@ -91,6 +91,7 @@ void Edit::on(const sf::Event& event)
 	{
 	default:
 		break;
+	// Zoom the level.
 	case sf::Event::MouseWheelScrolled:
 	{
 		int delta = event.mouseWheelScroll.delta;

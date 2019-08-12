@@ -3,11 +3,11 @@
 namespace Editor::GUI::State
 {
 
-Machine::Machine(State* initialState, sf::RenderWindow* window, ResourceManager* resource)
-	: mNextState(nullptr),
-	  mWindow(window),
-	  mResource(resource)
+void Machine::init(State* initialState, sf::RenderWindow* window, ResourceManager* resource)
 {
+	mNextState = nullptr;
+	mWindow	= window;
+	mResource  = resource;
 	forceSetState(initialState);
 }
 
@@ -19,6 +19,11 @@ void Machine::setState(State* newState)
 		delete mNextState;
 	// Queue the state change.
 	mNextState = newState;
+}
+
+std::string Machine::title(std::string id) const
+{
+	return mCurrentState->title() + "###" + id;
 }
 
 void Machine::draw()

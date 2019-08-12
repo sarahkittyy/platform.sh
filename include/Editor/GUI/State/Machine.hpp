@@ -24,10 +24,19 @@ public:
 	 * @param window The app renderwindow.
 	 * @param resource The app resourcemanager.
 	 */
-	Machine(State* initialState, sf::RenderWindow* window, ResourceManager* resource);
+	void init(State* initialState, sf::RenderWindow* window, ResourceManager* resource);
 
 	/// Set the state of the machine at the next available time to do so (after draw()).
 	void setState(State* newState);
+
+	/**
+	 * @brief Get the title for the window from the active state.
+	 * 
+	 * @param id The constant identifier for the window, so the changing title names don't confuse ImGui.
+	 * 
+	 * @return std::string The intended window title. 
+	 */
+	std::string title(std::string id = "") const;
 
 	/// Draw the active state to the current ImGui window.
 	void draw();

@@ -19,6 +19,11 @@ void State::draw()
 {
 }
 
+std::string State::title() const
+{
+	return "Untitled";
+}
+
 sf::RenderWindow& State::window()
 {
 	return *mWindow;

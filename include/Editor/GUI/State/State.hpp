@@ -34,6 +34,9 @@ public:
 	/// Draw to the active
 	virtual void draw();
 
+	/// The state's window title.
+	virtual std::string title() const;
+
 protected:
 	/// Grab the app render window.
 	sf::RenderWindow& window();

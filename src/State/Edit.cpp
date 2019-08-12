@@ -8,6 +8,12 @@ Edit::Edit()
 	mPropertiesPanelVisible = true;
 }
 
+Edit::Edit(std::shared_ptr<Level::Level> level)
+{
+	mLevel					= level;
+	mPropertiesPanelVisible = true;
+}
+
 Edit::~Edit()
 {
 	mBGMusic->stop();
@@ -22,8 +28,9 @@ void Edit::init()
 	mBGMusic->setLoop(true);
 	mBGMusic->play();
 
-	/// Reset the level.
-	newLevel();
+	/// Reset the level, if it's not already set.
+	if (!mLevel)
+		newLevel();
 }
 
 void Edit::update()
@@ -61,6 +68,28 @@ void Edit::newLevel()
 	mBGMusic->play();
 }
 
+void Edit::loadFromFile(std::string file)
+{
+	newLevel();
+
+	/// Read the file to json.
+	nlohmann::json data;
+	std::ifstream level(file);
+	if (!level) throw std::runtime_error("Could not open file " + file + " for reading.");
+	level >> data;
+	level.close();
+
+	mLevel->deserialize(data);
+}
+
+void Edit::saveToFile(std::string file)
+{
+	std::ofstream level(file);
+	if (!level) throw std::runtime_error("Could not open file " + file + " for writing.");
+	level << mLevel->serialize();
+	level.close();
+}
+
 void Edit::drawBaseGUI()
 {
 	// Alias for keys being hit.
@@ -80,9 +109,26 @@ void Edit::drawBaseGUI()
 		}
 		if (ImGui::MenuItem("Load", "L") || KeyHit(Key::L))
 		{
+			auto selection = pfd::open_file("Open the level file..",
+											"",
+											{ "JSON Files", "*.json" })
+								 .result()
+								 .front();
+			if (!selection.empty())
+			{
+				loadFromFile(selection);
+			}
 		}
 		if (ImGui::MenuItem("Save", "S") || KeyHit(Key::S))
 		{
+			auto selection = pfd::save_file("Save to where?",
+											"",
+											{ "JSON Files", "*.json" })
+								 .result();
+			if (!selection.empty())
+			{
+				saveToFile(selection);
+			}
 		}
 		if (ImGui::MenuItem("Quit", "Q") || KeyHit(Key::Q))
 		{
@@ -101,9 +147,9 @@ void Edit::drawBaseGUI()
 	}
 	if (ImGui::BeginMenu("Editor"))
 	{
-		if (ImGui::MenuItem("Play", "P") || KeyHit(Key::P))
+		if (ImGui::MenuItem("Test", "T") || KeyHit(Key::T))
 		{
-			changeState(new Game(mLevel));
+			changeState(new Game(mLevel, true));
 		}
 		ImGui::EndMenu();
 	}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <fstream>
 #include "Editor/GUI/State/Machine.hpp"
 #include "Editor/GUI/State/Props.hpp"
 #include "Level/Level.hpp"
@@ -8,6 +9,8 @@
 #include "State/State.hpp"
 #include "imgui/imgui-SFML.h"
 #include "imgui/imgui.h"
+#include "nlohmann/json.hpp"
+#include "pfd/portable-file-dialogs.h"
 
 namespace State
 {
@@ -21,6 +24,8 @@ class Edit : public State
 public:
 	/// Sets some primitive defaults.
 	Edit();
+	/// Load the editor with an initial level.
+	Edit(std::shared_ptr<Level::Level> level);
 	/// Stops playing music.
 	~Edit();
 
@@ -38,6 +43,10 @@ private:
 	//! Level-related functions
 	/// Reset the level to empty.
 	void newLevel();
+	/// Reset and deserialize the level from the given file.
+	void loadFromFile(std::string file);
+	/// Serialize the level to a file.
+	void saveToFile(std::string file);
 
 	/// Draws all static, base GUI.
 	void drawBaseGUI();

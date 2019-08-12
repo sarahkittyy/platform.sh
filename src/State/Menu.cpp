@@ -34,7 +34,7 @@ void Menu::init()
 	mTitle.setRotation(-5);
 
 	// Init the demo map.
-	mDemoMap.load(&resource(), "assets/maps/demo_map.json", true);
+	mDemoMap.loadFromTiled(&resource(), "assets/maps/demo_map.json", true);
 	sf::Vector2f mapCenter;
 	mapCenter.x = mDemoMap.getMapSize().x * mDemoMap.getTileSize().x;
 	mapCenter.y = mDemoMap.getMapSize().y * mDemoMap.getTileSize().y;

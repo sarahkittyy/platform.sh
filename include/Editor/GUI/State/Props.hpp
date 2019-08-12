@@ -15,6 +15,8 @@ public:
 	void init();
 	void draw();
 
+	std::string title() const;
+
 private:
 };
 

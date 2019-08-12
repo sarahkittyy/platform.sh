@@ -12,4 +12,9 @@ void Props::draw()
 	ImGui::Text("Properties");
 }
 
+std::string Props::title() const
+{
+	return "Properties";
+}
+
 }

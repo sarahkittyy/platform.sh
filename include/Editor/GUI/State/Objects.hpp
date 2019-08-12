@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <unordered_map>
+#include <vector>
 #include "Editor/GUI/State/State.hpp"
 #include "Level/Level.hpp"
 #include "Object/Objects.hpp"
@@ -23,8 +23,15 @@ private:
 	/// The level this gui panel edits.
 	Level::Level* mLevel;
 
-	/// Object names mapped to their icon textures.
-	std::unordered_map<std::string, sf::Texture*> mObjects;
+	/// Structure that stores an object template, as well a pointer to it's icon texture.
+	struct ObjectButton
+	{
+		std::shared_ptr<Object::Object> sample;
+		sf::Texture* texture;
+	};
+
+	/// A vector of all bundled ObjectButton instances.
+	std::vector<ObjectButton> mObjects;
 };
 
 }

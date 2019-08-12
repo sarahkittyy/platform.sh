@@ -13,19 +13,32 @@ void Objects::init()
 	// Iterate over all template objects
 	for (auto& templateObject : Level::Level::getObjectTemplates())
 	{
-		// Save their icon textures.
-		mObjects[templateObject->name()] = resource().texture(templateObject->icon());
+		// Store the icon with the template object
+		ObjectButton out{
+			.sample  = templateObject,
+			.texture = resource().texture(templateObject->icon())
+		};
+		// Save the bundled data.
+		mObjects.push_back(out);
 	}
 }
 
 void Objects::draw()
 {
 	// Draw all object buttons.
-	for (auto& [name, texture] : mObjects)
+	for (auto& button : mObjects)
 	{
-		if (ImGui::ImageButton(*texture))
+		if (ImGui::ImageButton(*button.texture, sf::Vector2f(32, 32)))
 		{
 		}
+		// Hover tooltip
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::SetTooltip("%s\n> %s",
+							  button.sample->name().c_str(),
+							  button.sample->desc().c_str());
+		}
+		ImGui::SameLine();
 	}
 }
 

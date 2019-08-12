@@ -12,9 +12,7 @@ namespace Editor::GUI::State
 class PropsLevel : public State
 {
 public:
-	PropsLevel(Object::Props initialProps =
-				   Object::Props()
-					   .set({ { "levelText", "" } }));
+	PropsLevel(Object::Props initialProps = Object::Props());
 
 	void init();
 	void draw();
@@ -22,7 +20,11 @@ public:
 	std::string title() const;
 
 private:
-	char mLevelText[100];
+	//* Storage
+	char mLevelText[100];   /// Level text
+	float mTickrate;		/// Level tickrate.
+
+	//* ------
 };
 
 }

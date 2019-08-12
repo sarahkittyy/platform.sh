@@ -56,6 +56,7 @@ private:
 	struct _Panel
 	{
 		Editor::GUI::State::Machine machine;
+		ImGuiWindowFlags flags;
 		std::string name;
 		bool visible;
 	};
@@ -63,7 +64,9 @@ private:
 	typedef std::shared_ptr<_Panel> Panel;
 
 	/// Create and initialize a panel.
-	Panel createPanel(Editor::GUI::State::State* initialState, std::string name);
+	Panel createPanel(Editor::GUI::State::State* initialState,
+					  std::string name,
+					  ImGuiWindowFlags flags = 0);
 
 	//! Panels
 	Panel mProperties;

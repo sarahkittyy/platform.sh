@@ -29,10 +29,10 @@ void Edit::init()
 		newLevel();
 
 	//* Create panels
-	// clang-format off
-	mProperties = createPanel(new Editor::GUI::State::PropsLevel(mLevel.get()), "Properties");
-	// clang-format on
-	mObjects = createPanel(new Editor::GUI::State::Objects(), "Objects");
+	mProperties = createPanel(new Editor::GUI::State::PropsLevel(mLevel.get()),
+							  "Properties");
+	mObjects	= createPanel(new Editor::GUI::State::Objects(mLevel.get()),
+							  "Objects");
 }
 
 void Edit::update()
@@ -165,19 +165,24 @@ void Edit::drawPanel(Edit::Panel& panel)
 {
 	if (panel->visible)
 	{
-		ImGui::Begin(panel->machine.title(panel->name).c_str(), &panel->visible);
+		ImGui::Begin(panel->machine.title(panel->name).c_str(),
+					 &panel->visible,
+					 panel->flags);
 		panel->machine.draw();
 		ImGui::End();
 	}
 }
 
-Edit::Panel Edit::createPanel(Editor::GUI::State::State* initialState, std::string name)
+Edit::Panel Edit::createPanel(Editor::GUI::State::State* initialState,
+							  std::string name,
+							  ImGuiWindowFlags flags)
 {
 	Panel ret;
 	ret.reset(new Edit::_Panel());
 	ret->machine.init(initialState, &window(), &resource());
 	ret->visible = true;
 	ret->name	= name;
+	ret->flags   = flags;
 	return ret;
 }
 

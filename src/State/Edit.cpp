@@ -24,6 +24,10 @@ void Edit::init()
 	mBGMusic->setLoop(true);
 	mBGMusic->play();
 
+	// Grud line init.
+	mGridLinesVisible = true;
+	initGridLines();
+
 	// Camera control init.
 	mPanning	= false;
 	mMouseStart = { 0, 0 };
@@ -73,8 +77,20 @@ void Edit::update()
 	{
 		mPanning = false;
 	}
+
+	// Update the grid lines.
+	updateGridLines();
+
 	// Draw sfml.
 	window().clear(sf::Color::Black);
+
+	// Draw grid lines, if necessary.
+	if (mGridLinesVisible)
+	{
+		sf::RenderStates states;
+		states.transform *= mGridLineTransform;
+		window().draw(mGridLines, states);
+	}
 
 	// Draw the level in the back.
 	window().draw(*mLevel);
@@ -198,6 +214,8 @@ void Edit::drawBaseGUI()
 	{
 		ImGui::MenuItem("Properties", nullptr, &mProperties->visible);
 		ImGui::MenuItem("Objects", nullptr, &mObjects->visible);
+		ImGui::Separator();
+		ImGui::MenuItem("Grid", nullptr, &mGridLinesVisible);
 		ImGui::EndMenu();
 	}
 	if (ImGui::BeginMenu("Editor"))
@@ -211,6 +229,17 @@ void Edit::drawBaseGUI()
 
 	ImGui::EndMainMenuBar();
 	ImGui::PopStyleColor(2);
+}
+
+void Edit::initGridLines()
+{
+	mGridLines.setPrimitiveType(sf::Lines);
+}
+
+void Edit::updateGridLines()
+{
+	mGridLines.clear();
+	mLevel->
 }
 
 void Edit::drawPanel(Edit::Panel& panel)

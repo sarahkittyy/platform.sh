@@ -258,6 +258,16 @@ std::string Level::getDisplayText()
 	return mLevelText.getString();
 }
 
+const sf::Vector2i Level::tileSize()
+{
+	return TILESIZE;
+}
+
+const sf::Vector2i Level::gridSize()
+{
+	return GRIDSIZE;
+}
+
 void Level::start()
 {
 	mRunning = true;

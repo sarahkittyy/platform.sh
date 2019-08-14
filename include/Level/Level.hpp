@@ -125,6 +125,11 @@ public:
 	void setDisplayText(std::string text);
 	std::string getDisplayText();
 
+	/// Level tile size, in pixels
+	static const sf::Vector2i tileSize();
+	/// Level grid size, in tiles.
+	static const sf::Vector2i gridSize();
+
 	/// Start the level updating.
 	void start();
 	/// Reset all objects to default.

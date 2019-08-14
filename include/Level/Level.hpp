@@ -115,6 +115,8 @@ public:
 	void setViewportSize(sf::Vector2f size);
 	/// Get the level viewport size.
 	sf::Vector2f getViewportSize();
+	/// Get the viewport.
+	const sf::View& getViewport() const;
 
 	/// Set the game update tick speed.
 	void setTickSpeed(sf::Time speed);

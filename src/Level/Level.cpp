@@ -226,6 +226,11 @@ sf::Vector2f Level::getViewportSize()
 	return mViewport.getSize();
 }
 
+const sf::View& Level::getViewport() const
+{
+	return mViewport;
+}
+
 void Level::setTickSpeed(sf::Time speed)
 {
 	mTickSpeed = speed;

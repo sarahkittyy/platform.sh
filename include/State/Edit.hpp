@@ -53,6 +53,12 @@ private:
 	/// Draws all static, base GUI.
 	void drawBaseGUI();
 
+	/// Whether or not to show the grid lines.
+	bool mGridLinesVisible;
+	/// Editor grid lines.
+	sf::VertexArray mGridLines;
+	void initGridLines();
+
 	/// A panel, with a gui state machine and a visibility flag.
 	struct _Panel
 	{

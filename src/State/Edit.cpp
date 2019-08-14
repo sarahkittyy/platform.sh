@@ -24,10 +24,6 @@ void Edit::init()
 	mBGMusic->setLoop(true);
 	mBGMusic->play();
 
-	// Grud line init.
-	mGridLinesVisible = true;
-	initGridLines();
-
 	// Camera control init.
 	mPanning	= false;
 	mMouseStart = { 0, 0 };
@@ -41,6 +37,10 @@ void Edit::init()
 							  "Properties");
 	mObjects	= createPanel(new Editor::GUI::State::Objects(mLevel.get()),
 							  "Objects");
+
+	// Grid line init.
+	mGridLinesVisible = true;
+	initGridLines();
 }
 
 void Edit::update()
@@ -78,18 +78,21 @@ void Edit::update()
 		mPanning = false;
 	}
 
-	// Update the grid lines.
-	updateGridLines();
-
 	// Draw sfml.
 	window().clear(sf::Color::Black);
 
 	// Draw grid lines, if necessary.
 	if (mGridLinesVisible)
 	{
-		sf::RenderStates states;
-		states.transform *= mGridLineTransform;
-		window().draw(mGridLines, states);
+		sf::View moduloView = mLevel->getViewport();
+		sf::Vector2i center = (sf::Vector2i)moduloView.getCenter();
+		center.x += mLevel->tileSize().x / 2;
+		center.y += mLevel->tileSize().y / 2;
+		center.x %= mLevel->tileSize().x;
+		center.y %= mLevel->tileSize().y;
+		moduloView.setCenter((sf::Vector2f)center);
+		window().setView(moduloView);
+		window().draw(mGridLines);
 	}
 
 	// Draw the level in the back.
@@ -115,11 +118,23 @@ void Edit::on(const sf::Event& event)
 		{
 			// Zoom in.
 			mLevel->setViewportSize(mLevel->getViewportSize() * 0.8f);
+			// Zoom cap.
+			if (mLevel->getViewportSize().x <
+				(window().getDefaultView().getSize() * 0.25f).x)
+			{
+				mLevel->setViewportSize(window().getDefaultView().getSize() * 0.25f);
+			}
 		}
 		else if (delta < 0)
 		{
 			// Zoom out.
 			mLevel->setViewportSize(mLevel->getViewportSize() * 1.2f);
+			// Zoom cap.
+			if (mLevel->getViewportSize().x >
+				(window().getDefaultView().getSize() * 2.f).x)
+			{
+				mLevel->setViewportSize(window().getDefaultView().getSize() * 2.f);
+			}
 		}
 	}
 	}
@@ -134,7 +149,7 @@ void Edit::newLevel()
 	}
 	mLevel.reset(new Level::Level());
 	mLevel->init(&window(), &resource());
-	////mLevel->addObject("Player", Object::Props().set({ { "startPos", Object::Props::fromVector(sf::Vector2f(0.f, 0.f)) } }));
+	mLevel->addObject("Player", Object::Props().set({ { "startPos", Object::Props::fromVector(sf::Vector2f(0.f, 0.f)) } }));
 	mBGMusic->play();
 }
 
@@ -234,12 +249,40 @@ void Edit::drawBaseGUI()
 void Edit::initGridLines()
 {
 	mGridLines.setPrimitiveType(sf::Lines);
-}
 
-void Edit::updateGridLines()
-{
-	mGridLines.clear();
-	mLevel->
+	//! Warning - code here is super messy - edit at your own risk ;;
+	// Visible area size
+	sf::Vector2f size = mLevel->getViewportSize();
+
+	// Top-Left visible position.
+	sf::Vector2f tl(
+		mLevel->getCameraPosition().x - size.x / 2.f,
+		mLevel->getCameraPosition().y - size.y / 2.f);
+	// Extra spacing to ensure whole screen is covered.
+	tl.x += tl.x;
+	tl.y += tl.y;
+	// Extra sizing to ensure window is covered.
+	tl -= (sf::Vector2f)mLevel->tileSize();
+	size += (sf::Vector2f)mLevel->tileSize() * 2.f;
+	size *= 4.f;
+
+	// Alignment to grid.
+	tl.x = std::floor(tl.x / mLevel->tileSize().x) * mLevel->tileSize().x;
+	tl.y = std::floor(tl.y / mLevel->tileSize().y) * mLevel->tileSize().y;
+	tl -= sf::Vector2f(mLevel->tileSize() / 2);
+
+	// Vertical lines.
+	for (float i = tl.x; i < tl.x + size.x; i += mLevel->tileSize().x)
+	{
+		mGridLines.append(sf::Vertex(sf::Vector2f(i, tl.y), sf::Color::White));
+		mGridLines.append(sf::Vertex(sf::Vector2f(i, tl.y + size.y), sf::Color::White));
+	}
+	// Horizontal lines.
+	for (float i = tl.y; i < tl.y + size.y; i += mLevel->tileSize().y)
+	{
+		mGridLines.append(sf::Vertex(sf::Vector2f(tl.x, i), sf::Color::White));
+		mGridLines.append(sf::Vertex(sf::Vector2f(tl.x + size.x, i), sf::Color::White));
+	}
 }
 
 void Edit::drawPanel(Edit::Panel& panel)

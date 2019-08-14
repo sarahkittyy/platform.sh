@@ -41,7 +41,6 @@ void Level::init(sf::RenderWindow* window,
 	setMusic("assets/music/bg.flac");
 
 	mViewport.setSize(sf::Vector2f(mWindow->getSize()));
-	mWindow->setView(mViewport);
 	on("windowResized", [this](const nlohmann::json& data) {
 		unsigned x, y;
 		x = data.at("x").get<unsigned>();
@@ -210,7 +209,6 @@ void Level::syncZIndexQueue()
 void Level::setCameraPosition(sf::Vector2f pos)
 {
 	mViewport.setCenter(pos.x, pos.y);
-	mWindow->setView(mViewport);
 }
 
 sf::Vector2f Level::getCameraPosition()
@@ -221,7 +219,6 @@ sf::Vector2f Level::getCameraPosition()
 void Level::setViewportSize(sf::Vector2f size)
 {
 	mViewport.setSize(size);
-	mWindow->setView(mViewport);
 }
 
 sf::Vector2f Level::getViewportSize()
@@ -345,9 +342,10 @@ void Level::on(std::string event, std::function<void(const nlohmann::json&)> han
 
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	mWindow->setView(mWindow->getDefaultView());
 	// Draw the text, untransformed in the top right.
 	target.draw(mLevelText, states);
+
+	// Transform by the viewport.
 	mWindow->setView(mViewport);
 
 	// Draw all objects
@@ -355,6 +353,9 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(*obj, states);
 	}
+
+	// Undo the viewport transform
+	mWindow->setView(mWindow->getDefaultView());
 }
 
 Level::ObjectPtr Level::getObject(std::string name)

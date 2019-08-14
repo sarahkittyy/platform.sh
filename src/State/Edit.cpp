@@ -271,17 +271,19 @@ void Edit::initGridLines()
 	tl.y = std::floor(tl.y / mLevel->tileSize().y) * mLevel->tileSize().y;
 	tl -= sf::Vector2f(mLevel->tileSize() / 2);
 
+	const sf::Color gridLineColor = sf::Color(255, 255, 255, 100);
+
 	// Vertical lines.
 	for (float i = tl.x; i < tl.x + size.x; i += mLevel->tileSize().x)
 	{
-		mGridLines.append(sf::Vertex(sf::Vector2f(i, tl.y), sf::Color::White));
-		mGridLines.append(sf::Vertex(sf::Vector2f(i, tl.y + size.y), sf::Color::White));
+		mGridLines.append(sf::Vertex(sf::Vector2f(i, tl.y), gridLineColor));
+		mGridLines.append(sf::Vertex(sf::Vector2f(i, tl.y + size.y), gridLineColor));
 	}
 	// Horizontal lines.
 	for (float i = tl.y; i < tl.y + size.y; i += mLevel->tileSize().y)
 	{
-		mGridLines.append(sf::Vertex(sf::Vector2f(tl.x, i), sf::Color::White));
-		mGridLines.append(sf::Vertex(sf::Vector2f(tl.x + size.x, i), sf::Color::White));
+		mGridLines.append(sf::Vertex(sf::Vector2f(tl.x, i), gridLineColor));
+		mGridLines.append(sf::Vertex(sf::Vector2f(tl.x + size.x, i), gridLineColor));
 	}
 }
 

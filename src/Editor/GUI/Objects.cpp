@@ -13,6 +13,9 @@ void Objects::init()
 	// Iterate over all template objects
 	for (auto& templateObject : Level::Level::getObjectTemplates())
 	{
+		//! Tilemaps are a special case, ignore them here.
+		if (templateObject->name() == "Tilemap")
+			continue;
 		// Store the icon with the template object
 		Objects::ObjectButton out{
 			.sample  = templateObject,

@@ -32,6 +32,12 @@ private:
 
 	/// A vector of all bundled ObjectButton instances.
 	std::vector<ObjectButton> mObjects;
+
+	////////////////////////////
+	//
+	// Selection system
+	//
+	////////////////////////////
 };
 
 }

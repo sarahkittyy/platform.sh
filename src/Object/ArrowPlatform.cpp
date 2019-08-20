@@ -1,3 +1,4 @@
+#include "Level/Level.hpp"
 #include "Object/ArrowPlatform.hpp"
 
 namespace Object
@@ -127,7 +128,7 @@ void ArrowPlatform::updateTick()
 void ArrowPlatform::pushPushables(sf::Vector2f currentPosition, sf::Vector2f offset)
 {
 	// Get all pushable objects
-	auto pushables = queryObjects([](const Props& props) {
+	auto pushables = level().queryObjects([](const Props& props) {
 		return props.test("/pushable"_json_pointer, true);
 	});
 
@@ -174,7 +175,7 @@ void ArrowPlatform::pushPushables(sf::Vector2f currentPosition, sf::Vector2f off
 void ArrowPlatform::updateEndpoints(sf::Vector2f currentPosition)
 {
 	// Get all endpoints.
-	auto ends = queryObjects([](const Props& props) -> bool {
+	auto ends = level().queryObjects([](const Props& props) -> bool {
 		return props.test("/arrowPlatformEnd"_json_pointer, true);
 	});
 

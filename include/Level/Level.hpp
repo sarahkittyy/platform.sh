@@ -99,38 +99,42 @@ public:
 	void removeObject(Object::Object* object);
 
 	/// Grab a list of all objects to which the given query function returns true.
-	std::vector<ObjectPtr> queryObjects(std::function<bool(const Object::Props&)> query);
+	std::vector<ObjectPtr> queryObjects(std::function<bool(const Object::Props&)> query) const;
 
 	/// Gets all object templates.
 	static const std::vector<ObjectPtr>& getObjectTemplates();
 
 	/// Checks for collision with any object at a given grid point.
-	bool isCollisionAt(sf::Vector2i pos);
+	bool isCollisionAt(sf::Vector2i pos) const;
 
 	/// Set the position of the camera
 	void setCameraPosition(sf::Vector2f pos);
 	/// Get the position of the camera
-	sf::Vector2f getCameraPosition();
+	sf::Vector2f getCameraPosition() const;
 	/// Set the size of the visible area.
 	void setViewportSize(sf::Vector2f size);
 	/// Get the level viewport size.
-	sf::Vector2f getViewportSize();
+	sf::Vector2f getViewportSize() const;
 	/// Get the viewport.
 	const sf::View& getViewport() const;
 
 	/// Set the game update tick speed.
 	void setTickSpeed(sf::Time speed);
-	sf::Time getTickSpeed();
+	sf::Time getTickSpeed() const;
+
+	/// Get the time elapsed in the level *since last update*.
+	sf::Time getCurrentClockTime() const;
+
 	/// Sets the level text font. Defaults to starmap.ttf
 	void setFont(std::string path);
 	/// Set the text to display on the top-right of the screen.
 	void setDisplayText(std::string text);
-	std::string getDisplayText();
+	std::string getDisplayText() const;
 
 	/// Level tile size, in pixels
-	static const sf::Vector2i tileSize();
+	static sf::Vector2i tileSize();
 	/// Level grid size, in tiles.
-	static const sf::Vector2i gridSize();
+	static sf::Vector2i gridSize();
 
 	/// Start the level updating.
 	void start();
@@ -171,6 +175,12 @@ public:
 	 * private object event queue if necessary, to handle in the object's own update() loop.
 	 */
 	void on(std::string event, std::function<void(const nlohmann::json&)> handler);
+
+	/// Sort the priority queue.
+	void syncPriorityQueue();
+
+	/// Sort the ZIndex queue.
+	void syncZIndexQueue();
 
 private:
 	/// SFML draw() override.
@@ -219,12 +229,6 @@ private:
 	std::vector<ObjectPtr> mObjectsPriority;
 	/// All objects, sorted by Z-index.
 	std::vector<ObjectPtr> mObjectsZIndex;
-
-	/// Sort the priority queue.
-	void syncPriorityQueue();
-
-	/// Sort the ZIndex queue.
-	void syncZIndexQueue();
 };
 
 }

@@ -11,7 +11,9 @@
 // So that Object::Object can friend Level and allow for initialization.
 namespace Level
 {
+
 class Level;
+
 }
 
 namespace Object
@@ -79,30 +81,14 @@ protected:
 	/// Get the object's properties -- editable for derived classes.
 	Props& props();
 
-	/// Add an object to the currently attached level.
-	template <typename Obj>
-	Obj* addObject(Obj* object)
-	{
-		return dynamic_cast<Obj*>(object);
-	}
+	/// Get the intiial object properties.
+	const Props& initialProps();
 
-	/// Remove an object from the level.
-	void removeObject(Object* object);
+	/// Get the parent level
+	Level::Level& level() const;
 
-	/// Query the parent level for objects of which the query function returns true.
-	std::vector<std::shared_ptr<Object>> queryObjects(std::function<bool(const Props&)> query);
-
-	/// Check for any collision with any object in the level at a given point.
-	bool isCollisionAt(sf::Vector2i pos);
-
-	/// Set the position of the level camera
-	void setCameraPosition(sf::Vector2f pos);
-	/// Get the position of the level camera
-	sf::Vector2f getCameraPosition();
-	/// Set the size of the level visible area.
-	void setViewportSize(sf::Vector2f size);
-	/// Get the level viewport size.
-	sf::Vector2f getViewportSize();
+	/// Returns a value 0<=t<=1 representing the fraction of time passed until the next tick.
+	float interpolationFactor() const;
 
 	/// Set the object's update priority. (Lower = updated first)
 	void setPriority(unsigned int priority);
@@ -114,22 +100,6 @@ protected:
 	/// Convert tile coordinates to actual coordinates (not rounded)
 	sf::Vector2f getActualPosition(sf::Vector2f tilePos);
 
-	/// Get the size of the grid.
-	const sf::Vector2i& gridSize();
-	/// Get the size of a single grid tile.
-	const sf::Vector2i& tileSize();
-
-	/// Returns a value 0<=t<=1 representing the fraction of time passed until the next tick.
-	float interpolationFactor() const;
-
-	/// Emit an event to the level.
-	void emit(std::string event, nlohmann::json data);
-	/// Attach a callback to be run on level event emitted.
-	void on(std::string event, std::function<void(const nlohmann::json& data)> callback);
-
-	/// Get the intiial object properties.
-	const Props& initialProps();
-
 	/// SFML draw() override.
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
@@ -138,6 +108,9 @@ private:
 	unsigned int mPriority;
 	/// The object Z index (lower -> drawn last)
 	unsigned int mZIndex;
+
+	/// The parent level.
+	Level::Level* mLevel;
 
 	/// The object's initial properties.
 	Props mInitialProps;
@@ -152,44 +125,6 @@ private:
 
 	/// Pointer to the app resource manager.
 	ResourceManager* mResource;
-
-	/// Function pointer to add an object to the currently linked level.
-	std::function<Object*(Object*)> mAddObject;
-	/// Initialized by Level::Level, removes & deallocates object from level.
-	std::function<void(Object*)> mRemoveObject;
-	/// Query the parent level for other objects matching a query function.
-	std::function<std::vector<std::shared_ptr<Object>>(std::function<bool(const Props&)>)> mQueryObjects;
-
-	/// Check for any collision with any object in the level at a given point.
-	std::function<bool(sf::Vector2i)> mIsCollisionAt;
-
-	/// Set the level camera position.
-	std::function<void(sf::Vector2f)> mSetCameraPosition;
-	/// Get the camera position.
-	std::function<sf::Vector2f()> mGetCameraPosition;
-	/// Set the level viewport scale
-	std::function<void(sf::Vector2f)> mSetViewportSize;
-	/// Get the level viewport scale.
-	std::function<sf::Vector2f()> mGetViewportSize;
-	/// Re-sync the level priority queue.
-	std::function<void()> mSyncPriorityQueue;
-	/// Re-sync the level ZIndex queue.
-	std::function<void()> mSyncZIndexQueue;
-
-	/// Get the current time of the restarting clock that manages tickrate.
-	std::function<sf::Time()> mGetCurrentClockTime;
-	/// Get the level's tickrate.
-	std::function<sf::Time()> mGetTickRate;
-
-	/// Emit an event to the level.
-	std::function<void(std::string, nlohmann::json)> mEmit;
-	/// Attach an event callback to
-	std::function<void(std::string, std::function<void(const nlohmann::json&)>)> mOnEvent;
-
-	/// The map grid size
-	sf::Vector2i const* mGridSize;
-	/// The map tile size.
-	sf::Vector2i const* mTileSize;
 
 	// For initialization
 	friend class Level::Level;

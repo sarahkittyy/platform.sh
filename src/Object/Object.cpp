@@ -1,3 +1,4 @@
+#include "Level/Level.hpp"
 #include "Object/Object.hpp"
 
 namespace Object
@@ -75,78 +76,26 @@ Props& Object::props()
 	return mProps;
 }
 
-void Object::removeObject(Object* object)
+Level::Level& Object::level() const
 {
-	mRemoveObject(object);
+	return *mLevel;
 }
 
-std::vector<std::shared_ptr<Object>>
-Object::queryObjects(std::function<bool(const Props&)> query)
+float Object::interpolationFactor() const
 {
-	return mQueryObjects(query);
-}
-
-bool Object::isCollisionAt(sf::Vector2i pos)
-{
-	return mIsCollisionAt(pos);
-}
-
-void Object::setCameraPosition(sf::Vector2f pos)
-{
-	mSetCameraPosition(pos);
-}
-
-sf::Vector2f Object::getCameraPosition()
-{
-	return mGetCameraPosition();
-}
-
-void Object::setViewportSize(sf::Vector2f size)
-{
-	mSetViewportSize(size);
-}
-
-sf::Vector2f Object::getViewportSize()
-{
-	return mGetViewportSize();
+	return level().getCurrentClockTime().asSeconds() / level().getTickSpeed().asSeconds();
 }
 
 void Object::setPriority(unsigned int priority)
 {
 	mPriority = priority;
-	mSyncPriorityQueue();
+	level().syncPriorityQueue();
 }
 
 void Object::setZIndex(unsigned int zindex)
 {
 	mZIndex = zindex;
-	mSyncZIndexQueue();
-}
-
-const sf::Vector2i& Object::gridSize()
-{
-	return *mGridSize;
-}
-
-const sf::Vector2i& Object::tileSize()
-{
-	return *mTileSize;
-}
-
-float Object::interpolationFactor() const
-{
-	return mGetCurrentClockTime().asSeconds() / mGetTickRate().asSeconds();
-}
-
-void Object::emit(std::string event, nlohmann::json data)
-{
-	mEmit(event, data);
-}
-
-void Object::on(std::string event,
-				std::function<void(const nlohmann::json& data)> callback)
-{
-	mOnEvent(event, callback);
+	level().syncZIndexQueue();
 }
 
 const Props& Object::initialProps()
@@ -156,12 +105,12 @@ const Props& Object::initialProps()
 
 sf::Vector2f Object::getGridPosition(sf::Vector2f actualPos)
 {
-	return actualPos / (float)tileSize().x;
+	return actualPos / (float)level().tileSize().x;
 }
 
 sf::Vector2f Object::getActualPosition(sf::Vector2f tilePos)
 {
-	return tilePos * (float)tileSize().x;
+	return tilePos * (float)level().tileSize().x;
 }
 
 void Object::draw(sf::RenderTarget& target, sf::RenderStates states) const

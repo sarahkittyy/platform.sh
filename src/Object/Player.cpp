@@ -1,3 +1,4 @@
+#include "Level/Level.hpp"
 #include "Object/Player.hpp"
 
 namespace Object
@@ -78,8 +79,8 @@ void Player::init()
 
 	// Set the origin such that the player's top-left aligns itself perfectly with the tile.
 	mPlayer.setOrigin(
-		-sf::Vector2f(tileSize().x / 2.f, tileSize().y) +   //tile offset
-		sf::Vector2f(mPlayer.getSize().x / 2.f,				//player offset
+		-sf::Vector2f(level().tileSize().x / 2.f, level().tileSize().y) +   //tile offset
+		sf::Vector2f(mPlayer.getSize().x / 2.f,								//player offset
 					 mPlayer.getSize().y));
 
 	reset();
@@ -100,8 +101,8 @@ void Player::update()
 
 	//* Camera centering.
 	// Keep the level camera centered on the player.
-	setCameraPosition(getPosition() + diff +
-					  sf::Vector2f(0, mPlayer.getSize().y / 2.f));
+	level().setCameraPosition(getPosition() + diff +
+							  sf::Vector2f(0, mPlayer.getSize().y / 2.f));
 }
 
 void Player::updateTick()
@@ -139,7 +140,7 @@ bool Player::airborne()
 {
 	sf::Vector2i tilePos = getPositionInterpolated();
 
-	return !isCollisionAt({ tilePos.x, tilePos.y + 1 });
+	return !level().isCollisionAt({ tilePos.x, tilePos.y + 1 });
 }
 
 bool Player::jump()
@@ -147,10 +148,10 @@ bool Player::jump()
 	sf::Vector2i tilePos = getPositionInterpolated();
 
 	// If there's something above us, don't jump.
-	if (isCollisionAt({ tilePos.x, tilePos.y - 1 }))
+	if (level().isCollisionAt({ tilePos.x, tilePos.y - 1 }))
 		return false;
 	// If there's nothing below us, don't jump.
-	if (!isCollisionAt({ tilePos.x, tilePos.y + 1 }))
+	if (!level().isCollisionAt({ tilePos.x, tilePos.y + 1 }))
 		return false;
 	// Jump.
 	moveInterpolated({ 0, -1 });
@@ -170,7 +171,7 @@ void Player::moveRight()
 	sf::Vector2i tilePos = getPositionInterpolated();
 
 	// If there's something to the right of us, don't move.
-	if (isCollisionAt({ tilePos.x + 1, tilePos.y }))
+	if (level().isCollisionAt({ tilePos.x + 1, tilePos.y }))
 		return;
 
 	moveInterpolated({ 1, 0 });
@@ -181,7 +182,7 @@ void Player::moveLeft()
 	sf::Vector2i tilePos = getPositionInterpolated();
 
 	// If there's something to the left of us, don't move.
-	if (isCollisionAt({ tilePos.x - 1, tilePos.y }))
+	if (level().isCollisionAt({ tilePos.x - 1, tilePos.y }))
 		return;
 
 	moveInterpolated({ -1, 0 });
@@ -192,7 +193,7 @@ void Player::pushRight()
 	sf::Vector2i tilePos = getPositionInterpolated();
 
 	// If there's something to the right of us, we're squished
-	if (isCollisionAt({ tilePos.x + 1, tilePos.y }))
+	if (level().isCollisionAt({ tilePos.x + 1, tilePos.y }))
 		return kill();
 
 	mQueuedPush.x += 1;
@@ -203,7 +204,7 @@ void Player::pushLeft()
 	sf::Vector2i tilePos = getPositionInterpolated();
 
 	// If there's something to the left of us, we're squished
-	if (isCollisionAt({ tilePos.x - 1, tilePos.y }))
+	if (level().isCollisionAt({ tilePos.x - 1, tilePos.y }))
 		return kill();
 
 	mQueuedPush.x -= 1;
@@ -214,7 +215,7 @@ void Player::pushUp()
 	sf::Vector2i tilePos = getPositionInterpolated();
 
 	// If there's something to the left of us, we're squished
-	if (isCollisionAt({ tilePos.x, tilePos.y - 1 }))
+	if (level().isCollisionAt({ tilePos.x, tilePos.y - 1 }))
 		return kill();
 
 	mQueuedPush.y -= 1;
@@ -237,7 +238,7 @@ void Player::kill()
 	mSounds.playSound("death");
 
 	// Emit a death event.
-	emit("playerKilled", { { "deathCount", mDeathCount } });
+	level().emit("playerKilled", { { "deathCount", mDeathCount } });
 	// Reset the player.
 	reset();
 }

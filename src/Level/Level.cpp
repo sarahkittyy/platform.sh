@@ -95,31 +95,9 @@ Object::Object* Level::addObjectGeneric(Object::Object* object)
 {
 	// Initialize the object.
 	object->mResource = mResource;
-
-	object->mAddObject	= [this](Object::Object* obj) { return addObject(obj); };
-	object->mRemoveObject = [this](Object::Object* obj) { removeObject(obj); };
-	object->mQueryObjects = [this](std::function<bool(const Object::Props&)> query) { return queryObjects(query); };
-
-	object->mIsCollisionAt = [this](sf::Vector2i pos) { return isCollisionAt(pos); };
-
-	// Bind camera controls.
-	object->mSetCameraPosition = [this](sf::Vector2f pos) { setCameraPosition(pos); };
-	object->mGetCameraPosition = [this]() { return getCameraPosition(); };
-	object->mSetViewportSize   = [this](sf::Vector2f size) { setViewportSize(size); };
-	object->mGetViewportSize   = [this]() { return getViewportSize(); };
-
-	object->mSyncPriorityQueue = [this]() { syncPriorityQueue(); };
-	object->mSyncZIndexQueue   = [this]() { syncZIndexQueue(); };
-
-	object->mGridSize = &GRIDSIZE;
-	object->mTileSize = &TILESIZE;
-
-	object->mEmit	= [this](std::string event, nlohmann::json data) { emit(event, data); };
-	object->mOnEvent = [this](std::string event, EventCallback callback) { on(event, callback); };
-
-	object->mGetTickRate		 = [this]() { return mTickSpeed; };
-	object->mGetCurrentClockTime = [this]() { return mClock.getElapsedTime(); };
-
+	// Give the object a pointer to this level.
+	object->mLevel = this;
+	// Init the object
 	object->init();
 
 	// Store the object in a smart pointer.
@@ -158,7 +136,7 @@ void Level::removeObject(Object::Object* object)
 				   });
 }
 
-std::vector<Level::ObjectPtr> Level::queryObjects(std::function<bool(const Object::Props&)> query)
+std::vector<Level::ObjectPtr> Level::queryObjects(std::function<bool(const Object::Props&)> query) const
 {
 	std::vector<ObjectPtr> ret;
 
@@ -174,7 +152,7 @@ const std::vector<Level::ObjectPtr>& Level::getObjectTemplates()
 	return mObjectTemplates;
 }
 
-bool Level::isCollisionAt(sf::Vector2i pos)
+bool Level::isCollisionAt(sf::Vector2i pos) const
 {
 	// Check all objects with the "collideable" prop.
 	auto collideableObjects = queryObjects([](auto& props) {
@@ -211,7 +189,7 @@ void Level::setCameraPosition(sf::Vector2f pos)
 	mViewport.setCenter(pos.x, pos.y);
 }
 
-sf::Vector2f Level::getCameraPosition()
+sf::Vector2f Level::getCameraPosition() const
 {
 	return mViewport.getCenter();
 }
@@ -221,7 +199,7 @@ void Level::setViewportSize(sf::Vector2f size)
 	mViewport.setSize(size);
 }
 
-sf::Vector2f Level::getViewportSize()
+sf::Vector2f Level::getViewportSize() const
 {
 	return mViewport.getSize();
 }
@@ -236,9 +214,14 @@ void Level::setTickSpeed(sf::Time speed)
 	mTickSpeed = speed;
 }
 
-sf::Time Level::getTickSpeed()
+sf::Time Level::getTickSpeed() const
 {
 	return mTickSpeed;
+}
+
+sf::Time Level::getCurrentClockTime() const
+{
+	return mClock.getElapsedTime();
 }
 
 void Level::setFont(std::string path)
@@ -258,17 +241,17 @@ void Level::setDisplayText(std::string text)
 	mLevelText.setPosition(mWindow->getSize().x - PADDING, PADDING);
 }
 
-std::string Level::getDisplayText()
+std::string Level::getDisplayText() const
 {
 	return mLevelText.getString();
 }
 
-const sf::Vector2i Level::tileSize()
+sf::Vector2i Level::tileSize()
 {
 	return TILESIZE;
 }
 
-const sf::Vector2i Level::gridSize()
+sf::Vector2i Level::gridSize()
 {
 	return GRIDSIZE;
 }
